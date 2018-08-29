@@ -3,6 +3,6 @@ import { ProximaxDataPayload } from '../proximax/data-payload';
 
 export interface UploadParameter {
   dataPayload: ProximaxDataPayload;
-  keyPair?: KeyPair;
+  keyPair: KeyPair;
   secureProvider?: string;
 }
