@@ -53,6 +53,7 @@
   "dependencies": {
     "buffer": "^5.2.0",
     "ipfs-api": "^24.0.1",
+    "nem2-sdk": "^0.10.1",
     "pull-stream": "^3.6.9",
     "rxjs": "^6.0.0"
   },

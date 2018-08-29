@@ -1,4 +1,4 @@
 export interface KeyPair {
-  privateKey?: string;
-  publicKey?: string;
+  privateKey: string;
+  publicKey: string;
 }
