@@ -1,8 +1,4 @@
 import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { DataFile } from '../model/common/data-file';
-import { FileContent } from '../model/common/file-content';
-import { IpfsContent } from '../model/ipfs/ipfs-content';
 import { Version } from '../model/ipfs/version';
 
 export class IpfsClient {
@@ -17,6 +13,7 @@ export class IpfsClient {
     return from(this.localAPI.version());
   }
 
+  /*
   public createDataFile(
     data: any,
     name?: string,
@@ -24,8 +21,8 @@ export class IpfsClient {
     contentType?: string,
     metadata?: Map<any, any>,
     options?: any
-  ): Observable<DataFile> {
-    const df: DataFile = {
+  ): Observable<dataFile.DataFile> {
+    const df: dataFile.DataFile = {
       contentType,
       description,
       metadata,
@@ -62,5 +59,5 @@ export class IpfsClient {
     options?: any
   ): Observable<IpfsContent[]> {
     return from(this.localAPI.files.add(content, options));
-  }
+  }*/
 }

@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import 'mocha';
-import { TestHelper } from '../helper/test-helper';
 import { IpfsClient } from './ipfs';
 
 describe('IpfsClient', () => {
@@ -20,7 +19,7 @@ describe('IpfsClient', () => {
   });
 
   it('should add text content to ipfs and return it hash', async () => {
-    const Buffer = require('buffer').Buffer;
+    /* const Buffer = require('buffer').Buffer;
     const textContent = Buffer.from('Proximax P2P storage');
     const expectedHash = 'QmcQoG9VT4XYPNEpftg5to3vDmYifmGQ6c2w4oMcowgMsi';
     const test = await TestHelper.subscribeTestValue(
@@ -28,7 +27,7 @@ describe('IpfsClient', () => {
       expectedHash
     );
     console.log(test);
-    /*client
+    client
       .addContent(textContent)
       .subscribe(
         response => {
@@ -45,7 +44,7 @@ describe('IpfsClient', () => {
   });
 
   it('should create data from after uploading buffer content to ipfs network', () => {
-    const Buffer = require('buffer').Buffer;
+    /*const Buffer = require('buffer').Buffer;
     const fileContent = Buffer.from('Proximax P2P storage ' + Date.now());
     const metadata = new Map<any, any>();
     metadata.set('author', 'proximax');
@@ -77,6 +76,6 @@ describe('IpfsClient', () => {
       )
       .subscribe(res => {
         console.log(res);
-      });
+      });*/
   });
 });

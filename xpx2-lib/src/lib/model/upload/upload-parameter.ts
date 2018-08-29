@@ -1,11 +1,8 @@
-import { PrivacyStrategyType } from '../privacy/privacy-strategy-type';
-import { UploadParameterData } from './upload-parameter-data';
+import { KeyPair } from '../common/keypair';
+import { ProximaxDataPayload } from '../proximax/data-payload';
 
 export interface UploadParameter {
-  computeDigest?: boolean;
-  privacyStrategy: PrivacyStrategyType;
-  signerPrivateKey: string;
-  recipientPublicKey: string;
-  description?: string;
-  dataList: UploadParameterData[];
+  dataPayload: ProximaxDataPayload;
+  keyPair?: KeyPair;
+  secureProvider?: string;
 }

@@ -1,4 +1,4 @@
 export interface KeyPair {
-  singerPrivateKey?: string;
-  recipientPublicKey?: string;
+  privateKey?: string;
+  publicKey?: string;
 }

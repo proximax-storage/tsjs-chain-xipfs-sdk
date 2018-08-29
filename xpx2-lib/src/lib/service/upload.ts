@@ -1,15 +1,12 @@
 import { Observable, of } from 'rxjs';
-import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload';
 import { ProximaxUploadResult } from '../model/proximax/upload-result';
+import { UploadParameter } from '../model/upload/upload-parameter';
 
 export class UploadService {
-  public upload(
-    payload: ProximaxMessagePayloadModel,
-    rootData: ProximaxMessagePayloadModel
-  ): Observable<ProximaxUploadResult> {
-    console.log(payload);
+  public upload(param: UploadParameter): Observable<ProximaxUploadResult> {
+    console.log(param);
 
-    const result = new ProximaxUploadResult('', '', '', rootData);
+    const result = new ProximaxUploadResult('');
 
     return of(result);
   }
