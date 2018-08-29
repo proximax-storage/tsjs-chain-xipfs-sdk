@@ -1,0 +1,6 @@
+export enum PrivacyStrategyType {
+  'PLAIN' = 1001,
+  'SECURE_PRIVATE_PUBLIC_KEY' = 1002,
+  'SECURE_SHARE_SECRET' = 1003,
+  'SECURE_PASSWORD' = 1004
+}
