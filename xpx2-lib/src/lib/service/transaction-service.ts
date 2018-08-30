@@ -76,7 +76,6 @@ export class TransactionService {
 
     const transactionHttp = new TransactionHttp(this.host);
 
-    
     return transactionHttp.announce(signedTransaction);
   }
 }
