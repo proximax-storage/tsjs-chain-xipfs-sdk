@@ -21,7 +21,8 @@ export class UploadService {
       .createTransaction(securedMessage, param.keyPair)
       .pipe(
         map(response => {
-          return new ProximaxUploadResult(response.message);
+          console.log(response);
+          return new ProximaxUploadResult('');
         })
       );
   }
