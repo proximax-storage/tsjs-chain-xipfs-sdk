@@ -11,14 +11,13 @@ describe('TransactionService', () => {
     const metadata = new Map<any, any>();
     metadata.set('author', 'Proximax');
 
-    const datalist = [];
-    datalist.push(
-      new ProximaxDataFile(
-        'QmSV5y3v9aWhJivY6YEphkt2z69aXRem8nRmVH5s8Xuosw',
-        'text/plain',
-        PrivacyStrategyType.PLAIN
-      )
+    const datalist: ProximaxDataFile[] = [];
+    const df = new ProximaxDataFile(
+      'QmSV5y3v9aWhJivY6YEphkt2z69aXRem8nRmVH5s8Xuosw',
+      'text/plain',
+      PrivacyStrategyType.PLAIN
     );
+    datalist.push(df);
     const payload = new ProximaxDataPayload(
       'Testing 1',
       'Test dsc',
