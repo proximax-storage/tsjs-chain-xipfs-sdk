@@ -34,11 +34,12 @@ describe('TransactionService', () => {
     };
 
     const transactionx = new TransactionService(
-      'http://localhost:3000',
-      NetworkType.MIJIN_TEST
+      NetworkType.MIJIN_TEST,
+      'http://172.24.231.94:9000'
     );
-    await transactionx
-      .createTransaction(payload, keyPair)
+
+    transactionx
+      .createAsyncTransaction(payload, keyPair)
       .subscribe(console.log);
   });
 });

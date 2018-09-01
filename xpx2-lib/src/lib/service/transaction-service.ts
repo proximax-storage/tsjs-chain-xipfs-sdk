@@ -5,7 +5,6 @@ import {
   NetworkType,
   PlainMessage,
   Transaction,
-  TransactionAnnounceResponse,
   TransactionHttp,
   TransferTransaction
 } from 'nem2-sdk';
@@ -16,7 +15,7 @@ export class TransactionService {
   private network: NetworkType = NetworkType.MIJIN_TEST;
   private host: string = 'http://localhost:3000';
 
-  constructor(host: string, network: NetworkType) {
+  constructor(network: NetworkType, host: string) {
     this.network = network;
     this.host = host;
   }
@@ -50,10 +49,8 @@ export class TransactionService {
     // NOTE:  Need to run nem2-camel acted as a proxy
     return transactionHttp.announceSync(signedTransaction);
   }
-  public createTransaction(
-    message: any,
-    keypair: KeyPair
-  ): Observable<TransactionAnnounceResponse> {
+
+  public createTransaction(message: any, keypair: KeyPair): Account {
     const senderAccount = Account.createFromPrivateKey(
       keypair.privateKey,
       this.network
@@ -76,6 +73,8 @@ export class TransactionService {
 
     const transactionHttp = new TransactionHttp(this.host);
 
-    return transactionHttp.announce(signedTransaction);
+    transactionHttp.announce(signedTransaction);
+
+    return senderAccount;
   }
 }
