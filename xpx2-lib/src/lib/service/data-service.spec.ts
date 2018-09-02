@@ -8,7 +8,7 @@ describe('DataService', () => {
   const ipfsConnection = new IpfsConnection('172.24.231.94', '5001');
   const dataService = new DataService(ipfsConnection);
 
-  it('should create proximax data file when input is string or text', async () => {
+  it('should create proximax data file when input is string or text', () => {
     // setup
     const content = 'Proximax P2P storage ';
 
@@ -17,24 +17,24 @@ describe('DataService', () => {
     const expectedHash = 'QmRLSoo71sRDYoqcdpEsivXAcSvEx8n526U8rX94LhrvQX';
 
     // test
-    await dataService
+    dataService
       .createProximaxDataFile(content, contentType, privacyType)
       .subscribe(
         response => {
-          console.log(response);
+          //    console.log(response);
           expect(response).to.be.exist;
           expect(response.dataHash).to.be.equal(expectedHash);
           expect(response.contentType).to.be.equal(contentType);
           expect(response.privacyType).to.be.equal(privacyType);
         },
         error => {
-          console.log(error);
+          // console.log(error);
           expect(error).to.not.be.exist;
         }
       );
   });
 
-  it('should create proximax data payload', async () => {
+  it('should create proximax data payload', () => {
     // setup
     const name = 'Test 123 ';
     const description = 'Test 123';
@@ -51,7 +51,7 @@ describe('DataService', () => {
     datalist.push(df);
 
     // test
-    await dataService
+    dataService
       .createProximaxDataPayload(
         name,
         description,

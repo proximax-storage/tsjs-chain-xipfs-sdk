@@ -1,3 +1,4 @@
+import { SecureType } from '../privacy/secure-type';
 import { ProximaxDataFile } from './data-file';
 
 export class ProximaxDataPayload {
@@ -7,6 +8,7 @@ export class ProximaxDataPayload {
     public readonly digest?: string,
     public readonly metadata?: Map<string, object>,
     public readonly data?: ProximaxDataFile[],
-    public readonly timestamp?: number
+    public readonly timestamp?: number,
+    public readonly secureType?: SecureType
   ) {}
 }
