@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { IpfsConnection } from '../connection/ipfs-connection';
-import { PrivacyStrategyType } from '../model/privacy/privacy-strategy-type';
+import { PrivacyType } from '../model/privacy/privacy-type';
 import { ProximaxDataFile } from '../model/proximax/data-file';
 import { DataService } from './data-service';
 
@@ -13,7 +13,7 @@ describe('DataService', () => {
     const content = 'Proximax P2P storage ';
 
     const contentType = 'text/plain';
-    const privacyType = PrivacyStrategyType.PLAIN;
+    const privacyType = PrivacyType.PLAIN;
     const expectedHash = 'QmRLSoo71sRDYoqcdpEsivXAcSvEx8n526U8rX94LhrvQX';
 
     // test
@@ -45,7 +45,7 @@ describe('DataService', () => {
     const df = new ProximaxDataFile(
       'QmSV5y3v9aWhJivY6YEphkt2z69aXRem8nRmVH5s8Xuosw',
       'text/plain',
-      PrivacyStrategyType.PLAIN
+      PrivacyType.PLAIN
     );
 
     datalist.push(df);

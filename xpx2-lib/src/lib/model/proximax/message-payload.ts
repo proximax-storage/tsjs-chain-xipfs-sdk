@@ -1,4 +1,4 @@
-import { PrivacyStrategyType } from '../privacy/privacy-strategy-type';
+import { PrivacyType } from '../privacy/privacy-type';
 
 export class ProximaxMessagePayloadModel {
   constructor(
@@ -13,7 +13,7 @@ export class ProximaxMessagePayloadModel {
     /**
      * The privacy strategy type
      */
-    public privacyType?: PrivacyStrategyType,
+    public privacyType?: PrivacyType,
     /**
      * The privacy search tag configuration
      */

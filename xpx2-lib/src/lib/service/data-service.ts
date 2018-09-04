@@ -3,7 +3,7 @@ import { from, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IpfsConnection } from '../connection/ipfs-connection';
 import { IpfsContent } from '../model/ipfs/ipfs-content';
-import { PrivacyStrategyType } from '../model/privacy/privacy-strategy-type';
+import { PrivacyType } from '../model/privacy/privacy-type';
 import { ProximaxDataFile } from '../model/proximax/data-file';
 import { ProximaxDataPayload } from '../model/proximax/data-payload';
 
@@ -17,7 +17,7 @@ export class DataService {
   public createProximaxDataFile(
     data: any,
     contentType?: string,
-    privacyType?: PrivacyStrategyType,
+    privacyType?: PrivacyType,
     options?: any
   ): Observable<ProximaxDataFile> {
     const localData = this.pullStream.values([Buffer.from(data)]);

@@ -2,13 +2,14 @@ import {
   Account,
   Address,
   Deadline,
+  Listener,
   NetworkType,
   PlainMessage,
   Transaction,
   TransactionHttp,
   TransferTransaction
 } from 'nem2-sdk';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 // import { map } from 'rxjs/operators';
 import { KeyPair } from '../model/common/keypair';
 
@@ -65,7 +66,14 @@ export class TransactionService {
     return transactionHttp.getTransaction(transactionHash);
   }
 
-  public createTransaction(message: any, keypair: KeyPair): Account {
+  public createTransaction(
+    message: any,
+    keypair: KeyPair
+  ): Observable<Transaction> {
+    return from(this.createAsyncTransaction(message, keypair));
+  }
+
+  public createTransactionInternal(message: any, keypair: KeyPair) {
     const senderAccount = Account.createFromPrivateKey(
       keypair.privateKey,
       this.network
@@ -80,7 +88,7 @@ export class TransactionService {
       Deadline.create(),
       recipientAddress,
       [],
-      PlainMessage.create(message),
+      PlainMessage.create(JSON.stringify(message)),
       this.network
     );
 
@@ -88,8 +96,12 @@ export class TransactionService {
 
     const transactionHttp = new TransactionHttp(this.host);
 
-    transactionHttp.announce(signedTransaction);
+    const listener = new Listener('ws://172.24.231.94:3000');
 
-    return senderAccount;
+    listener.open().then(() => {
+      return listener.confirmed(senderAccount.address);
+    });
+
+    transactionHttp.announce(signedTransaction);
   }
 }

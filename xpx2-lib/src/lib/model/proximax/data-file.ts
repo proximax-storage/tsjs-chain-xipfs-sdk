@@ -1,9 +1,9 @@
-import { PrivacyStrategyType } from '../privacy/privacy-strategy-type';
+import { PrivacyType } from '../privacy/privacy-type';
 
 export class ProximaxDataFile {
   constructor(
     public dataHash: string,
     public contentType?: string,
-    public privacyType?: PrivacyStrategyType
+    public privacyType?: PrivacyType
   ) {}
 }
