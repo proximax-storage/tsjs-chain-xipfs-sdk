@@ -1,10 +1,11 @@
-import { ProximaxDataPayload } from "../proximax/data-payload";
+import { PrivacyType } from '../privacy/privacy-type';
+import { IpfsDataInfo } from '../proximax/ipfs-data-info';
 
 export class UploadResult {
-    constructor(
-        public transactionHash:string,
-        public privacyType:number,
-        public version?:string,
-        public data?:ProximaxDataPayload
-    ){}
+  constructor(
+    public transactionHash: string,
+    public privacyType?: PrivacyType,
+    public version?: string,
+    public data?: IpfsDataInfo
+  ) {}
 }

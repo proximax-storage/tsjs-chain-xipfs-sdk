@@ -1,5 +1,4 @@
-import { BlockchainNetworkType } from "../model/proximax/blockchain-network-type";
-
+import { BlockchainNetworkType } from '../model/proximax/blockchain-network-type';
 
 export class BlockchainNetworkConnection {
   constructor(

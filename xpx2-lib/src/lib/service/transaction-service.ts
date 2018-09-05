@@ -2,26 +2,84 @@ import {
   Account,
   Address,
   Deadline,
-  Listener,
   NetworkType,
   PlainMessage,
-  Transaction,
   TransactionHttp,
   TransferTransaction
 } from 'nem2-sdk';
-import { from, Observable } from 'rxjs';
-// import { map } from 'rxjs/operators';
-import { KeyPair } from '../model/common/keypair';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
+import { SecureMessage } from '../model/privacy/secure-message';
+import { BlockchainNetworkType } from '../model/proximax/blockchain-network-type';
 
 export class TransactionService {
   private network: NetworkType = NetworkType.MIJIN_TEST;
-  private host: string = 'http://localhost:3000';
+  // private host: string = 'http://localhost:3000';
+  private gateway: string = 'http://localhost:9000';
 
-  constructor(network: NetworkType, host: string) {
-    this.network = network;
-    this.host = host;
+  constructor(blockchainNetwork: BlockchainNetworkConnection) {
+    this.network = this.getNemNetworkType(blockchainNetwork.network);
+    // this.host = blockchainNetwork.endpointUrl;
+    this.gateway = blockchainNetwork.gatewayUrl
+      ? blockchainNetwork.gatewayUrl
+      : blockchainNetwork.endpointUrl;
   }
 
+  public announceAsyncTransaction(
+    payload: any,
+    senderPrivateKey: string,
+    recipientPublicKey: string,
+    useBlockChainSecureMessage: boolean,
+    transactionDeadline?: number
+  ): Observable<any> {
+    // this.network = NetworkType.MIJIN_TEST;
+    // this.gateway = 'http://172.24.231.82:3000';
+    const senderAccount = Account.createFromPrivateKey(
+      senderPrivateKey,
+      this.network
+    );
+
+    const recipientAddress = Address.createFromPublicKey(
+      recipientPublicKey,
+      this.network
+    );
+
+    payload = JSON.stringify(payload);
+
+    let message = PlainMessage.create(payload);
+
+    if (useBlockChainSecureMessage) {
+      message = SecureMessage.create(payload);
+    }
+
+    const transferTransaction = TransferTransaction.create(
+      Deadline.create(transactionDeadline),
+      recipientAddress,
+      [],
+      message,
+      this.network
+    );
+
+    console.log(transferTransaction);
+
+    const signedTransaction = senderAccount.sign(transferTransaction);
+
+    console.log(signedTransaction);
+
+    const transactionHttp = new TransactionHttp(this.gateway);
+    console.log(this.gateway);
+    // console.log(signedTransaction);
+    // NOTE:  Need to run nem2-camel acted as a proxy
+    return transactionHttp.announceSync(signedTransaction).pipe(
+      map(response => {
+        console.log(response);
+        return response.transactionInfo!.hash;
+      })
+    );
+  }
+
+  /*
   public createAsyncTransaction(
     message: any,
     keypair: KeyPair
@@ -57,22 +115,23 @@ export class TransactionService {
         console.log(signedTransaction);
         return response.transactionInfo ? response.transactionInfo.hash : '';
       })
-    );*/
-  }
-
+    );
+  }*/
+  /*
   public getTransaction(transactionHash: string): Observable<Transaction> {
     const transactionHttp = new TransactionHttp(this.host);
     console.log(this.host);
     return transactionHttp.getTransaction(transactionHash);
   }
-
+  */
+  /*
   public createTransaction(
     message: any,
     keypair: KeyPair
   ): Observable<Transaction> {
     return from(this.createAsyncTransaction(message, keypair));
-  }
-
+  }*/
+  /*
   public createTransactionInternal(message: any, keypair: KeyPair) {
     const senderAccount = Account.createFromPrivateKey(
       keypair.privateKey,
@@ -103,5 +162,22 @@ export class TransactionService {
     });
 
     transactionHttp.announce(signedTransaction);
+  }
+*/
+  private getNemNetworkType(
+    blockchainNetworkType: BlockchainNetworkType
+  ): NetworkType {
+    switch (blockchainNetworkType) {
+      case BlockchainNetworkType.TEST_NET:
+        return NetworkType.TEST_NET;
+      case BlockchainNetworkType.MIJIN_TEST:
+        return NetworkType.MIJIN_TEST;
+      case BlockchainNetworkType.MAIN_NET:
+        return NetworkType.MAIN_NET;
+      case BlockchainNetworkType.MIJIN_MAIN:
+        return NetworkType.MIJIN;
+      default:
+        return NetworkType.MIJIN_TEST;
+    }
   }
 }

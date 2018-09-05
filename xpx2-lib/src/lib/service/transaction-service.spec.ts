@@ -1,11 +1,12 @@
 import 'mocha';
-import { NetworkType } from 'nem2-sdk';
-import { KeyPair, PrivacyStrategyType, TransactionService } from '../..';
+/*import { KeyPair, PrivacyType, TransactionService } from '../..';
+import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
+import { BlockchainNetworkType } from '../model/proximax/blockchain-network-type';
 import { ProximaxDataFile } from '../model/proximax/data-file';
-import { ProximaxDataPayload } from '../model/proximax/data-payload';
+import { ProximaxDataPayload } from '../model/proximax/data-payload';*/
 
 describe('TransactionService', () => {
-  it('should announce transaction', () => {
+  /* it('should announce transaction', () => {
     const metadata = new Map<any, any>();
     metadata.set('author', 'Proximax');
 
@@ -13,7 +14,7 @@ describe('TransactionService', () => {
     const df = new ProximaxDataFile(
       'QmSV5y3v9aWhJivY6YEphkt2z69aXRem8nRmVH5s8Xuosw',
       'text/plain',
-      PrivacyStrategyType.PLAIN
+      PrivacyType.PLAIN
     );
     datalist.push(df);
     const payload = new ProximaxDataPayload(
@@ -30,13 +31,15 @@ describe('TransactionService', () => {
       publicKey:
         '98F8B65880E569D823841DDAD19513578A36693708FC6DC2598214D5522A4FD3'
     };
-
-    const transactionx = new TransactionService(
-      NetworkType.MIJIN_TEST,
-      'http://172.24.231.94:3000'
+    const blockchainConnection = new BlockchainNetworkConnection(
+      BlockchainNetworkType.MIJIN_TEST,
+      'http://172.24.231.94:3000',
+      'http://172.24.231.94:8000'
     );
 
-    transactionx.createTransaction(payload, keyPair).subscribe(
+    const transactionx = new TransactionService(blockchainConnection);
+
+    transactionx.createAsyncTransaction(payload, keyPair).subscribe(
       response => {
         console.log(response);
       },
@@ -47,7 +50,7 @@ describe('TransactionService', () => {
         console.log('done');
       }
     );
-  });
+  });*/
   /*
   it('should get the transaction info', async () => {
    const transactionx = new TransactionService(

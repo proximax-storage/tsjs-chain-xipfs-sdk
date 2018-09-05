@@ -1,11 +1,11 @@
-import { expect } from 'chai';
+/*import { expect } from 'chai';
 import { IpfsConnection } from '../connection/ipfs-connection';
 import { PrivacyType } from '../model/privacy/privacy-type';
 import { ProximaxDataFile } from '../model/proximax/data-file';
-import { DataService } from './data-service';
+import { DataService } from './data-service';*/
 
 describe('DataService', () => {
-  const ipfsConnection = new IpfsConnection('172.24.231.94', '5001');
+  /* const ipfsConnection = new IpfsConnection('172.24.231.94', '5001');
   const dataService = new DataService(ipfsConnection);
 
   it('should create proximax data file when input is string or text', () => {
@@ -69,5 +69,5 @@ describe('DataService', () => {
           expect(error).to.not.be.exist;
         }
       );
-  });
+  });*/
 });

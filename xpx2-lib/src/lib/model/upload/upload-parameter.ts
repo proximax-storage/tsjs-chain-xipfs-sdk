@@ -1,4 +1,4 @@
-import { PrivacyStrategy } from '../../privacy/privacy';
+import { PrivacyType } from '../privacy/privacy-type';
 import { UploadParameterData } from './upload-parameter-data';
 
 export class UploadParameter {
@@ -10,7 +10,7 @@ export class UploadParameter {
     // public readonly detectContentType?: boolean,
     public readonly transactionDeadline?: number,
     public readonly useBlockhainSecureMessage?: boolean,
-    public readonly privacyStrategy?: PrivacyStrategy
+    public readonly privacyStrategy?: PrivacyType
   ) {}
 
   public validate(): void {
@@ -22,8 +22,8 @@ export class UploadParameter {
       throw new Error('data input stream or bytes is required');
     }
 
-    if(this.signerPrivateKey === null || this.signerPrivateKey === undefined) {
-        throw new Error('singer privacy key is required')
+    if (this.signerPrivateKey === null || this.signerPrivateKey === undefined) {
+      throw new Error('singer privacy key is required');
     }
   }
 }
