@@ -1,4 +1,3 @@
-import 'mocha';
 import { from, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IpfsConnection } from '../connection/ipfs-connection';

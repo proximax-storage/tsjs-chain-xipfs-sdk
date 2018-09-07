@@ -1,5 +1,7 @@
 import { from, Observable } from 'rxjs';
-import { Version } from '../model/ipfs/version';
+import { map } from 'rxjs/operators';
+import { IpfsNetworkInfo } from '../model/ipfs/ipfs-network-info';
+import { IpfsVersion } from '../model/ipfs/ipfs-version';
 
 export class IpfsConnection {
   private API: any;
@@ -13,8 +15,20 @@ export class IpfsConnection {
     this.API = new API(host, port, options);
   }
 
-  public verifyConnection(): Observable<Version> {
-    return from(this.API.version());
+  public isConnect(): Observable<IpfsNetworkInfo> {
+    return from<IpfsVersion>(this.API.version()).pipe(
+      map(response => {
+        if (!response) {
+          return new IpfsNetworkInfo('Disconnected');
+        }
+
+        return new IpfsNetworkInfo(
+          'Connected',
+          response.version,
+          response.repo
+        );
+      })
+    );
   }
 
   public getAPI() {

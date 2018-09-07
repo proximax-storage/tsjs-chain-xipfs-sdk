@@ -8,15 +8,16 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import { AppRouters } from './app.routes';
 import { ContentComponent } from './content/content.component';
 import { AddContentDialogComponent } from './add-content-dialog/add-content-dialog.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ConnectionDialogComponent } from './connection-dialog/connection-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
 
     ContentComponent,
-
-    AddContentDialogComponent
+    AddContentDialogComponent,
+    ConnectionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +25,8 @@ import { FormsModule } from '@angular/forms';
     MaterialModule,
     FlexLayoutModule,
     AppRouters,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule 
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>{{data}}</h1>
 <div mat-dialog-content>
-  <form class="add-content-form" [formGroup]="add-content-form" (ngSubmit)="onSubmit()">
+  <form class="connection-form" [formGroup]="add-content-form" (ngSubmit)="onSubmit()">
     <mat-form-field>
       <input matInput placeholder="Title" type="text" required formControlName="title" name="title">
     </mat-form-field>
@@ -25,5 +25,5 @@
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button class="close" (click)="onNoClick()" color="warn">Cancel</button>
+  <button mat-raised-button class="close" (click)="onNoClick()" color="warn">Close</button>
 </div>
