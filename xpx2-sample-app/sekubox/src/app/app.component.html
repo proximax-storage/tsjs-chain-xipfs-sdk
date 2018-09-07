@@ -10,7 +10,7 @@
         <mat-icon class="icon">cloud_download</mat-icon>
         <span class="label">Download</span>
       </a> -->
-      <a mat-list-item>
+      <a mat-list-item (click)="openDialog()">
         <mat-icon class="icon">info</mat-icon>
         <span class="label">Settings</span>
       </a>
@@ -48,7 +48,7 @@
             </a>
           </li>-->
           <li>
-            <a>
+            <a (click)="openDialog()">
               <mat-icon class="icon">info</mat-icon>
               <span class="label">Settings</span>
             </a>

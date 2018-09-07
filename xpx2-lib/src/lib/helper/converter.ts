@@ -1,5 +1,5 @@
 import { NetworkType } from 'nem2-sdk';
-import { BlockchainNetworkType } from '../model/proximax/blockchain-network-type';
+import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 
 export class Converter {
   public static getBlockchainNetworkType(nemNetworkType: NetworkType): string {

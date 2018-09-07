@@ -7,11 +7,11 @@ import {
   TransactionHttp,
   TransferTransaction
 } from 'nem2-sdk';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
+import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { SecureMessage } from '../model/privacy/secure-message';
-import { BlockchainNetworkType } from '../model/proximax/blockchain-network-type';
 
 export class TransactionService {
   private network: NetworkType = NetworkType.MIJIN_TEST;
@@ -24,6 +24,12 @@ export class TransactionService {
     this.gateway = blockchainNetwork.gatewayUrl
       ? blockchainNetwork.gatewayUrl
       : blockchainNetwork.endpointUrl;
+  }
+
+  public getAddressFromPrivateKey(privateKey: string) : string {
+    const account = Account.createFromPrivateKey(privateKey,this.network);
+
+    return account.address.plain();
   }
 
   public announceAsyncTransaction(

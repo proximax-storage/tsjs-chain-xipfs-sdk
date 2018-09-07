@@ -26,12 +26,14 @@ import { ConnectionDialogComponent } from './connection-dialog/connection-dialog
     FlexLayoutModule,
     AppRouters,
     FormsModule,
-    ReactiveFormsModule 
+    ReactiveFormsModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
-    AddContentDialogComponent
+    AddContentDialogComponent,
+    ConnectionDialogComponent,
   ],
 })
 export class AppModule { }

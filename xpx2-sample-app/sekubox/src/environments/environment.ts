@@ -1,3 +1,5 @@
+import { BlockchainNetworkType  } from 'xpx2-js-sdk';
+
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
@@ -5,13 +7,13 @@
 export const environment = {
   production: false,
   ipfsConnection: {
-    multAddress: '172.24.231.82',
-    host: '5001',
+    multAddress: '172.24.231.91',
+    port: '5001',
   },
   blockchainConnection: {
-    network: 'MIJIN_TEST',
-    endpointUrl: 'http://172.24.231.82:3000',
-    gatewayUrl: 'http://172.24.231.82:9000',
+    network: BlockchainNetworkType.MIJIN_TEST,
+    endpointUrl: 'http://172.24.231.91:3000',
+    gatewayUrl: 'http://172.24.231.91:9000',
     senderTestAccount: {
       privateKey: '',
       publicKey: '',

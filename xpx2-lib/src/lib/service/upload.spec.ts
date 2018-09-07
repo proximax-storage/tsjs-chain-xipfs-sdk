@@ -1,8 +1,8 @@
 import 'mocha';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { IpfsConnection } from '../connection/ipfs-connection';
+import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { PrivacyType } from '../model/privacy/privacy-type';
-import { BlockchainNetworkType } from '../model/proximax/blockchain-network-type';
 import { UploadParameter } from '../model/upload/upload-parameter';
 import { UploadParameterData } from '../model/upload/upload-parameter-data';
 import { DataService } from './data-service';

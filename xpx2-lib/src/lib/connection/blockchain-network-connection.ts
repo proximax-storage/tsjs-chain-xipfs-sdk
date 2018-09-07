@@ -2,8 +2,8 @@ import { NetworkHttp } from 'nem2-sdk';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Converter } from '../helper/converter';
+import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { NetworkInfo } from '../model/blockchain/network-info';
-import { BlockchainNetworkType } from '../model/proximax/blockchain-network-type';
 
 export class BlockchainNetworkConnection {
   constructor(

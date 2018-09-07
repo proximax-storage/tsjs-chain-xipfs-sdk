@@ -1,7 +1,7 @@
 import 'mocha';
 
 import { expect } from 'chai';
-import { BlockchainNetworkType } from '../model/proximax/blockchain-network-type';
+import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { BlockchainNetworkConnection } from './blockchain-network-connection';
 
 describe('BlockChainNetworkConnection', () => {

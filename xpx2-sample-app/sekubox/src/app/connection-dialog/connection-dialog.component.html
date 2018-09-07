@@ -1,28 +1,35 @@
 <h1 mat-dialog-title>{{data}}</h1>
 <div mat-dialog-content>
-  <form class="connection-form" [formGroup]="add-content-form" (ngSubmit)="onSubmit()">
-    <mat-form-field>
-      <input matInput placeholder="Title" type="text" required formControlName="title" name="title">
-    </mat-form-field>
-    <mat-form-field>
-      <textarea matInput placeholder="Description" formControlName="description" name="decription"></textarea>
-    </mat-form-field>
-    <mat-form-field>
-      <textarea matInput placeholder="Metadata" formControlName="metadata" name="metadata"></textarea>
-    </mat-form-field>
-     <mat-form-field>
-      <mat-select matInput placeholder="Privacy Type" formControlName="privacyType" name="privacy">
-        <mat-option *ngFor="let p of privacyTypeOptions" [value]="{{privacyTypes[p]}}">
-          {{p}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <ngx-mat-file-input required formControlName="dataFile" name="dataFile" placeholder="Input file"></ngx-mat-file-input>
-      <mat-icon matSuffix>folder</mat-icon>
-    </mat-form-field>
-    <button mat-raised-button type="submit" color="primary">Save</button>
-  </form>
+
+  <mat-tab-group dynamicHeight>
+    <mat-tab label="Blockchain info">
+
+      <mat-list>
+        <mat-list-item>Status: {{blockchain.status}} </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>Network: {{blockchain.networkType}}</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>Endpoint Url: {{blockchain.baseUrl}}</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item> Gateway Url: {{blockchain.gatewayUrl}}</mat-list-item>
+      </mat-list>
+
+
+    </mat-tab>
+    <mat-tab label="Storage info">
+
+      <mat-list>
+        <mat-list-item>Status: {{storage.status}} </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>Network: {{storage.network}}</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>Port: {{storage.port}}</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item> Version: {{storage.version}}</mat-list-item>
+      </mat-list>
+
+    </mat-tab>
+  </mat-tab-group>
 </div>
 <div mat-dialog-actions>
   <button mat-raised-button class="close" (click)="onNoClick()" color="warn">Close</button>

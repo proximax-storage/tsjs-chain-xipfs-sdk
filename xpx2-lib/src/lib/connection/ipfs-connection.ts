@@ -19,10 +19,18 @@ export class IpfsConnection {
     return from<IpfsVersion>(this.API.version()).pipe(
       map(response => {
         if (!response) {
-          return new IpfsNetworkInfo('Disconnected');
+          return new IpfsNetworkInfo(
+            this.host,
+            this.port,
+            this.options,
+            'Disconnected'
+          );
         }
 
         return new IpfsNetworkInfo(
+          this.host,
+          this.port,
+          this.options,
           'Connected',
           response.version,
           response.repo

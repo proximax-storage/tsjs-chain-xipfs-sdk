@@ -5,6 +5,7 @@ export * from './lib/model/common/keypair';
 export * from './lib/model/privacy/privacy-type';
 export * from './lib/model/proximax/upload-parameter';
 export * from './lib/connection/blockchain-network-connection';
+export * from './lib/model/blockchain/blockchain-network-type';
 export * from './lib/connection/ipfs-connection';
 export * from './lib/model/blockchain/network-info';
 export * from './lib/model/common/constants';
