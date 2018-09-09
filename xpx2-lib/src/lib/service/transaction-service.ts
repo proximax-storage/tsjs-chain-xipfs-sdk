@@ -7,7 +7,7 @@ import {
   TransactionHttp,
   TransferTransaction
 } from 'nem2-sdk';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
@@ -26,8 +26,8 @@ export class TransactionService {
       : blockchainNetwork.endpointUrl;
   }
 
-  public getAddressFromPrivateKey(privateKey: string) : string {
-    const account = Account.createFromPrivateKey(privateKey,this.network);
+  public getAddressFromPrivateKey(privateKey: string): string {
+    const account = Account.createFromPrivateKey(privateKey, this.network);
 
     return account.address.plain();
   }

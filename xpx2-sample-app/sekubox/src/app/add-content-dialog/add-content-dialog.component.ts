@@ -1,4 +1,10 @@
-import { Component, OnInit, Inject, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Inject,
+  EventEmitter,
+  ChangeDetectorRef
+} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, NgForm } from '@angular/forms';
 import {
@@ -7,13 +13,15 @@ import {
   DataService,
   IpfsConnection,
   BlockchainNetworkConnection,
-  UploadService
+  UploadService,
+  DataStreamer
 } from 'xpx2-js-sdk';
 import { environment } from '../../environments/environment';
 import { UploadParameter } from 'xpx2-js-sdk/build/main/lib/model/upload/upload-parameter';
 import { UploadParameterData } from 'xpx2-js-sdk/build/main/lib/model/upload/upload-parameter-data';
 import { FileInput } from 'ngx-material-file-input';
-
+import { map } from 'rxjs/operators';
+import { BlobStreamer } from 'src/app/add-content-dialog/BlockStreamer';
 export interface SelectPrivacyType {
   value: number;
   viewValue: string;
@@ -29,7 +37,7 @@ export class AddContentDialogComponent implements OnInit {
   transactionService: TransactionService;
   dataService: DataService;
   uploadService: UploadService;
-  file: any;
+  file: File;
 
   privacyTypes: SelectPrivacyType[] = [
     {
@@ -42,6 +50,7 @@ export class AddContentDialogComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private cd: ChangeDetectorRef,
     public dialogRef: MatDialogRef<AddContentDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -75,44 +84,66 @@ export class AddContentDialogComponent implements OnInit {
 
   onNoClick(): void {
     this.dialogRef.close();
-
   }
 
-  onSubmit(form: NgForm): void {
-    this.dialogRef.close();
-    /*const byteStream = this.file;
-    const description = '';
-    const contentType = '';
-    const signerPrivateKey = '';
-    const recipientPublicKey = '';
-    const recipientAddress = '';
+  async onSubmit(form: NgForm): Promise<void> {
+    // this.dialogRef.close();
+
+    const description = this.addContentForm.get('description');
+    const title = this.addContentForm.get('title');
+   // const contentType = '';
+    const signerPrivateKey = 'D35F7C7697CA8CA16A0DE483C891B8591F7DE6B7E46A35AF54DE25882E4B32ED';
+    const recipientPublicKey = '9A63C603EA56DC058E9EB2E0DF8C769C19CB859C898F06247769E5DE312CD58F';
+    const recipientAddress = 'SBFU4SOEI7WLPXOXP4ULQ5F7UXKG3J6DGMS3ZINI';
 
     const metadata = new Map<any, any>();
-    const dataParam = new UploadParameterData(
-      byteStream,
-      null,
-      null,
-      description,
-      contentType,
-      metadata,
-      name
-    );
 
-    const param = new UploadParameter(
-      dataParam,
-      signerPrivateKey,
-      recipientPublicKey,
-      recipientAddress,
-      null,
-      false,
-      PrivacyType.PLAIN);
+    const fInputControl = this.addContentForm.get('dataFile');
+    const fileInput: FileInput = fInputControl.value;
+    const myFile = fileInput.files[0];
 
-    this.uploadService.uploadAsync(param).subscribe(console.log);*/
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const options = {
+        progress: (bytes: number) => {
+          console.log(`Progress: ${bytes}/${myFile.size}`);
+        }
+      };
 
-    const fInput = this.addContentForm.get('dataFile');
-    const file: FileInput = fInput.value;
-    console.log(file.files[0].type);
+      const dataParam = new UploadParameterData(
+        reader.result,
+        null,
+        options,
+        description.value,
+        myFile.type,
+        metadata,
+        title.value
+      );
+
+      const param = new UploadParameter(
+        dataParam,
+        signerPrivateKey,
+        recipientPublicKey,
+        recipientAddress,
+        null,
+        false,
+        PrivacyType.PLAIN
+      );
+
+      this.uploadService.uploadAsync(param).subscribe(console.log);
+      // console.log(data);
+      /*this.dataService
+        .createProximaxDataFile(
+          reader.result,
+          myFile.type,
+          PrivacyType.PLAIN,
+          options
+        )
+        .subscribe(console.log);*/
+    };
+
+    reader.readAsArrayBuffer(myFile);
+
+    this.cd.markForCheck();
   }
-
-
 }

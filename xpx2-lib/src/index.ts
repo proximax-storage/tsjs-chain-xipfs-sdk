@@ -13,3 +13,5 @@ export * from './lib/model/ipfs/ipfs-content';
 export * from './lib/model/ipfs/ipfs-version';
 export * from './lib/model/ipfs/ipfs-network-info';
 export * from './lib/privacy/nem-privacy';
+export * from './lib/helper/data-streamer';
+export * from './lib/helper/converter';
