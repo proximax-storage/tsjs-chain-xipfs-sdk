@@ -4,6 +4,7 @@ import {
   Deadline,
   NetworkType,
   PlainMessage,
+  SignedTransaction,
   TransactionHttp,
   TransferTransaction
 } from 'nem2-sdk';
@@ -15,12 +16,12 @@ import { SecureMessage } from '../model/privacy/secure-message';
 
 export class TransactionService {
   private network: NetworkType = NetworkType.MIJIN_TEST;
-  // private host: string = 'http://localhost:3000';
+  private host: string = 'http://localhost:3000';
   private gateway: string = 'http://localhost:9000';
 
   constructor(blockchainNetwork: BlockchainNetworkConnection) {
     this.network = this.getNemNetworkType(blockchainNetwork.network);
-    // this.host = blockchainNetwork.endpointUrl;
+    this.host = blockchainNetwork.endpointUrl;
     this.gateway = blockchainNetwork.gatewayUrl
       ? blockchainNetwork.gatewayUrl
       : blockchainNetwork.endpointUrl;
@@ -83,6 +84,11 @@ export class TransactionService {
         return response.transactionInfo!.hash;
       })
     );
+  }
+
+  public announcTransaction(signTransaction: SignedTransaction): void {
+    const transactionHttp = new TransactionHttp(this.host); 
+    transactionHttp.announce(signTransaction);
   }
 
   /*
