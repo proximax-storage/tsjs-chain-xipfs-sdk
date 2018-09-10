@@ -1,5 +1,5 @@
-export * from './lib/service/upload';
-export * from './lib/service/transaction-service';
+export * from './lib/service/upload-service';
+export * from './lib/service/blockchain-transaction-service';
 export * from './lib/service/data-service';
 export * from './lib/model/common/keypair';
 export * from './lib/model/privacy/privacy-type';

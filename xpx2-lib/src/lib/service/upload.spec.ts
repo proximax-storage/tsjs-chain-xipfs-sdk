@@ -1,4 +1,4 @@
-import 'mocha';
+/*import 'mocha';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { IpfsConnection } from '../connection/ipfs-connection';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
@@ -6,8 +6,6 @@ import { PrivacyType } from '../model/privacy/privacy-type';
 import { UploadParameter } from '../model/upload/upload-parameter';
 import { UploadParameterData } from '../model/upload/upload-parameter-data';
 import { DataService } from './data-service';
-import { TransactionService } from './transaction-service';
-import { UploadService } from './upload';
 
 describe('UploadService', () => {
   it('should announce transaction', async () => {
@@ -71,3 +69,4 @@ describe('UploadService', () => {
     );
   });
 });
+*/

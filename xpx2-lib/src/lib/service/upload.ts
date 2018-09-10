@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+/*import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { IpfsDataInfo } from '../model/proximax/ipfs-data-info';
 import { MessagePayloadModel } from '../model/proximax/message-payload-model';
@@ -8,10 +8,10 @@ import { UploadParameter } from '../model/upload/upload-parameter';
 import { UploadResult } from '../model/upload/upload-result';
 // import { NemPrivacyStrategy } from '../privacy/nem-privacy';
 import { DataService } from './data-service';
-import { TransactionService } from './transaction-service';
+import { BlockchainTransactionService } from './blockchain-transaction-service';
 
-export class UploadService {
-  private transactionService: TransactionService;
+export class UploadService2 {
+  private transactionService: BlockchainTransactionService;
   private dataService: DataService;
 
   constructor(
@@ -21,31 +21,7 @@ export class UploadService {
     this.transactionService = transactionService;
     this.dataService = dataService;
   }
-  /*
-  public upload(
-    param: ProximaxUploadParameter
-  ): Observable<ProximaxUploadResult> {
-    console.log(param);
-
-    const dataMessage = JSON.stringify(param.dataPayload);
-
-    const nemPrivacyStrategy = new NemPrivacyStrategy(param.keyPair);
-
-    const securedMessage = nemPrivacyStrategy.encrypt(dataMessage);
-
-    return this.transactionService
-      .createAsyncTransaction(securedMessage, param.keyPair)
-      .pipe(
-        map(result => {
-          return new ProximaxUploadResult(
-            result,
-            param.secureType,
-            param.version,
-            param.dataPayload
-          );
-        })
-      );
-  }*/
+  
 
   public uploadAsync(param: UploadParameter): Observable<any> {
     // data verification
@@ -87,8 +63,9 @@ export class UploadService {
             )
             .pipe(
               map(trxResponse => {
+                console.log(trxResponse);
                 const uploadResult: UploadResult = new UploadResult(
-                  trxResponse,
+                  '',
                   messagePayload.privacyType,
                   messagePayload.version,
                   messagePayload.data
@@ -100,3 +77,4 @@ export class UploadService {
       );
   }
 }
+*/

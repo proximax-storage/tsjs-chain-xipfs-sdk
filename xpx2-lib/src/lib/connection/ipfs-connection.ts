@@ -1,11 +1,15 @@
-import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { IpfsNetworkInfo } from '../model/ipfs/ipfs-network-info';
-import { IpfsVersion } from '../model/ipfs/ipfs-version';
-
+/**
+ * Class represents the ipfs connection
+ */
 export class IpfsConnection {
   private API: any;
 
+  /**
+   * Constructor
+   * @param host the ifps host
+   * @param port the ipfs port
+   * @param options the protocol options e.g. { protocol: 'http' }
+   */
   constructor(
     public readonly host: string,
     public readonly port?: string,
@@ -15,30 +19,9 @@ export class IpfsConnection {
     this.API = new API(host, port, options);
   }
 
-  public isConnect(): Observable<IpfsNetworkInfo> {
-    return from<IpfsVersion>(this.API.version()).pipe(
-      map(response => {
-        if (!response) {
-          return new IpfsNetworkInfo(
-            this.host,
-            this.port,
-            this.options,
-            'Disconnected'
-          );
-        }
-
-        return new IpfsNetworkInfo(
-          this.host,
-          this.port,
-          this.options,
-          'Connected',
-          response.version,
-          response.repo
-        );
-      })
-    );
-  }
-
+ /**
+  * Return instance of ipfs api
+  */
   public getAPI() {
     return this.API;
   }

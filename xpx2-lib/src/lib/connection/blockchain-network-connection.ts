@@ -9,7 +9,9 @@ export class BlockchainNetworkConnection {
   constructor(
     public readonly network: BlockchainNetworkType,
     public readonly endpointUrl: string,
-    public readonly gatewayUrl?: string
+    public readonly socketUrl:string,
+    public readonly gatewayUrl?: string,
+    
   ) {}
 
   public isConnect(): Observable<NetworkInfo> {
