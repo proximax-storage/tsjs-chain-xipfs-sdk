@@ -1,5 +1,5 @@
+import { IpfsDataInfo } from '../ipfs/ipfs-data-info';
 import { PrivacyType } from '../privacy/privacy-type';
-import { IpfsDataInfo } from '../proximax/ipfs-data-info';
 
 export class UploadResult {
   constructor(

@@ -1,6 +1,5 @@
-import 'mocha';
-
 import { expect } from 'chai';
+import 'mocha';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { BlockchainNetworkConnection } from './blockchain-network-connection';
 
@@ -14,7 +13,7 @@ describe('BlockChainNetworkConnection', () => {
       gatewayUrl
     );
     await blockchainConnection.isConnect().subscribe(networkInfo => {
-      console.log(networkInfo);
+      // console.log(networkInfo);
       expect(networkInfo.status).to.be.equal('Connected');
     });
   });
@@ -28,7 +27,7 @@ describe('BlockChainNetworkConnection', () => {
       gatewayUrl
     );
     await blockchainConnection.isConnect().subscribe(networkInfo => {
-      console.log(networkInfo);
+      // console.log(networkInfo);
       expect(networkInfo.status).to.be.equal('Disconnected');
     });
   });

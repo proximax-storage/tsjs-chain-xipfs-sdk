@@ -1,22 +1,17 @@
 import { crypto } from 'nem2-library';
-import { KeyPair } from '../model/common/keypair';
 export class NemPrivacyStrategy {
-  private keypair: KeyPair;
-
-  constructor(key: KeyPair) {
-    this.keypair = key;
-  }
+  constructor(
+    public readonly privateKey: string,
+    public readonly publicKey: string
+  ) {}
 
   public encrypt(message: any): any {
-    crypto.encode(this.keypair.privateKey, this.keypair.publicKey, message);
-
-    console.log(this.keypair);
+    crypto.encode(this.privateKey, this.publicKey, message);
     return message;
   }
 
   public decrypt(message: any): any {
-    console.log(this.keypair);
-    crypto.decode(this.keypair.privateKey, this.keypair.publicKey, message);
+    crypto.decode(this.privateKey, this.publicKey, message);
     return message;
   }
 }
