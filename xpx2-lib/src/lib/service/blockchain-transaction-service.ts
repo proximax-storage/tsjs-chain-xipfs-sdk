@@ -4,6 +4,7 @@ import {
   Deadline,
   NetworkType,
   PlainMessage,
+  Transaction,
   TransactionType,
   TransferTransaction,
   XEM
@@ -85,7 +86,7 @@ export class BlockchainTransactionService {
     );
   }
 
-  public getTransferTransaction(transactionHash: string) {
+  public getTransferTransaction(transactionHash: string): Observable<Transaction> {
     if (!transactionHash) {
       throw new Error('transaction hash is required');
     }
