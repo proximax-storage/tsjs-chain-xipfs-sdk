@@ -9,7 +9,7 @@ describe('IpfsConnection', () => {
 
     const connection = new IpfsConnection(multiAddress, port);
     expect(connection.host).to.be.equal(multiAddress);
-    expect(connection.options).to.be.equal(port);
+    expect(connection.port).to.be.equal(port);
     expect(connection.getAPI() != null).to.be.true;
   });
 });

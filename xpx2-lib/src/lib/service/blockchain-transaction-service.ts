@@ -34,7 +34,7 @@ export class BlockchainTransactionService {
     payload: ProximaxMessagePayloadModel,
     signerPrivateKey: string,
     recipientPublicKey: string,
-    recipientAddress:string,
+    recipientAddress: string,
     transactionDeadline: number,
     useBlockchainSecureMessage: boolean
   ): Observable<string> {
@@ -57,44 +57,48 @@ export class BlockchainTransactionService {
       networkType
     );
 
-    const recipient = this.getRecipient(recipientAddress,recipientPublicKey,signerPrivateKey)
+    const recipient = this.getRecipient(
+      recipientAddress,
+      recipientPublicKey,
+      signerPrivateKey
+    );
+
+    // TODO: Refactor when levy implement in blockchain
+    const mosaic = XEM.createRelative(1);
 
     const transferTransaction = TransferTransaction.create(
       Deadline.create(transactionDeadline),
       recipient,
-      [XEM.createRelative(1)],
+      [mosaic],
       message,
       networkType
     );
 
     const signedTransaction = signerAccount.sign(transferTransaction);
 
-   
     return this.client.announce(signedTransaction).pipe(
       map(_ => {
-
-         // TODO: validate transaction announce correctly 
+        // TODO: validate transaction announce correctly
 
         return signedTransaction.hash;
       })
-    )
+    );
   }
 
-
-  public getTransferTransaction(transactionHash:string) {
-    if(!transactionHash) {
+  public getTransferTransaction(transactionHash: string) {
+    if (!transactionHash) {
       throw new Error('transaction hash is required');
     }
 
     return this.client.getTransaction(transactionHash).pipe(
       map(transaction => {
-        if(transaction.type === TransactionType.TRANSFER) { 
+        if (transaction.type === TransactionType.TRANSFER) {
           return transaction;
         } else {
-          throw new Error('Expecting a transfer transaction')
+          throw new Error('Expecting a transfer transaction');
         }
       })
-    )
+    );
   }
 
   private getRecipient(

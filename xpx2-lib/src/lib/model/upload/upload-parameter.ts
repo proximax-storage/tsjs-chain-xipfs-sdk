@@ -11,7 +11,7 @@ export class UploadParameter {
     public readonly transactionDeadline: number,
     public readonly useBlockhainSecureMessage: boolean,
     public readonly privacyStrategy: PrivacyType,
-    public readonly version:string,
+    public readonly version: string
   ) {}
 
   public validate(): void {

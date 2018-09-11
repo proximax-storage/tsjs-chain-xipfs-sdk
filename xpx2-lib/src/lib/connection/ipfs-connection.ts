@@ -19,9 +19,9 @@ export class IpfsConnection {
     this.API = new API(host, port, options);
   }
 
- /**
-  * Return instance of ipfs api
-  */
+  /**
+   * Return instance of ipfs api
+   */
   public getAPI() {
     return this.API;
   }

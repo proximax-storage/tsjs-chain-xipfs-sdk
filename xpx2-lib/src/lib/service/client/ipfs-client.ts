@@ -36,14 +36,14 @@ export class IpfsClient {
     );
   }
 
-  public addStream(data:any, options?:object) : Observable<string> {
-      if(!data) {
-          throw new Error('data is required')
-      }
+  public addStream(data: any, options?: object): Observable<string> {
+    if (!data) {
+      throw new Error('data is required');
+    }
 
-      return from<IpfsContent[]>(this.connection.getAPI().files.add(data,options)).pipe(
-          map(hashList => hashList[0].hash)
-      );
+    return from<IpfsContent[]>(
+      this.connection.getAPI().files.add(data, options)
+    ).pipe(map(hashList => hashList[0].hash));
   }
 
   /*
@@ -54,5 +54,4 @@ export class IpfsClient {
 
      
   }*/
-
 }
