@@ -46,12 +46,11 @@ export class IpfsClient {
     ).pipe(map(hashList => hashList[0].hash));
   }
 
-  /*
-  public getStream(hash:string): Observable<Buffer> {
-      if(!hash) {
-          throw new Error('hash is required');
-      }
+  public getStream(hash: string): Observable<IpfsContent> {
+    if (!hash) {
+      throw new Error('hash is required');
+    }
 
-     
-  }*/
+    return from<IpfsContent>(this.connection.getAPI().files.get(hash));
+  }
 }

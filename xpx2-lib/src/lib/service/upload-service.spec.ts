@@ -5,6 +5,7 @@ import {
   IpfsMultAddress,
   IpfsPort,
   RecipientAccount,
+  SchemaVersion,
   SenderAccount
 } from '../config/config.spec';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
@@ -77,17 +78,11 @@ describe('UploadService', () => {
       1,
       false,
       PrivacyType.PLAIN,
-      '1.0'
+      SchemaVersion
     );
 
     await uploadService.upload(uploadParam).subscribe(response => {
       console.log(response);
     });
-
-    await blockchainTransactionService
-      .getTransferTransaction(
-        'D9F380A5499455C6A19501D624D3BF44AE8CC2E0B439B6B470A807B75BE05F0B'
-      )
-      .subscribe(console.log);
   });
 });

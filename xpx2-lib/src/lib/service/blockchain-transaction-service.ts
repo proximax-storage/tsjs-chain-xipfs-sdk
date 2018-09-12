@@ -4,7 +4,6 @@ import {
   Deadline,
   NetworkType,
   PlainMessage,
-  Transaction,
   TransactionType,
   TransferTransaction,
   XEM
@@ -14,7 +13,7 @@ import { map } from 'rxjs/operators';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { SecureMessage } from '../model/privacy/secure-message';
-import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload';
+import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { TransactionClient } from './client/transaction-client';
 
 export class BlockchainTransactionService {
@@ -86,7 +85,9 @@ export class BlockchainTransactionService {
     );
   }
 
-  public getTransferTransaction(transactionHash: string): Observable<Transaction> {
+  public getTransferTransaction(
+    transactionHash: string
+  ): Observable<TransferTransaction> {
     if (!transactionHash) {
       throw new Error('transaction hash is required');
     }
@@ -94,7 +95,7 @@ export class BlockchainTransactionService {
     return this.client.getTransaction(transactionHash).pipe(
       map(transaction => {
         if (transaction.type === TransactionType.TRANSFER) {
-          return transaction;
+          return transaction as TransferTransaction;
         } else {
           throw new Error('Expecting a transfer transaction');
         }

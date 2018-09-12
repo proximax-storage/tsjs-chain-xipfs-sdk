@@ -1,10 +1,11 @@
 import { expect } from 'chai';
 import 'mocha';
+import { IpfsMultAddress } from '../config/config.spec';
 import { IpfsConnection } from './ipfs-connection';
 
 describe('IpfsConnection', () => {
   it('should create new ipfs connection', () => {
-    const multiAddress = '172.24.231.91';
+    const multiAddress = IpfsMultAddress;
     const port = '5001';
 
     const connection = new IpfsConnection(multiAddress, port);
