@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BlockchainNetworkConnection } from '../model/blockchain/blockchain-network-connection';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
-import { SecureMessage } from '../model/privacy/secure-message';
+import { SecureMessage } from '../model/blockchain/secure-message';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { TransactionClient } from './client/transaction-client';
 
@@ -48,7 +48,7 @@ export class BlockchainTransactionService {
 
     const jsonPayload = JSON.stringify(payload);
     const message = useBlockchainSecureMessage
-      ? SecureMessage.create(jsonPayload)
+      ? SecureMessage.encrypt(jsonPayload, signerPrivateKey, recipientPublicKey)
       : PlainMessage.create(jsonPayload);
     const networkType = this.getNemNetworkType(this.connection.network);
 

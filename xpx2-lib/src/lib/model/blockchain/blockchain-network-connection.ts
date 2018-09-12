@@ -40,6 +40,9 @@ export class BlockchainNetworkConnection {
     public readonly gatewayUrl?: string
   ) {}
 
+  /**
+   * Validates the blockchain network connection
+   */
   public validate(): void {
     if (!this.network) {
       throw new Error('The blockchain network type is required');

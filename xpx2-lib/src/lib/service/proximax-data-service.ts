@@ -22,10 +22,10 @@ export class ProximaxDataService {
         // console.log(response);
         const myContent = response[0].content;
         return new DownloadResultData(
-          myContent,
-          data.digest!,
-          data.dataHash!,
+          data.dataHash,
           data.timestamp!,
+          myContent,
+          data.digest,
           data.description,
           data.contentType,
           data.name,

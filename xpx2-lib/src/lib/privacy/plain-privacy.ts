@@ -1,5 +1,5 @@
-import { PrivacyType } from '../model/privacy/privacy-type';
 import { PrivacyStrategy } from './privacy';
+import { PrivacyType } from './privacy-type';
 
 export class PlainPrivacyStrategy implements PrivacyStrategy {
   public getPrivacyType(): number {

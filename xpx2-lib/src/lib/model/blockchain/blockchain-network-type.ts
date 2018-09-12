@@ -16,6 +16,9 @@
 
 import { NetworkType } from 'nem2-sdk';
 
+/**
+ * Enumerations blockchain network type
+ */
 export enum BlockchainNetworkType {
   MIJIN = NetworkType.MIJIN,
   MIJIN_TEST = NetworkType.MIJIN_TEST,

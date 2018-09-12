@@ -24,7 +24,10 @@ export class DownloadService {
       .getTransferTransaction(param.transactionHash)
       .pipe(
         map(transferedTransaction =>
-          this.getMessagePayload(transferedTransaction, param.accountPrivateKey)
+          this.getMessagePayload(
+            transferedTransaction,
+            param.accountPrivateKey!
+          )
         ),
         switchMap(messagePayloadModel => {
           // console.log(messagePayloadModel);
@@ -36,7 +39,7 @@ export class DownloadService {
                 return new DownloadResult(
                   param.transactionHash,
                   messagePayloadModel.privacyType,
-                  messagePayloadModel.version,
+                  messagePayloadModel.version!,
                   data
                 );
               })

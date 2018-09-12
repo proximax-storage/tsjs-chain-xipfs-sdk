@@ -1,9 +1,7 @@
 import 'mocha';
 import {
-  BlockchainHost,
-  BlockchainWebsocket,
-  IpfsMultAddress,
-  IpfsPort,
+  BlockchainInfo,
+  IpfsInfo,
   RecipientAccount,
   SchemaVersion,
   SenderAccount
@@ -11,9 +9,9 @@ import {
 import { BlockchainNetworkConnection } from '../model/blockchain/blockchain-network-connection';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { IpfsConnection } from '../model/ipfs/ipfs-connection';
-import { PrivacyType } from '../model/privacy/privacy-type';
 import { UploadParameter } from '../model/upload/upload-parameter';
 import { UploadParameterData } from '../model/upload/upload-parameter-data';
+import { PrivacyType } from '../privacy/privacy-type';
 import { BlockchainTransactionService } from './blockchain-transaction-service';
 import { IpfsClient } from './client/ipfs-client';
 import { TransactionClient } from './client/transaction-client';
@@ -21,11 +19,14 @@ import { ProximaxDataService } from './proximax-data-service';
 import { UploadService } from './upload-service';
 
 describe('UploadService', () => {
-  const ipfsConnection = new IpfsConnection(IpfsMultAddress, IpfsPort);
+  const ipfsConnection = new IpfsConnection(
+    IpfsInfo.multiaddress,
+    IpfsInfo.port
+  );
   const blockchainNetworkConnection = new BlockchainNetworkConnection(
     BlockchainNetworkType.MIJIN_TEST,
-    BlockchainHost,
-    BlockchainWebsocket
+    BlockchainInfo.endpointUrl,
+    BlockchainInfo.socketUrl
   );
 
   const ipfsClient = new IpfsClient(ipfsConnection);

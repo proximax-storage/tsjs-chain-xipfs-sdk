@@ -13,17 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { PrivacyType } from '../../privacy/privacy-type';
-import { DownloadResultData } from './download-result-data';
 
-/**
- * Class represents download result
- */
-export class DownloadResult {
-  constructor(
-    public readonly transactionHash: string,
-    public readonly privacyType: PrivacyType,
-    public readonly version: string,
-    public readonly data: DownloadResultData
-  ) {}
+export enum PrivacyType {
+  'PLAIN' = 1001,
+  'NEM_KEYS' = 1002,
+  'SHAMIR' = 1003,
+  'PASSWORD' = 1004,
+  'CUSTOM' = 1005
 }

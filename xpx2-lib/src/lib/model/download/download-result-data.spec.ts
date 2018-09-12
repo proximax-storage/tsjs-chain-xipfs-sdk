@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { PrivacyType } from '../../privacy/privacy-type';
+
+import { expect } from 'chai';
+import 'mocha';
+
 import { DownloadResultData } from './download-result-data';
 
-/**
- * Class represents download result
- */
-export class DownloadResult {
-  constructor(
-    public readonly transactionHash: string,
-    public readonly privacyType: PrivacyType,
-    public readonly version: string,
-    public readonly data: DownloadResultData
-  ) {}
-}
+describe('DownloadResultData', () => {
+  it('should create the download result data', () => {
+    const downloadResultData = new DownloadResultData(
+      'QmUD7uG5prAMHbcCfp4x1G1mMSpywcSMHTGpq62sbpDAg6',
+      123231432
+    );
+    expect(downloadResultData.dataHash).to.be.not.equal(undefined);
+    expect(downloadResultData.timestamp).to.be.not.equal(undefined);
+  });
+});

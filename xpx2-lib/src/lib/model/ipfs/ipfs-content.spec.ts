@@ -13,17 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { PrivacyType } from '../../privacy/privacy-type';
-import { DownloadResultData } from './download-result-data';
 
-/**
- * Class represents download result
- */
-export class DownloadResult {
-  constructor(
-    public readonly transactionHash: string,
-    public readonly privacyType: PrivacyType,
-    public readonly version: string,
-    public readonly data: DownloadResultData
-  ) {}
-}
+import { expect } from 'chai';
+import 'mocha';
+import { IpfsContent } from './ipfs-content';
+
+describe('IpfsContent', () => {
+  it('should create ipfs content', () => {
+    const ipfsContent: IpfsContent = {
+      content: Buffer.from('Proximax P2P storage'),
+      hash: 'QmZyUEQVuRK3XV7L9Dk26pg6RVSgaYkiSTEdnT2kZZdwoi',
+      path: '/tmp/myfile.txt',
+      size: 11696
+    };
+
+    expect(ipfsContent).to.be.an('object');
+  });
+});

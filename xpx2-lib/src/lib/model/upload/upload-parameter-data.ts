@@ -1,6 +1,4 @@
-import { DataInfo } from '../proximax/data-info';
-
-export class UploadParameterData extends DataInfo {
+export class UploadParameterData {
   constructor(
     public byteStreams: any,
     public path?: string,
@@ -9,7 +7,5 @@ export class UploadParameterData extends DataInfo {
     public contentType?: string,
     public metadata?: Map<string, object>,
     public name?: string
-  ) {
-    super(description, contentType, metadata, name);
-  }
+  ) {}
 }

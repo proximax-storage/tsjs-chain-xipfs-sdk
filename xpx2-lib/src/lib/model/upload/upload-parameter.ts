@@ -1,4 +1,4 @@
-import { PrivacyType } from '../privacy/privacy-type';
+import { PrivacyType } from '../../privacy/privacy-type';
 import { UploadParameterData } from './upload-parameter-data';
 
 export class UploadParameter {
@@ -7,11 +7,11 @@ export class UploadParameter {
     public readonly signerPrivateKey: string,
     public readonly recipientPublicKey: string,
     public readonly recipientAddress: string,
-    // public readonly detectContentType?: boolean,
     public readonly transactionDeadline: number,
     public readonly useBlockhainSecureMessage: boolean,
     public readonly privacyStrategy: PrivacyType,
-    public readonly version: string
+    public readonly version: string,
+    public readonly detectContentType?: boolean,
   ) {}
 
   public validate(): void {

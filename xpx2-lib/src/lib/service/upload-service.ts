@@ -60,8 +60,8 @@ export class UploadService {
   ): Observable<ProximaxMessagePayloadModel> {
     const messagePayload = new ProximaxMessagePayloadModel(
       param.privacyStrategy,
-      param.version,
-      data
+      data,
+      param.version!
     );
     return of(messagePayload);
   }
