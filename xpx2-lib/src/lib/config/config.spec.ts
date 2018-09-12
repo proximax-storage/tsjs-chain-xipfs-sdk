@@ -1,6 +1,11 @@
 export const BaseHost = 'localhost';
 export const IpfsMultAddress = BaseHost;
 export const IpfsPort = '5001';
+export const BlockchainInfo = {
+  endpointUrl: 'http://' + BaseHost + ':3000',
+  gatewayUrl: 'http://' + BaseHost + ':9000',
+  socketUrl: 'ws://' + BaseHost + ':3000'
+};
 export const BlockchainHost = 'http://' + BaseHost + ':3000';
 export const BlockchainWebsocket = 'ws://' + BaseHost + ':3000';
 export const SenderAccount = {

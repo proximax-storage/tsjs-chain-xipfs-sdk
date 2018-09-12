@@ -1,7 +1,7 @@
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { ProximaxDataModel } from '../model/proximax/data-model';
-import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload';
+import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { UploadParameter } from '../model/upload/upload-parameter';
 import { UploadResult } from '../model/upload/upload-result';
 import { BlockchainTransactionService } from './blockchain-transaction-service';

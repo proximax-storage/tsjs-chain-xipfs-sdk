@@ -8,9 +8,9 @@ import {
   SchemaVersion,
   SenderAccount
 } from '../config/config.spec';
-import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
-import { IpfsConnection } from '../connection/ipfs-connection';
+import { BlockchainNetworkConnection } from '../model/blockchain/blockchain-network-connection';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
+import { IpfsConnection } from '../model/ipfs/ipfs-connection';
 import { PrivacyType } from '../model/privacy/privacy-type';
 import { UploadParameter } from '../model/upload/upload-parameter';
 import { UploadParameterData } from '../model/upload/upload-parameter-data';

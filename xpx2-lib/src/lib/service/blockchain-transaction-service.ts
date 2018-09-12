@@ -10,7 +10,7 @@ import {
 } from 'nem2-sdk';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
+import { BlockchainNetworkConnection } from '../model/blockchain/blockchain-network-connection';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { SecureMessage } from '../model/privacy/secure-message';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
@@ -124,7 +124,7 @@ export class BlockchainTransactionService {
     switch (blockchainNetworkType) {
       case BlockchainNetworkType.MAIN_NET:
         return NetworkType.MAIN_NET;
-      case BlockchainNetworkType.MIJIN_MAIN:
+      case BlockchainNetworkType.MIJIN:
         return NetworkType.MIJIN;
       case BlockchainNetworkType.TEST_NET:
         return NetworkType.TEST_NET;

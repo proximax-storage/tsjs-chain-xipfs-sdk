@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import 'mocha';
-import { IpfsMultAddress } from '../config/config.spec';
+
+import { IpfsMultAddress } from '../../config/config.spec';
 import { IpfsConnection } from './ipfs-connection';
 
 describe('IpfsConnection', () => {

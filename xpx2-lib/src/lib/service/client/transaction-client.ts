@@ -8,7 +8,7 @@ import {
 } from 'nem2-sdk';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { BlockchainNetworkConnection } from '../../connection/blockchain-network-connection';
+import { BlockchainNetworkConnection } from '../../model/blockchain/blockchain-network-connection';
 
 export class TransactionClient {
   private transactionHttp: TransactionHttp;

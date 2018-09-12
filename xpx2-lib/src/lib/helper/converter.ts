@@ -7,7 +7,7 @@ export class Converter {
       case NetworkType.MAIN_NET:
         return BlockchainNetworkType[BlockchainNetworkType.MAIN_NET];
       case NetworkType.MIJIN:
-        return BlockchainNetworkType[BlockchainNetworkType.MIJIN_MAIN];
+        return BlockchainNetworkType[BlockchainNetworkType.MIJIN];
       case NetworkType.MIJIN_TEST:
         return BlockchainNetworkType[BlockchainNetworkType.MIJIN_TEST];
       case NetworkType.TEST_NET:

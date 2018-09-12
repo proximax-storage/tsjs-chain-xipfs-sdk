@@ -7,10 +7,10 @@ import {
   IpfsPort,
   RecipientAccount
 } from '../config/config.spec';
-import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
-import { IpfsConnection } from '../connection/ipfs-connection';
+import { BlockchainNetworkConnection } from '../model/blockchain/blockchain-network-connection';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { DownloadParameter } from '../model/download/download-parameter';
+import { IpfsConnection } from '../model/ipfs/ipfs-connection';
 import { PrivacyType } from '../model/privacy/privacy-type';
 import { BlockchainTransactionService } from './blockchain-transaction-service';
 import { IpfsClient } from './client/ipfs-client';
