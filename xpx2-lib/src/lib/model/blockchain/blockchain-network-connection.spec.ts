@@ -24,7 +24,7 @@ describe('BlockChainNetworkConnection', () => {
   it('should throw error if the blockchain network type is invalid', () => {
     expect(() => {
       const connection = new BlockchainNetworkConnection(
-        BlockchainNetworkType.MIJIN_TEST,
+        1,
         BlockchainInfo.endpointUrl,
         BlockchainInfo.socketUrl,
         BlockchainInfo.gatewayUrl
@@ -38,7 +38,7 @@ describe('BlockChainNetworkConnection', () => {
     expect(() => {
       const connection = new BlockchainNetworkConnection(
         BlockchainNetworkType.MIJIN_TEST,
-        'invalid endpointUrl',
+        '',
         BlockchainInfo.socketUrl,
         BlockchainInfo.gatewayUrl
       );

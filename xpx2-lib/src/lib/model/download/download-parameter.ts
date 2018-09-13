@@ -24,19 +24,19 @@ export class DownloadParameter {
     /**
      * The transaction has
      */
-    public readonly transactionHash: string,
+    public transactionHash: string,
     /**
      * The sender or recipient account private key
      */
-    public readonly accountPrivateKey?: string,
+    public accountPrivateKey?: string,
     /**
      * The privacy strategy
      */
-    public readonly privacyStrategy?: PrivacyType,
+    public privacyStrategy?: PrivacyType,
     /**
      * Determines to validate digest
      */
-    public readonly validateDigest?: boolean
+    public validateDigest?: boolean
   ) {}
 
   /**
@@ -48,9 +48,8 @@ export class DownloadParameter {
     }
 
     if (
-      !this.privacyStrategy &&
       this.privacyStrategy === PrivacyType.NEM_KEYS &&
-      !this.accountPrivateKey
+      this.accountPrivateKey!.length <= 0
     ) {
       throw new Error('The account private key is required');
     }

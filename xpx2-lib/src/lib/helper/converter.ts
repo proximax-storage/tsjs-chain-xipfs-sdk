@@ -14,4 +14,21 @@ export class Converter {
         return BlockchainNetworkType[BlockchainNetworkType.TEST_NET];
     }
   }
+
+  public static getNemNetworkType(
+    blockchainNetworkType: BlockchainNetworkType
+  ): NetworkType {
+    switch (blockchainNetworkType) {
+      case BlockchainNetworkType.MAIN_NET:
+        return NetworkType.MAIN_NET;
+      case BlockchainNetworkType.MIJIN:
+        return NetworkType.MIJIN;
+      case BlockchainNetworkType.TEST_NET:
+        return NetworkType.TEST_NET;
+      case BlockchainNetworkType.MIJIN_TEST:
+        return NetworkType.MIJIN_TEST;
+      default:
+        return NetworkType.MIJIN_TEST;
+    }
+  }
 }

@@ -21,18 +21,25 @@ import { PrivacyType } from '../../privacy/privacy-type';
 import { ProximaxDataModel } from './data-model';
 import { ProximaxMessagePayloadModel } from './message-payload-model';
 
-
 describe('ProximaxMessagePayloadModel', () => {
   it('should throw error if the proximax message payload model did not have valid privacy type', () => {
     expect(() => {
-      const messagePayloadModel = new ProximaxMessagePayloadModel(12,new ProximaxDataModel(''),SchemaVersion)
+      const messagePayloadModel = new ProximaxMessagePayloadModel(
+        12,
+        new ProximaxDataModel(''),
+        SchemaVersion
+      );
       messagePayloadModel.validate();
     }).to.throw();
   });
 
   it('should throw error if the proximax message payload model did not have valid proximax data model', () => {
     expect(() => {
-      const messagePayloadModel = new ProximaxMessagePayloadModel(12,new ProximaxDataModel(''),SchemaVersion)
+      const messagePayloadModel = new ProximaxMessagePayloadModel(
+        PrivacyType.PLAIN,
+        undefined,
+        SchemaVersion
+      );
       messagePayloadModel.validate();
     }).to.throw();
   });
@@ -42,7 +49,11 @@ describe('ProximaxMessagePayloadModel', () => {
       'QmWDQegEhLdCUWF6aQZcLM6ELPTuWHfvjLYBeG6Kxy8hjs'
     );
     dataModel.validate();
-    const messagePayloadModel = new ProximaxMessagePayloadModel(PrivacyType.PLAIN,dataModel,SchemaVersion)
+    const messagePayloadModel = new ProximaxMessagePayloadModel(
+      PrivacyType.PLAIN,
+      dataModel,
+      SchemaVersion
+    );
     messagePayloadModel.validate();
     expect(messagePayloadModel.data).to.be.not.equal(undefined);
     expect(messagePayloadModel.privacyType).to.be.equal(PrivacyType.PLAIN);

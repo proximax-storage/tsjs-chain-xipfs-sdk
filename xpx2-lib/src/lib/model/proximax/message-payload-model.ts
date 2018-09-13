@@ -29,7 +29,7 @@ export class ProximaxMessagePayloadModel {
     /**
      * The proximax data model
      */
-    public readonly data: ProximaxDataModel,
+    public readonly data?: ProximaxDataModel,
     /**
      * The message payload version
      */
@@ -40,7 +40,7 @@ export class ProximaxMessagePayloadModel {
    * Validates the proximax message payload model
    */
   public validate(): void {
-    if (!this.privacyType) {
+    if (!this.privacyType || !(this.privacyType in PrivacyType)) {
       throw new Error('Privacy type is required');
     }
 

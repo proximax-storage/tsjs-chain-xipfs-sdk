@@ -77,10 +77,10 @@ export class BlockchainTransactionService {
     const signedTransaction = signerAccount.sign(transferTransaction);
 
     return this.client.announce(signedTransaction).pipe(
-      map(_ => {
+      map(transactionHash => {
         // TODO: validate transaction announce correctly
 
-        return signedTransaction.hash;
+        return transactionHash;
       })
     );
   }

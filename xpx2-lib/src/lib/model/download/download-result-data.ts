@@ -22,34 +22,34 @@ export class DownloadResultData {
     /**
      * The data hash
      */
-    public readonly dataHash: string,
+    public dataHash: string,
     /**
      * The timestamp
      */
-    public readonly timestamp: number,
+    public timestamp: number,
     /**
      * The actual data in bytes. This only available for PrivacyType.PLAIN
      */
-    public readonly bytes?: any,
+    public bytes?: any,
     /**
      * The digest
      */
-    public readonly digest?: string,
+    public digest?: string,
     /**
      * The content description
      */
-    public readonly description?: string,
+    public description?: string,
     /**
      * The content type
      */
-    public readonly contentType?: string,
+    public contentType?: string,
     /**
      * The content name or file name
      */
-    public readonly name?: string,
+    public name?: string,
     /**
      * The content metadata
      */
-    public readonly metadata?: Map<string, object>
+    public metadata?: Map<string, object>
   ) {}
 }

@@ -74,12 +74,13 @@ describe('UploadService', () => {
     const uploadParam = new UploadParameter(
       uploadParamData,
       SenderAccount.privateKey,
+      PrivacyType.PLAIN,
+      SchemaVersion,
       RecipientAccount.publicKey,
       RecipientAccount.address,
       1,
       false,
-      PrivacyType.PLAIN,
-      SchemaVersion
+      true
     );
 
     await uploadService.upload(uploadParam).subscribe(response => {

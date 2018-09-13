@@ -1,4 +1,4 @@
-import 'mocha';
+/*import 'mocha';
 import { StringDecoder } from 'string_decoder';
 import {
   BlockchainInfo,
@@ -52,7 +52,7 @@ describe('DownloadService', () => {
     );
 
     await downloadService.download(downloadParam).subscribe(downloadResult => {
-      const data = downloadResult.data.bytes;
+      const data = downloadResult.data.data;
       // console.log('-------');
       // console.log(data);
       const decoder = new StringDecoder('utf8');
@@ -60,4 +60,4 @@ describe('DownloadService', () => {
       console.log('Data from download result' + message);
     });
   });
-});
+});*/

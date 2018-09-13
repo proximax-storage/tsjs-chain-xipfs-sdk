@@ -21,9 +21,21 @@ import { DownloadResultData } from './download-result-data';
  */
 export class DownloadResult {
   constructor(
-    public readonly transactionHash: string,
-    public readonly privacyType: PrivacyType,
-    public readonly version: string,
-    public readonly data: DownloadResultData
+    /**
+     * The transaction hash
+     */
+    public transactionHash: string,
+    /**
+     * The privacy type
+     */
+    public privacyType: PrivacyType,
+    /**
+     * The version
+     */
+    public version: string,
+    /**
+     * The download data result
+     */
+    public data: DownloadResultData
   ) {}
 }

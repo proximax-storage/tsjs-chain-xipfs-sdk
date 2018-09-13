@@ -24,31 +24,31 @@ export class BlockchainNetworkConnection {
     /**
      * The blockchain network type
      */
-    public readonly network: BlockchainNetworkType,
+    public network: BlockchainNetworkType,
     /**
      * The endpoint url
      */
-    public readonly endpointUrl: string,
+    public endpointUrl: string,
     /**
      * The web socket endpoint url
      */
-    public readonly socketUrl?: string,
+    public socketUrl?: string,
     /**
      * The gateway endpoint url
      * Note: require nem2-camel installed
      */
-    public readonly gatewayUrl?: string
+    public gatewayUrl?: string
   ) {}
 
   /**
    * Validates the blockchain network connection
    */
   public validate(): void {
-    if (!this.network) {
+    if (!this.network || !(this.network in BlockchainNetworkType)) {
       throw new Error('The blockchain network type is required');
     }
 
-    if (!this.endpointUrl) {
+    if (!this.endpointUrl || this.endpointUrl.length <= 0) {
       throw new Error('The blockchain endpoint url is required');
     }
   }

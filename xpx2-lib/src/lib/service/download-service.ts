@@ -32,7 +32,7 @@ export class DownloadService {
         switchMap(messagePayloadModel => {
           // console.log(messagePayloadModel);
           return this.proximaxDataService
-            .getData(messagePayloadModel.data)
+            .getData(messagePayloadModel.data!)
             .pipe(
               map(data => {
                 console.log(data);

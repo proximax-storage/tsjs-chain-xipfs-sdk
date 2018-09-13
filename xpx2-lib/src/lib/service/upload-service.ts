@@ -47,10 +47,10 @@ export class UploadService {
     return this.blockchainTransactionService.createAndAnnounceTransaction(
       payload,
       param.signerPrivateKey,
-      param.recipientPublicKey,
-      param.recipientAddress,
-      param.transactionDeadline,
-      param.useBlockhainSecureMessage
+      param.recipientPublicKey!,
+      param.recipientAddress!,
+      param.transactionDeadline!,
+      param.useBlockhainSecureMessage!
     );
   }
 
