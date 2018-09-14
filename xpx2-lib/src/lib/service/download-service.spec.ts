@@ -1,5 +1,5 @@
-/*import 'mocha';
-import { StringDecoder } from 'string_decoder';
+import { expect } from 'chai';
+import 'mocha';
 import {
   BlockchainInfo,
   IpfsInfo,
@@ -43,7 +43,12 @@ describe('DownloadService', () => {
 
   it('should download data by transaction hash', async () => {
     const transactionHash =
-      'F6F901704BB271F7CE2E4FD6BC38A9715EC3752000AEDF0AA67CE38BD07EC42E';
+      '8A201CBA4929D1CC9EA37597C8F5CCE361531F2375E0AF2A287F7D78FEC57013';
+    const expectedDataHash = 'QmQP3SMR7fZqfAxm442NErqwNuchQTf2aVwqTqj2rkCEaB';
+
+    const expectedText =
+      'ProximaX is an advanced extension of the Blockchain and Distributed Ledger Technology' +
+      ' (DLT) with utility-rich services and protocols.';
     const privacyStrategy = PrivacyType.PLAIN;
     const downloadParam = new DownloadParameter(
       transactionHash,
@@ -52,12 +57,12 @@ describe('DownloadService', () => {
     );
 
     await downloadService.download(downloadParam).subscribe(downloadResult => {
-      const data = downloadResult.data.data;
-      // console.log('-------');
-      // console.log(data);
-      const decoder = new StringDecoder('utf8');
-      const message = decoder.write(data);
-      console.log('Data from download result' + message);
+      // console.log(downloadResult);
+      // console.log(downloadResult.data!.bytes.toString('utf8'));
+      expect(downloadResult.data!.dataHash).to.be.equal(expectedDataHash);
+      expect(downloadResult.data!.bytes.toString('utf8')).to.be.equal(
+        expectedText
+      );
     });
   });
-});*/
+});

@@ -1,3 +1,4 @@
+import { expect } from 'chai';
 import 'mocha';
 import {
   BlockchainInfo,
@@ -23,6 +24,7 @@ describe('UploadService', () => {
     IpfsInfo.multiaddress,
     IpfsInfo.port
   );
+
   const blockchainNetworkConnection = new BlockchainNetworkConnection(
     BlockchainNetworkType.MIJIN_TEST,
     BlockchainInfo.endpointUrl,
@@ -36,6 +38,7 @@ describe('UploadService', () => {
     blockchainNetworkConnection,
     transactionClient
   );
+
   const proximaxDataService = new ProximaxDataService(ipfsClient);
 
   const uploadService = new UploadService(
@@ -49,6 +52,7 @@ describe('UploadService', () => {
         ' (DLT) with utility-rich services and protocols.'
     );
 
+    const expectedHash = 'QmQP3SMR7fZqfAxm442NErqwNuchQTf2aVwqTqj2rkCEaB';
     const description = 'Proximax P2P storage';
     const contentType = 'text/plain';
     const metadata = new Map<any, any>();
@@ -57,7 +61,7 @@ describe('UploadService', () => {
 
     const options = {
       progress: (bytes: number) => {
-        console.log(`Progress: ${bytes}`);
+        console.log(`Upload Progress: ${bytes}`);
       }
     };
 
@@ -83,8 +87,10 @@ describe('UploadService', () => {
       true
     );
 
-    await uploadService.upload(uploadParam).subscribe(response => {
-      console.log(response);
+    await uploadService.upload(uploadParam).subscribe(uploadResult => {
+      // console.log(response);
+      expect(uploadResult.transactionHash).to.be.not.equal(undefined);
+      expect(uploadResult.data!.dataHash).to.be.equal(expectedHash);
     });
   });
 });

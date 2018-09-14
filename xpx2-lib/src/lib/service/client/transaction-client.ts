@@ -72,10 +72,24 @@ export class TransactionClient {
     address: Address,
     transactionHash: string,
     listener: Listener
-  ) {
+  ): Observable<string> {
     return listener.status(address).pipe(
       filter(transaction => transaction.hash === transactionHash),
       map(transaction => transaction.status)
+    );
+  }
+
+  public getAddedUnconfirmedTransactionStatus(
+    address: Address,
+    transactionHash: string,
+    listener: Listener
+  ): Observable<string> {
+    return listener.unconfirmedAdded(address).pipe(
+      filter(
+        unconfirmedTrx =>
+          unconfirmedTrx.transactionInfo!.hash === transactionHash
+      ),
+      map(_ => 'Success')
     );
   }
 }

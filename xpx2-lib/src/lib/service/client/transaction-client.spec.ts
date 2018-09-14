@@ -7,10 +7,10 @@ import {
   TransferTransaction,
   XEM
 } from 'nem2-sdk';
-import { switchMap } from 'rxjs/operators';
 import {
   BlockchainInfo,
   RecipientAccount,
+  SampleTransactionHash,
   SenderAccount
 } from '../../config/config.spec';
 import { Converter } from '../../helper/converter';
@@ -25,6 +25,8 @@ describe('TransactionClient', () => {
     BlockchainInfo.socketUrl
   );
   const client = new TransactionClient(connection);
+
+  const transactionHash = SampleTransactionHash;
 
   it('should announce transaction to blockchain network', async () => {
     const message = 'Test announce transaction';
@@ -51,47 +53,16 @@ describe('TransactionClient', () => {
 
     const signedTransaction = signerAccount.sign(transferTransaction);
 
-    await client.announce(signedTransaction).subscribe(transactionHash => {
-      console.log(transactionHash);
-      expect(transactionHash).to.be.not.undefined(transactionHash);
+    await client.announce(signedTransaction).subscribe(trxHash => {
+      // console.log(trxHash);
+      expect(trxHash).to.be.not.equal(undefined);
     });
   });
 
-  it('should get transaction from blockchain network after announcing', async () => {
-    const message = 'Test announce transaction';
-
-    const networkType = Converter.getNemNetworkType(connection.network);
-
-    const signerAccount = Account.createFromPrivateKey(
-      SenderAccount.privateKey,
-      networkType
-    );
-
-    const recipientAccount = Account.createFromPrivateKey(
-      RecipientAccount.privateKey,
-      networkType
-    );
-
-    const transferTransaction = TransferTransaction.create(
-      Deadline.create(1),
-      recipientAccount.address,
-      [XEM.createRelative(1)],
-      PlainMessage.create(message),
-      networkType
-    );
-
-    const signedTransaction = signerAccount.sign(transferTransaction);
-
-    await client
-      .announce(signedTransaction)
-      .pipe(
-        switchMap(transactionHash => {
-          console.log(transactionHash);
-          return client.getTransaction(transactionHash);
-        })
-      )
-      .subscribe(transaction => {
-        console.log(transaction as TransferTransaction);
-      });
+  it('should return transaction by transaction hash from blockchain', async () => {
+    await client.getTransaction(transactionHash).subscribe(trx => {
+      // console.log(response);
+      expect(trx.isConfirmed()).to.be.true;
+    });
   });
 });
