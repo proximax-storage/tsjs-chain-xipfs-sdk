@@ -1,6 +1,6 @@
 {
   "name": "xpx2-js-sdk",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Proximax Storage Javascript SDK",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
