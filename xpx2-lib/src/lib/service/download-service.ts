@@ -62,7 +62,7 @@ export class DownloadService {
             .getData(messagePayloadModel.data!)
             .pipe(
               map(data => {
-               // console.log(data);
+                // console.log(data);
                 return new DownloadResult(
                   param.transactionHash,
                   messagePayloadModel.privacyType,
