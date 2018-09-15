@@ -9,19 +9,23 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, NgForm } from '@angular/forms';
 import {
   PrivacyType,
-  TransactionService,
-  DataService,
-  IpfsConnection,
   BlockchainNetworkConnection,
   UploadService,
-  DataStreamer
+  TransactionClient,
+  BlockchainTransactionService,
+  ProximaxDataService,
+  IpfsClient,
+  IpfsConnection,
+  UploadParameterData,
+  UploadParameter
 } from 'xpx2-js-sdk';
 import { environment } from '../../environments/environment';
-import { UploadParameter } from 'xpx2-js-sdk/build/main/lib/model/upload/upload-parameter';
-import { UploadParameterData } from 'xpx2-js-sdk/build/main/lib/model/upload/upload-parameter-data';
+
 import { FileInput } from 'ngx-material-file-input';
-import { map } from 'rxjs/operators';
-import { BlobStreamer } from 'src/app/add-content-dialog/BlockStreamer';
+import { SchemaVersion } from '../../../../../xpx2-lib/src/lib/config/config.spec';
+
+
+
 export interface SelectPrivacyType {
   value: number;
   viewValue: string;
@@ -34,10 +38,13 @@ export interface SelectPrivacyType {
 })
 export class AddContentDialogComponent implements OnInit {
   addContentForm: FormGroup;
-  transactionService: TransactionService;
-  dataService: DataService;
+  transactionService: BlockchainTransactionService;
+  dataService: ProximaxDataService;
   uploadService: UploadService;
+  ipfsClient: IpfsClient;
+  transactionClient: TransactionClient;
   file: File;
+
 
   privacyTypes: SelectPrivacyType[] = [
     {
@@ -46,6 +53,12 @@ export class AddContentDialogComponent implements OnInit {
     }
   ];
 
+  progressBuffer = 0;
+  showProgress = false;
+  submitted = false;
+  uploading = true;
+  transactionHash = '';
+  progressStatus = 'Uploading...';
   public event: EventEmitter<any> = new EventEmitter();
 
   constructor(
@@ -63,9 +76,11 @@ export class AddContentDialogComponent implements OnInit {
       environment.blockchainConnection.endpointUrl,
       environment.blockchainConnection.gatewayUrl
     );
-    this.dataService = new DataService(ipfsConnection);
+    this.ipfsClient = new IpfsClient(ipfsConnection);
 
-    this.transactionService = new TransactionService(blockchainConnection);
+    this.dataService = new ProximaxDataService(this.ipfsClient);
+    this.transactionClient = new TransactionClient(blockchainConnection);
+    this.transactionService = new BlockchainTransactionService(blockchainConnection, this.transactionClient);
     this.uploadService = new UploadService(
       this.transactionService,
       this.dataService
@@ -80,70 +95,107 @@ export class AddContentDialogComponent implements OnInit {
       metadata: [],
       privacyType: []
     });
+
+    this.progressBuffer = 0;
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+
+    this.dialogRef.close(this.transactionHash);
+  }
+
+  get f() {
+    return this.addContentForm.controls;
   }
 
   async onSubmit(form: NgForm): Promise<void> {
     // this.dialogRef.close();
+    this.showProgress = true;
+    this.submitted = true;
+    this.uploading = true;
+    const description = this.addContentForm.get('description').value;
+    const title = this.addContentForm.get('title').value;
+    const metadata = this.addContentForm.get('metadata').value;
+    let metadataMap = new Map<any, any>();
+    if (metadata) {
+      try {
+        metadataMap = new Map(JSON.parse(metadata));
+      } catch {
 
-    const description = this.addContentForm.get('description');
-    const title = this.addContentForm.get('title');
-   // const contentType = '';
-    const signerPrivateKey = 'D35F7C7697CA8CA16A0DE483C891B8591F7DE6B7E46A35AF54DE25882E4B32ED';
-    const recipientPublicKey = '9A63C603EA56DC058E9EB2E0DF8C769C19CB859C898F06247769E5DE312CD58F';
-    const recipientAddress = 'SBFU4SOEI7WLPXOXP4ULQ5F7UXKG3J6DGMS3ZINI';
+      }
+    }
 
-    const metadata = new Map<any, any>();
+    const privacyType = this.addContentForm.get('privacyType').value;
+    const version = SchemaVersion;
+
+    console.log(title);
+    console.log(description);
+    console.log(metadataMap);
+    console.log(privacyType);
+
+    const dataParam = new UploadParameterData(
+      undefined,
+      null,
+      undefined,
+      description,
+      undefined,
+      metadataMap,
+      title
+    );
+
 
     const fInputControl = this.addContentForm.get('dataFile');
     const fileInput: FileInput = fInputControl.value;
-    const myFile = fileInput.files[0];
+    if (fileInput) {
+      const myFile = fileInput.files[0];
+      const reader = new FileReader();
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const options = {
-        progress: (bytes: number) => {
-          console.log(`Progress: ${bytes}/${myFile.size}`);
-        }
+
+
+      reader.onload = () => {
+
+        const options = {
+          progress: (bytes: number) => {
+            console.log(`Progress: ${bytes}/${myFile.size}`);
+            this.progressBuffer = (bytes / myFile.size) * 100;
+            this.progressStatus = `Progress: ${bytes}/${myFile.size}`;
+
+            if(bytes === myFile.size) {
+              this.uploading = false;
+              this.progressStatus = 'Completed';
+            }
+          }
+        };
+        dataParam.options = options;
+        dataParam.contentType = myFile.type;
+        dataParam.byteStreams = reader.result;
+
+        const param = new UploadParameter(
+          dataParam,
+          environment.blockchainConnection.senderTestAccount.privateKey,
+          privacyType,
+          version,
+          environment.blockchainConnection.recipientTestAccount.publicKey,
+          environment.blockchainConnection.recipientTestAccount.address,
+          1,
+          false,
+          false
+        );
+        param.data = dataParam;
+        param.validate();
+        this.uploadService.upload(param).subscribe(transaction => {
+          console.log(transaction.transactionHash);
+          this.transactionHash = transaction.transactionHash;
+         // this.dialogRef.close(transaction.transactionHash);
+
+        });
+
       };
+      reader.readAsArrayBuffer(myFile);
 
-      const dataParam = new UploadParameterData(
-        reader.result,
-        null,
-        options,
-        description.value,
-        myFile.type,
-        metadata,
-        title.value
-      );
-
-      const param = new UploadParameter(
-        dataParam,
-        signerPrivateKey,
-        recipientPublicKey,
-        recipientAddress,
-        null,
-        false,
-        PrivacyType.PLAIN
-      );
-
-      this.uploadService.uploadAsync(param).subscribe(console.log);
-      // console.log(data);
-      /*this.dataService
-        .createProximaxDataFile(
-          reader.result,
-          myFile.type,
-          PrivacyType.PLAIN,
-          options
-        )
-        .subscribe(console.log);*/
-    };
-
-    reader.readAsArrayBuffer(myFile);
+    }
 
     this.cd.markForCheck();
+
   }
 }

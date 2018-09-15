@@ -74,7 +74,8 @@ export class ProximaxDataService {
     if (!param.data) {
       throw new Error('upload paramater data is required');
     }
-
+    console.log('Add data to ipfs')
+    console.log(param.data);
     return this.client
       .addStream(param.data.byteStreams, param.data.options)
       .pipe(

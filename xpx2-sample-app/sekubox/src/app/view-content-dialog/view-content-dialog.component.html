@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>{{data}}</h1>
+
+<div mat-dialog-content>
+  <div [hidden]="!showProgress">
+    Process download file {{fileName}}
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button class="close" (click)="onNoClick()" color="warn" [disabled]="downloading">Close</button>
+</div>

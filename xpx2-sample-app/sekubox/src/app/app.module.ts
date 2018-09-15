@@ -10,6 +10,7 @@ import { ContentComponent } from './content/content.component';
 import { AddContentDialogComponent } from './add-content-dialog/add-content-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConnectionDialogComponent } from './connection-dialog/connection-dialog.component';
+import { ViewContentDialogComponent } from './view-content-dialog/view-content-dialog.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ConnectionDialogComponent } from './connection-dialog/connection-dialog
 
     ContentComponent,
     AddContentDialogComponent,
-    ConnectionDialogComponent
+    ConnectionDialogComponent,
+    ViewContentDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +36,7 @@ import { ConnectionDialogComponent } from './connection-dialog/connection-dialog
   entryComponents: [
     AddContentDialogComponent,
     ConnectionDialogComponent,
+    ViewContentDialogComponent,
   ],
 })
 export class AppModule { }

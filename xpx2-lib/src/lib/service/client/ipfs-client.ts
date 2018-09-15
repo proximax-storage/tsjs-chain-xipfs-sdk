@@ -67,8 +67,11 @@ export class IpfsClient {
       throw new Error('data is required');
     }
 
+    // convert to buffer 
+    const bufferData = Buffer.from(data);
+
     return from<IpfsContent[]>(
-      this.connection.getAPI().files.add(data, options)
+      this.connection.getAPI().files.add(bufferData, options)
     ).pipe(map(hashList => hashList[0].hash));
   }
 

@@ -5,27 +5,24 @@
     <mat-tab label="Blockchain info">
 
       <mat-list>
-        <mat-list-item>Status: {{blockchain.status}} </mat-list-item>
+        <mat-list-item>Endpoint Url: {{blockchainInfo.endpointUrl}} </mat-list-item>
         <mat-divider></mat-divider>
-        <mat-list-item>Network: {{blockchain.networkType}}</mat-list-item>
+        <mat-list-item>Socket Url: {{blockchainInfo.websocket}}</mat-list-item>
         <mat-divider></mat-divider>
-        <mat-list-item>Endpoint Url: {{blockchain.baseUrl}}</mat-list-item>
+        <mat-list-item>Sender private key: {{blockchainInfo.senderPrivateKey}} </mat-list-item>
         <mat-divider></mat-divider>
-        <mat-list-item> Gateway Url: {{blockchain.gatewayUrl}}</mat-list-item>
+        <mat-list-item>Recipient public key: {{blockchainInfo.recipientPublicKey}}</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>Recipient address: {{blockchainInfo.address}}</mat-list-item>
       </mat-list>
 
 
     </mat-tab>
     <mat-tab label="Storage info">
-
       <mat-list>
-        <mat-list-item>Status: {{storage.status}} </mat-list-item>
+        <mat-list-item>Network: {{storageInfo.hostOrMultiAddress}} </mat-list-item>
         <mat-divider></mat-divider>
-        <mat-list-item>Network: {{storage.network}}</mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item>Port: {{storage.port}}</mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item> Version: {{storage.version}}</mat-list-item>
+        <mat-list-item>Port: {{storageInfo.port}}</mat-list-item>
       </mat-list>
 
     </mat-tab>

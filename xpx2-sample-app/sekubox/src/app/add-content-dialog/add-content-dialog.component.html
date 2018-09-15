@@ -1,5 +1,14 @@
+
 <h1 mat-dialog-title>{{data}}</h1>
+<p [hidden]="!showProgress">
+    <span>{{progressStatus}}</span>
+    <mat-progress-bar mode="determinate" value={{progressBuffer}} ></mat-progress-bar>
+</p>
+
+
+
 <div mat-dialog-content>
+ 
   <form class="add-content-form" [formGroup]="addContentForm" (ngSubmit)="onSubmit()">
     <mat-form-field>
       <input matInput placeholder="Title" type="text" required formControlName="title" name="title">
@@ -18,12 +27,12 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field>
-      <ngx-mat-file-input required formControlName="dataFile" name="dataFile" placeholder="Input file" ></ngx-mat-file-input>
+      <ngx-mat-file-input  formControlName="dataFile" name="dataFile" placeholder="Input file" ></ngx-mat-file-input>
       <mat-icon matSuffix>folder</mat-icon>
     </mat-form-field>
-    <button mat-raised-button type="submit" color="primary">Save</button>
+    <button mat-raised-button type="submit" color="primary" [disabled]="submitted">Save</button>
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button class="close" (click)="onNoClick()" color="warn">Cancel</button>
+  <button mat-raised-button class="close" (click)="onNoClick()" color="warn" [disabled]="uploading">Close</button>
 </div>
