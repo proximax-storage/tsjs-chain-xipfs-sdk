@@ -1,11 +1,12 @@
 node_modules
-lib/node_modules
-example/node_modules
-
 build
 test
 src/**.js
 .idea/*
+examples/node_modules
+examples/dist
+examples/sekubox/node_modules
+examples/sekubox/dist
 
 coverage
 .nyc_output

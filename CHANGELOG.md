@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 <a name="0.0.4"></a>
 ## [0.0.4](https://github.com/proximax-storage/xpx2-ts-js-sdk/compare/v0.0.3...v0.0.4) (2018-09-16)
-
+- Disable websocket transaction status check
+- Fixed auto detect content type
 
 
 <a name="0.0.3"></a>
