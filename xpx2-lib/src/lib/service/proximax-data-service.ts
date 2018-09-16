@@ -44,6 +44,7 @@ export class ProximaxDataService {
       throw new Error('Data hash is required');
     }
 
+
     return this.client.getStream(data.dataHash).pipe(
       map(response => {
         // console.log(response);
@@ -72,10 +73,19 @@ export class ProximaxDataService {
     }
 
     if (!param.data) {
-      throw new Error('upload paramater data is required');
+      throw new Error('upload parameter data is required');
     }
-    console.log('Add data to ipfs')
-    console.log(param.data);
+    // console.log('Add data to ipfs')
+    // console.log(param.data);
+
+    let contentType = param.data.contentType;
+    if ((contentType === undefined || contentType === null || contentType.length <= 0) && param.detectContentType) {
+      const fileType = require('file-type');
+
+      contentType = fileType(Buffer.from(param.data.byteStreams));
+      console.log(contentType);
+    }
+
     return this.client
       .addStream(param.data.byteStreams, param.data.options)
       .pipe(
@@ -88,7 +98,7 @@ export class ProximaxDataService {
             dataHash,
             digest,
             param.data.description,
-            param.data.contentType,
+            contentType,
             param.data.metadata,
             param.data.name,
             Date.now()

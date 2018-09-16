@@ -1,6 +1,6 @@
 {
   "name": "xpx2-ts-js-sdk",
-  "version": "0.0.14",
+  "version": "0.0.1",
   "description": "Proximax P2P Storage Javascript SDK",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -60,7 +60,7 @@
     "nem2-sdk": "^0.10.1",
     "npm": "^6.4.1",
     "pull-stream": "^3.6.9",
-    "rxjs": "^6.0.0",
+    "rxjs": "^6.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",

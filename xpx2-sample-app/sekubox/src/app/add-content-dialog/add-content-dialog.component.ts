@@ -159,7 +159,7 @@ export class AddContentDialogComponent implements OnInit {
             this.progressBuffer = (bytes / myFile.size) * 100;
             this.progressStatus = `Progress: ${bytes}/${myFile.size}`;
 
-            if(bytes === myFile.size) {
+            if (bytes === myFile.size) {
               this.uploading = false;
               this.progressStatus = 'Completed';
             }
@@ -185,7 +185,7 @@ export class AddContentDialogComponent implements OnInit {
         this.uploadService.upload(param).subscribe(transaction => {
           console.log(transaction.transactionHash);
           this.transactionHash = transaction.transactionHash;
-         // this.dialogRef.close(transaction.transactionHash);
+          // this.dialogRef.close(transaction.transactionHash);
 
         });
 

@@ -30,9 +30,9 @@ npm install xpx2-ts-sdk rxjs --save
 ```
 
 ## Basic Usages
-### Upload content
+### 1. Upload content
 
-Prepares Proximax upload service 
+Imports xpx2-ts-js-sdk
 
 ```ts
 import {
@@ -47,7 +47,11 @@ import {
   UploadParameterData,
   UploadParameter
 } from 'xpx2-ts-js-sdk'
+```
 
+Prepares Proximax upload service 
+
+```ts
 // Creates ipfs connection
 const ipfsConnection = new IpfsConnection(
     'localhost', // the host or multi address
@@ -191,7 +195,11 @@ const uploadParam = new UploadParameter(
 
 // validates upload parameter
 uploadParam.validate();
+```
 
+Uploads the content
+
+```ts
 // call upload services
 uploadService.upload(uploadParam).subscribe(
     transactionHash => {
@@ -200,7 +208,92 @@ uploadService.upload(uploadParam).subscribe(
 )
 ```
 
+Note: The file size to be uploaded to IPFS storage is 1.5GB for most browsers except Google Chrome.
+Please check the status of this known [issue](https://github.com/ipfs/js-ipfs-api/pull/851).
+
+### 2. Download content
 
 
-Note: The limited of the file size to be uploaded is 1GB . However, Chrome will crash if the file size is more than 100MB.
-This is an known [issue](https://github.com/ipfs/js-ipfs-api/pull/851).
+Imports xpx2-ts-js-sdk
+
+```ts
+import {
+ PrivacyType,
+  BlockchainNetworkConnection,
+  UploadService,
+  TransactionClient,
+  BlockchainTransactionService,
+  ProximaxDataService,
+  IpfsClient,
+  IpfsConnection,
+  DownloadParameter
+} from 'xpx2-ts-js-sdk'
+```
+
+Prepares Proximax download service 
+
+```ts
+// Creates ipfs connection
+const ipfsConnection = new IpfsConnection(
+    'localhost', // the host or multi address
+    '5001', // the port number
+    { protocol: 'http' } // the optional protocol
+);
+
+// Creates Proximax blockchain network connection
+const blockchainConnection = new BlockchainNetworkConnection(
+    BlockchainNetworkType.MIJIN_TEST, // the network type
+    'http://localhost:3000', // the rest api base endpoint
+    'ws://localhost:3000', // the optional websocket end point 
+); 
+
+// Creates the ipfs client
+const ipfsClient = new IpfsClient(ipfsConnection);
+
+// Creates the blockchain transaction client
+const transactionClient = new TransactionClient(blockchainConnection);
+
+// Initilises Proximax data service
+const dataService = new ProximaxDataService(ipfsClient);
+
+// Initilises blockchain transaction service
+const transactionService = new BlockchainTransactionService(blockchainConnection, transactionClient);
+
+// Initilises upload service
+const downloadService = new DownloadService(transactionService,dataService);
+```
+
+
+Prepares download parameter
+
+```ts
+// the transaction hash
+const transactionHash = '';
+
+// sender and recipient account infos
+const privateKey = '';
+
+// privacy type
+const privacyType = PrivacyType.PLAIN;
+
+// creates upload parameter
+const downloadParam = new DownloadParameter(
+    transactionHash,  
+    privateKey,
+    privacyType);
+
+// validates download parameter
+downloadParam.validate();
+```
+
+Downloads the content
+
+```ts
+// call download services
+downloadService.download(uploadParam).subscribe(
+    result => {
+        const blob = new Blob([result.data.bytes], { type: result.data.contentType });
+        this.fileUrl = window.URL.createObjectURL(blob);
+    }
+);
+```
