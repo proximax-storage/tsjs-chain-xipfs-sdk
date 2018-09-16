@@ -7,6 +7,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 
 
+<a name="0.0.6"></a>
+## [0.0.6](https://github.com/proximax-storage/xpx2-ts-js-sdk/compare/v0.0.4...v0.0.6) (2018-09-16)
+
+
+
 <a name="0.0.5"></a>
 ## [0.0.5](https://github.com/proximax-storage/xpx2-ts-js-sdk/compare/v0.0.4...v0.0.5) (2018-09-16)
 
