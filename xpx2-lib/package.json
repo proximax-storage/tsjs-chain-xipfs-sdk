@@ -1,11 +1,11 @@
 {
-  "name": "xpx2-js-sdk",
+  "name": "xpx2-ts-js-sdk",
   "version": "0.0.14",
-  "description": "Proximax Storage Javascript SDK",
+  "description": "Proximax P2P Storage Javascript SDK",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "repository": "https://github.com/thomas-tran/xpx2-js-sdk",
+  "repository": "https://github.com/proximax-storage/xpx2-ts-js-sdk",
   "license": "MIT",
   "keywords": [],
   "scripts": {
@@ -61,7 +61,6 @@
     "npm": "^6.4.1",
     "pull-stream": "^3.6.9",
     "rxjs": "^6.0.0",
-    "ws": "^6.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",

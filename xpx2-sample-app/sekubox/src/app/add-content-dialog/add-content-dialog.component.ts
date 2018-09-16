@@ -22,7 +22,6 @@ import {
 import { environment } from '../../environments/environment';
 
 import { FileInput } from 'ngx-material-file-input';
-import { SchemaVersion } from '../../../../../xpx2-lib/src/lib/config/config.spec';
 
 
 
@@ -126,7 +125,7 @@ export class AddContentDialogComponent implements OnInit {
     }
 
     const privacyType = this.addContentForm.get('privacyType').value;
-    const version = SchemaVersion;
+    const version = '1.0';
 
     console.log(title);
     console.log(description);
