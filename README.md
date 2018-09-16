@@ -16,15 +16,15 @@ ProximaX is a project that utilizes the NEM blockchain technology with the IPFS 
 
 # Getting Started
 
-Start [here](https://github.com/proximax-storage/xpx2-ts-js-sdk/docs/start.md).
+Start [here](docs/start.md).
 
-Check the SDK reference [here](https://github.com/proximax-storage/xpx2-ts-js-sdk/docs/sdk-reference/index.html)
+Check the SDK reference [here](docs/sdk-reference/index.html)
 
-Check the sample app [here]((https://github.com/proximax-storage/xpx2-ts-js-sdk/examples)
+Check the sample app [here](examples)
 
 # Releases
 
-The release notes can be found [here](https://github.com/proximax-storage/xpx2-ts-js-sdk/CHANGELOG.md)
+The release notes can be found [here](CHANGELOG.md)
 
 # License
 Copyright (c) 2018 ProximaX Limited Licensed under the Apache License 2.0
