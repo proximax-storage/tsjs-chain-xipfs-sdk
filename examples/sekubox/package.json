@@ -29,7 +29,7 @@
     "ngx-material-file-input": "^0.2.0",
     "rxjs": "^6.3.2",
     "rxjs-compat": "^6.3.2",
-    "xpx2-ts-js-sdk": "latest",
+    "xpx2-ts-js-sdk": "^0.0.6",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

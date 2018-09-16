@@ -111,12 +111,14 @@ export class BlockchainTransactionService {
 
     return this.client.announce(signedTransaction).pipe(
       map(transactionHash => {
-        /* this.client.waitForAnnouncedTransactionToBeUnconfirmed(
+        this.client.waitForAnnouncedTransactionToBeUnconfirmed(
           recipient,
           transactionHash
-        );*/
+        ).then(
+          return transactionHash;
+        );
 
-        return transactionHash;
+      
       })
     );
   }

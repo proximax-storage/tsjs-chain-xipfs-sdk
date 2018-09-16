@@ -78,7 +78,7 @@ export class AddContentDialogComponent implements OnInit {
     this.ipfsClient = new IpfsClient(ipfsConnection);
 
     this.dataService = new ProximaxDataService(this.ipfsClient);
-    this.transactionClient = new TransactionClient(blockchainConnection);
+    this.transactionClient = new TransactionClient(blockchainConnection, WebSocket);
     this.transactionService = new BlockchainTransactionService(blockchainConnection, this.transactionClient);
     this.uploadService = new UploadService(
       this.transactionService,
