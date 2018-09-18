@@ -43,10 +43,19 @@ export class SecureMessage {
   /**
    * Decrypts the message
    * @param message the secured mesage
-   * @param key the key to decrypt message
+   * @param privateKey the private key
+   * @param publicKey the public key
    */
-  public static decrypt(message: string, key: string): PlainMessage {
-    const decryptedMessage = CryptoHelper.decode(message, key);
+  public static decrypt(
+    message: string,
+    privateKey: string,
+    publicKey: string
+  ): PlainMessage {
+    const decryptedMessage = CryptoHelper.decode(
+      message,
+      privateKey,
+      publicKey
+    );
     return PlainMessage.create(decryptedMessage);
   }
 

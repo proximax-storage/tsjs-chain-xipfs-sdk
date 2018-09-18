@@ -63,14 +63,14 @@ export class BlockchainTransactionService {
    * @param transactionDeadline the transaction deadline
    * @param useBlockchainSecureMessage determine to use blockchain secure message
    */
-  public async createAndAnnounceTransaction(
+  public createAndAnnounceTransaction(
     payload: ProximaxMessagePayloadModel,
     signerPrivateKey: string,
     recipientPublicKey: string,
     recipientAddress: string,
     transactionDeadline: number,
     useBlockchainSecureMessage: boolean
-  ): Promise<Observable<string>> {
+  ): Observable<string> {
     if (!signerPrivateKey) {
       throw new Error('signer private key is required');
     }
@@ -108,11 +108,11 @@ export class BlockchainTransactionService {
     );
 
     const signedTransaction = signerAccount.sign(transferTransaction);
-
+    /*
     await this.client.waitForAnnouncedTransactionToBeUnconfirmed(
       recipient,
       signedTransaction.hash
-    );
+    );*/
 
     return this.client.announce(signedTransaction).pipe(
       map(transactionHash => {
