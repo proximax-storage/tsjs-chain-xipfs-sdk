@@ -22,6 +22,7 @@ import {
 import { environment } from '../../environments/environment';
 
 import { FileInput } from 'ngx-material-file-input';
+import { PasswordPrivacyStrategy } from '../../../../../src/lib/privacy/password-privacy';
 
 
 
@@ -107,6 +108,15 @@ export class AddContentDialogComponent implements OnInit {
     return this.addContentForm.controls;
   }
 
+  onEncrypt(form: NgForm) {
+    const description = this.addContentForm.get('description').value;
+    const password = 'thecatonthemat';
+    const passwordPrivacy = new PasswordPrivacyStrategy(password);
+    passwordPrivacy.encrypt(description).subscribe(encrypted => {
+      console.log(encrypted);
+    });
+  }
+
   async onSubmit(form: NgForm): Promise<void> {
     // this.dialogRef.close();
     this.showProgress = true;
@@ -166,7 +176,7 @@ export class AddContentDialogComponent implements OnInit {
           }
         };
         dataParam.options = options;
-       // dataParam.contentType = myFile.type;
+        // dataParam.contentType = myFile.type;
         dataParam.byteStreams = reader.result;
 
         const param = new UploadParameter(

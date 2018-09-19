@@ -15,7 +15,14 @@ export class PasswordPrivacyStrategy implements PrivacyStrategy {
       throw new Error('The password is required');
     }
 
-    this.cipher = new PBECipherEncryptor(new TextEncoder().encode(password));
+    const isBrowser =
+      typeof window !== 'undefined' && typeof window.document !== 'undefined';
+
+    if (isBrowser) {
+      this.cipher = new PBECipherEncryptor(new TextEncoder().encode(password));
+    } else {
+      throw new Error('The password privacy is not available for nodejs');
+    }
   }
 
   public getPrivacyType(): number {

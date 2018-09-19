@@ -40,41 +40,11 @@ export class PBECipherEncryptor {
    * @param secret the secret
    */
   constructor(secret: Uint8Array) {
-    const Crypto = require('crypto');
-    this.salt = Crypto.randomFillSync(new Uint8Array(32));
-    this.iv = Crypto.randomFillSync(new Uint8Array(16));
+    this.salt = crypto.getRandomValues(new Uint8Array(32));
+    this.iv = crypto.getRandomValues(new Uint8Array(16));
     this.secret = secret;
     this.cryptoJS = crypto.subtle;
   }
-
-  /**
-   * Generates the crypto key
-   * @param passpharse The passpharse
-   * @returns PromiseLike<CryptoKey>
-   */
-  /*public generateKey(passpharse: string): PromiseLike<CryptoKey> {
-          // const passwordUtf8 = new TextEncoder().encode(passpharse);
-          const alg = { name: 'PBKDF2' };
-          return this.cryptoJS
-              .importKey('raw', this.secret, alg, false, ['deriveKey'])
-              .then(baseKey => {
-                  const params = {
-                      hash: 'SHA-256',
-                      // too big for low powered device, however,
-                      // this need to match the java sdk
-                      iterations: 65536,
-                      name: 'PBKDF2',
-                      salt: this.salt,
-                  };
-                  return this.cryptoJS.deriveKey(
-                      params,
-                      baseKey,
-                      { name: this.alg, length: 128 },
-                      false,
-                      this.keyUsage
-                  );
-              });
-      }*/
 
   /**
    * Encrypts data
@@ -91,8 +61,6 @@ export class PBECipherEncryptor {
         .then(baseKey => {
           const params = {
             hash: 'SHA-256',
-            // too big for low powered device, however,
-            // this need to match the java sdk
             iterations: 65536,
             name: 'PBKDF2',
             salt: this.salt
@@ -110,7 +78,8 @@ export class PBECipherEncryptor {
             .encrypt(
               { name: 'AES-GCM', iv: this.iv },
               key,
-              new TextEncoder().encode(data)
+              data
+             // new TextEncoder().encode(data)
             )
             .then(cipherBuffer => {
               return encode(cipherBuffer);
@@ -128,7 +97,6 @@ export class PBECipherEncryptor {
    */
   public decrypt(data: any): Promise<string> {
     try {
-      // TODO: change the iv to random instead of fix
       const buffer = decode(data);
 
       // use algorithm
@@ -153,7 +121,7 @@ export class PBECipherEncryptor {
           );
         })
         .then(key => {
-          return crypto.subtle
+          return this.cryptoJS
             .decrypt({ name: 'AES-GCM', iv: this.iv }, key, buffer)
             .then(decryptedBuffer => {
               // console.log(decryptedBuffer);
