@@ -78,8 +78,8 @@ export class PBECipherEncryptor {
             .encrypt(
               { name: 'AES-GCM', iv: this.iv },
               key,
-              data
-             // new TextEncoder().encode(data)
+              // data
+              new TextEncoder().encode(data)
             )
             .then(cipherBuffer => {
               return encode(cipherBuffer);
