@@ -1,10 +1,12 @@
 import { from, Observable } from 'rxjs';
-import { TextEncoder } from 'text-encoding-utf-8';
+
+import { Converter } from '../helper/converter';
 import { PBECipherEncryptor } from './pbe-cipher-encryptor';
 import { PrivacyStrategy } from './privacy';
 import { PrivacyType } from './privacy-type';
 export class PasswordPrivacyStrategy implements PrivacyStrategy {
-  private cipher: PBECipherEncryptor;
+  
+  private cipher: any;
 
   /**
    * Constructor
@@ -19,7 +21,7 @@ export class PasswordPrivacyStrategy implements PrivacyStrategy {
       typeof window !== 'undefined' && typeof window.document !== 'undefined';
 
     if (isBrowser) {
-      this.cipher = new PBECipherEncryptor(new TextEncoder().encode(password));
+      this.cipher = new PBECipherEncryptor(Converter.str2ab(password));
     } else {
       throw new Error('The password privacy is not available for nodejs');
     }
@@ -46,4 +48,6 @@ export class PasswordPrivacyStrategy implements PrivacyStrategy {
   public decrypt(data: any): Observable<any> {
     return from(this.cipher.decrypt(data));
   }
+
+
 }

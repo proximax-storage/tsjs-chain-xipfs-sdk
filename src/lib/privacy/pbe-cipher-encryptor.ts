@@ -1,5 +1,4 @@
-import { TextDecoder, TextEncoder } from 'text-encoding-utf-8';
-import { decode, encode } from 'typescript-base64-arraybuffer';
+import { Converter } from '../helper/converter';
 /**
  * Copyright 2018 ProximaX Limited
  *
@@ -18,76 +17,75 @@ import { decode, encode } from 'typescript-base64-arraybuffer';
 
 export class PBECipherEncryptor {
   // random salt
-  private salt = new Uint8Array(32);
+  private saltLength = 32;
 
   // initialise vector
-  private iv = new Uint8Array(16);
-
-  // The algorithm used to generate the key
-  private alg = 'AES-GCM';
-
-  // The key usage for encrypt and decrypt
-  private keyUsage: string[] = ['encrypt', 'decrypt'];
+  private ivLength = 16;
 
   // The secret hash
-  private secret: Uint8Array;
-
-  // The crypto provider
-  private cryptoJS;
+  private secret: ArrayBuffer;
 
   /**
    * SecuredCipher constructor
    * @param secret the secret
    */
-  constructor(secret: Uint8Array) {
-    this.salt = crypto.getRandomValues(new Uint8Array(32));
-    this.iv = crypto.getRandomValues(new Uint8Array(16));
+  constructor(secret: ArrayBuffer) {
     this.secret = secret;
-    this.cryptoJS = crypto.subtle;
   }
 
   /**
    * Encrypts data
    * @param data the data to be encrypted
-   * @returns Promise<string>
    */
-  public encrypt(data: any): Promise<string> {
-    try {
-      // use algorithm
-      const alg = { name: 'PBKDF2' };
+  public async encrypt(data: ArrayBuffer) {
+    const salt = window.crypto.getRandomValues(new Uint8Array(this.saltLength));
+    const iv = window.crypto.getRandomValues(new Uint8Array(this.ivLength));
+    
+    const baseKey = await window.crypto.subtle.importKey(
+      'raw',
+      this.secret,
+      'PBKDF2',
+      false,
+      ['deriveKey']
+    );
 
-      return this.cryptoJS
-        .importKey('raw', this.secret, alg, false, ['deriveKey'])
-        .then(baseKey => {
-          const params = {
-            hash: 'SHA-256',
-            iterations: 65536,
-            name: 'PBKDF2',
-            salt: this.salt
-          };
-          return this.cryptoJS.deriveKey(
-            params,
-            baseKey,
-            { name: this.alg, length: 128 },
-            false,
-            this.keyUsage
-          );
-        })
-        .then(key => {
-          return this.cryptoJS
-            .encrypt(
-              { name: 'AES-GCM', iv: this.iv },
-              key,
-              // data
-              new TextEncoder().encode(data)
-            )
-            .then(cipherBuffer => {
-              return encode(cipherBuffer);
-            }) as Promise<string>;
-        });
-    } catch (e) {
-      return Promise.reject(e);
-    }
+    // console.log('iv ' + iv);
+    // console.log('salt ' + salt);
+    // console.log(baseKey);
+
+    const params = {
+      hash: 'SHA-256',
+      iterations: 65536,
+      name: 'PBKDF2',
+      salt
+    };
+
+    const key = await window.crypto.subtle.deriveKey(
+      params,
+      baseKey,
+      { name: 'AES-GCM', length: 128 },
+      false,
+      ['encrypt', 'decrypt']
+    );
+
+    // console.log(key);
+
+    const cipherBuffer = await window.crypto.subtle.encrypt(
+      { name: 'AES-GCM', iv },
+      key,
+      data
+    );
+
+    console.log(cipherBuffer);
+
+    const finalCipher = Converter.concatenate(
+      Uint8Array,
+      salt,
+      iv,
+      new Uint8Array(cipherBuffer)
+    );
+   
+    return finalCipher.buffer;
   }
 
   /**
@@ -95,41 +93,49 @@ export class PBECipherEncryptor {
    * @param data the encrypted data
    * @returns Promise<string>
    */
-  public decrypt(data: any): Promise<string> {
-    try {
-      const buffer = decode(data);
+  public async decrypt(data: ArrayBuffer) {
+    const dataArray = new Uint8Array(data);
+    const salt = dataArray.slice(0, this.saltLength);
+    const iv = dataArray.slice(this.saltLength, this.saltLength + this.ivLength);
+    const encryptedCipher = dataArray.slice(
+      this.saltLength + this.ivLength,
+      data.byteLength
+    );
 
-      // use algorithm
-      const alg = { name: 'PBKDF2' };
-      return this.cryptoJS
-        .importKey('raw', this.secret, alg, false, ['deriveKey'])
-        .then(baseKey => {
-          const params = {
-            hash: 'SHA-256',
-            // too big for low powered device, however,
-            // this need to match the java sdk
-            iterations: 65536,
-            name: 'PBKDF2',
-            salt: this.salt
-          };
-          return this.cryptoJS.deriveKey(
-            params,
-            baseKey,
-            { name: this.alg, length: 128 },
-            false,
-            this.keyUsage
-          );
-        })
-        .then(key => {
-          return this.cryptoJS
-            .decrypt({ name: 'AES-GCM', iv: this.iv }, key, buffer)
-            .then(decryptedBuffer => {
-              // console.log(decryptedBuffer);
-              return new TextDecoder().decode(new Uint8Array(decryptedBuffer));
-            }) as Promise<string>;
-        });
-    } catch (e) {
-      return Promise.reject(e);
-    }
+   // console.log(salt);
+   // console.log(iv);
+   // console.log(encryptedCipher);
+
+    const baseKey = await window.crypto.subtle.importKey(
+      'raw',
+      this.secret,
+      'PBKDF2',
+      false,
+      ['deriveKey']
+    );
+
+    const params = {
+      hash: 'SHA-256',
+      iterations: 65536,
+      name: 'PBKDF2',
+      salt
+    };
+
+    const key = await window.crypto.subtle.deriveKey(
+      params,
+      baseKey,
+      { name: 'AES-GCM', length: 128 },
+      false,
+      ['encrypt', 'decrypt']
+    );
+
+    const decryptedCipher = await window.crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv },
+      key,
+      encryptedCipher
+    );
+
+    return decryptedCipher;
   }
+
 }

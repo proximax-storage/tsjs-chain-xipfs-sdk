@@ -1,0 +1,23 @@
+<div>
+  <br />
+  <div class="container">
+
+    <div class="container">
+      <div fxLayout="row" fxLayoutAlign="center center" class="content">
+        <form class="" [formGroup]="encrypt-decrypt-form">
+          <mat-card class="card">
+            <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
+              <h3>Plain Text</h3>
+            </mat-card-title>
+            <mat-card-content>
+              <mat-form-field>
+                <textarea matInput placeholder="Plain Text" formControlName="plaintext" name="plaintext" matAutosizeMinRows=6></textarea>
+              </mat-form-field>
+            </mat-card-content>
+          </mat-card>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -23,6 +23,7 @@ import { environment } from '../../environments/environment';
 
 import { FileInput } from 'ngx-material-file-input';
 import { PasswordPrivacyStrategy } from '../../../../../src/lib/privacy/password-privacy';
+import { PBECipherEncryptor } from '../../../../../src/lib/privacy/pbe-cipher-encryptor';
 
 
 
@@ -111,10 +112,28 @@ export class AddContentDialogComponent implements OnInit {
   onEncrypt(form: NgForm) {
     const description = this.addContentForm.get('description').value;
     const password = 'thecatonthemat';
+
+
     const passwordPrivacy = new PasswordPrivacyStrategy(password);
-    passwordPrivacy.encrypt(description).subscribe(encrypted => {
+    passwordPrivacy.encrypt(this.str2ab(description)).subscribe(encrypted => {
       console.log(encrypted);
+      passwordPrivacy.decrypt(encrypted).subscribe(decrypted => {
+        console.log(this.ab2str(decrypted));
+      });
     });
+  }
+
+  ab2str(buf) {
+    return String.fromCharCode.apply(null, new Uint16Array(buf));
+  }
+
+  str2ab(str) {
+    const buf = new ArrayBuffer(str.length * 2);
+    const bufView = new Uint16Array(buf);
+    for (let i = 0, strLen = str.length; i < strLen; i++) {
+      bufView[i] = str.charCodeAt(i);
+    }
+    return buf;
   }
 
   async onSubmit(form: NgForm): Promise<void> {
