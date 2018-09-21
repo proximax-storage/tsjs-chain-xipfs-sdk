@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EncryptDecryptComponent } from './encrypt-decrypt.component';
+import { DecryptComponent } from './decrypt.component';
 
-describe('EncryptDecryptComponent', () => {
-  let component: EncryptDecryptComponent;
-  let fixture: ComponentFixture<EncryptDecryptComponent>;
+describe('DecryptComponent', () => {
+  let component: DecryptComponent;
+  let fixture: ComponentFixture<DecryptComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EncryptDecryptComponent ]
+      declarations: [ DecryptComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EncryptDecryptComponent);
+    fixture = TestBed.createComponent(DecryptComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

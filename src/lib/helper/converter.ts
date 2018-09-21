@@ -32,8 +32,6 @@ export class Converter {
     }
   }
 
-
-  
   public static concatenate(resultConstructor, ...arrays) {
     let totalLength = 0;
     for (const arr of arrays) {

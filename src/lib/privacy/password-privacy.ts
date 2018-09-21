@@ -5,7 +5,6 @@ import { PBECipherEncryptor } from './pbe-cipher-encryptor';
 import { PrivacyStrategy } from './privacy';
 import { PrivacyType } from './privacy-type';
 export class PasswordPrivacyStrategy implements PrivacyStrategy {
-  
   private cipher: any;
 
   /**
@@ -48,6 +47,4 @@ export class PasswordPrivacyStrategy implements PrivacyStrategy {
   public decrypt(data: any): Observable<any> {
     return from(this.cipher.decrypt(data));
   }
-
-
 }

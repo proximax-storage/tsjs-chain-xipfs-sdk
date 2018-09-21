@@ -23,14 +23,11 @@ import { environment } from '../../environments/environment';
 
 import { FileInput } from 'ngx-material-file-input';
 import { PasswordPrivacyStrategy } from '../../../../../src/lib/privacy/password-privacy';
-import { PBECipherEncryptor } from '../../../../../src/lib/privacy/pbe-cipher-encryptor';
+import { SelectPrivacyType } from '../app.component';
 
 
 
-export interface SelectPrivacyType {
-  value: number;
-  viewValue: string;
-}
+
 
 @Component({
   selector: 'app-add-content-dialog',

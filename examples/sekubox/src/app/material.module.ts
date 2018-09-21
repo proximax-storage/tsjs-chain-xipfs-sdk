@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { MatProgressButtonsModule } from 'mat-progress-buttons';
 import {
   MatSidenavModule,
   MatToolbarModule,
@@ -15,7 +16,9 @@ import {
   MatTab,
   MatTabsModule,
   MatDividerModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatRadioModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 
 @NgModule({
@@ -33,7 +36,10 @@ import {
     MatSelectModule,
     MatTabsModule,
     MatDividerModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatRadioModule,
+    MatProgressSpinnerModule,
+    MatProgressButtonsModule
   ],
   exports: [
     MatSidenavModule,
@@ -49,7 +55,10 @@ import {
     MatSelectModule,
     MatTabsModule,
     MatDividerModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatRadioModule,
+    MatProgressSpinnerModule,
+    MatProgressButtonsModule
   ]
 })
 export class MaterialModule {}

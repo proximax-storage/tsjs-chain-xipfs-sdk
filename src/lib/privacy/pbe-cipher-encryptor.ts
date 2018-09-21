@@ -40,7 +40,7 @@ export class PBECipherEncryptor {
   public async encrypt(data: ArrayBuffer) {
     const salt = window.crypto.getRandomValues(new Uint8Array(this.saltLength));
     const iv = window.crypto.getRandomValues(new Uint8Array(this.ivLength));
-    
+
     const baseKey = await window.crypto.subtle.importKey(
       'raw',
       this.secret,
@@ -84,7 +84,7 @@ export class PBECipherEncryptor {
       iv,
       new Uint8Array(cipherBuffer)
     );
-   
+
     return finalCipher.buffer;
   }
 
@@ -96,15 +96,18 @@ export class PBECipherEncryptor {
   public async decrypt(data: ArrayBuffer) {
     const dataArray = new Uint8Array(data);
     const salt = dataArray.slice(0, this.saltLength);
-    const iv = dataArray.slice(this.saltLength, this.saltLength + this.ivLength);
+    const iv = dataArray.slice(
+      this.saltLength,
+      this.saltLength + this.ivLength
+    );
     const encryptedCipher = dataArray.slice(
       this.saltLength + this.ivLength,
       data.byteLength
     );
 
-   // console.log(salt);
-   // console.log(iv);
-   // console.log(encryptedCipher);
+    // console.log(salt);
+    // console.log(iv);
+    // console.log(encryptedCipher);
 
     const baseKey = await window.crypto.subtle.importKey(
       'raw',
@@ -137,5 +140,4 @@ export class PBECipherEncryptor {
 
     return decryptedCipher;
   }
-
 }

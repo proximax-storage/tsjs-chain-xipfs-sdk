@@ -21,3 +21,8 @@ export class AppComponent {
     });
   }
 }
+
+export interface SelectPrivacyType {
+  value: number;
+  viewValue: string;
+}

@@ -6,6 +6,7 @@ export * from './lib/service/client/ipfs-client';
 export * from './lib/service/client/transaction-client';
 export * from './lib/privacy/privacy-type';
 export * from './lib/privacy/plain-privacy';
+export * from './lib/privacy/password-privacy';
 export * from './lib/privacy/nem-privacy';
 export * from './lib/model/blockchain/blockchain-network-connection';
 export * from './lib/model/blockchain/blockchain-network-type';

@@ -11,7 +11,8 @@ import { AddContentDialogComponent } from './add-content-dialog/add-content-dial
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConnectionDialogComponent } from './connection-dialog/connection-dialog.component';
 import { ViewContentDialogComponent } from './view-content-dialog/view-content-dialog.component';
-import { EncryptDecryptComponent } from './encrypt-decrypt/encrypt-decrypt.component';
+import { EncryptDecryptComponent } from './encrypt/encrypt.component';
+import { DecryptComponent } from './decrypt/decrypt.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { EncryptDecryptComponent } from './encrypt-decrypt/encrypt-decrypt.compo
     AddContentDialogComponent,
     ConnectionDialogComponent,
     ViewContentDialogComponent,
-    EncryptDecryptComponent
+    EncryptDecryptComponent,
+    DecryptComponent
   ],
   imports: [
     BrowserModule,

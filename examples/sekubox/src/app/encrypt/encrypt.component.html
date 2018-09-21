@@ -1,0 +1,34 @@
+<div>
+  <br />
+  <div class="container">
+
+    <div class="container">
+      <div fxLayout="row" fxLayoutAlign="center center" class="content">
+        <mat-card class="card">
+          <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
+            <h3>Encrypt with Password</h3>
+          </mat-card-title>
+          <mat-card-content>
+            <form class="encryptForm" [formGroup]="encryptForm">
+
+              <mat-form-field>
+                <ngx-mat-file-input id="dataFile" formControlName="dataFile" name="dataFile" required placeholder="Select file to encrypt"></ngx-mat-file-input>
+                <mat-icon matSuffix>folder</mat-icon>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput formControlName="password" type="password" required name="password" placeholder="Enter password (max 10 characters)"
+                  maxlength="10">
+
+              </mat-form-field>
+
+              <mat-spinner-button (click)="encrypt()" [options]="encryptBtnOpts"></mat-spinner-button>
+            </form>
+          </mat-card-content>
+        </mat-card>
+
+      </div>
+    </div>
+   
+  </div>
+  <br />
+</div>
