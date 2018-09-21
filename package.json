@@ -1,6 +1,6 @@
 {
   "name": "xpx2-ts-js-sdk",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Proximax P2P Storage Javascript SDK",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
