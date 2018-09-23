@@ -1,6 +1,6 @@
 {
   "name": "xpx2-ts-js-sdk",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Proximax P2P Storage Javascript SDK",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -66,12 +66,14 @@
     "text-encoding-utf-8": "^1.0.2",
     "tweetnacl": "^1.0.0",
     "typescript-base64-arraybuffer": "^0.1.0",
-    "utf8": "^3.0.0"
+    "utf8": "^3.0.0",
+    "xpx2-library": "^0.9.12"
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "@types/mocha": "^5.2.5",
     "@types/text-encoding-utf-8": "^1.0.1",
+    "@types/utf8": "^2.1.6",
     "ava": "1.0.0-beta.7",
     "chai": "^4.1.2",
     "codecov": "^3.0.2",
