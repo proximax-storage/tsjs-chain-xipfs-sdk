@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-import { PrivacyType } from '../../privacy/privacy-type';
-import { ProximaxDataModel } from '../proximax/data-model';
+import { SchemaVersion } from '../config/config';
+import { PrivacyType } from '../privacy/privacy-type';
+import { UploadParameterData } from './upload-parameter-data';
+
 
 /**
- * Class represents upload result
+ * Class represetns the upload parameter
  */
-export class UploadResult {
+export class UploadParameter {
   constructor(
-    /**
-     * The transaction hash
-     */
-    public transactionHash: string,
-    /**
-     * The privacy type
-     */
-    public privacyType: PrivacyType,
-    /**
-     * The version
-     */
+    public data: UploadParameterData,
+    public signerPrivateKey: string,
+    public recipientPublicKey: string,
+    public recipientAddress: string,
+    public privacyStrategy: PrivacyType,
+    public transactionDeadline: number,
+    public useBlockhainSecureMessage: boolean,
+    public detectContentType: boolean,
     public version?: string,
-    /**
-     * The proximax data model
-     */
-    public data?: ProximaxDataModel
-  ) {}
+  ) {
+    if(!this.version) {
+      this.version = SchemaVersion
+    }
+    
+  }
 }

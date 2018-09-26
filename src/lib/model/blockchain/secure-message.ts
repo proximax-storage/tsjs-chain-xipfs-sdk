@@ -1,6 +1,6 @@
 import { PlainMessage } from 'nem2-sdk';
-import { CryptoHelper } from '../../helper/crypto-helper';
-
+import { decode } from 'utf8';
+import { crypto } from 'xpx2-library';
 /*
  * Copyright 2018 ProximaX Limited
  *
@@ -32,11 +32,8 @@ export class SecureMessage {
     privateKey: string,
     publicKey: string
   ): SecureMessage {
-    const encryptedMessage = CryptoHelper.encode(
-      message,
-      privateKey,
-      publicKey
-    );
+    const encryptedMessage = crypto.encode(privateKey, publicKey, message);
+
     return new SecureMessage(2, encryptedMessage);
   }
 
@@ -51,12 +48,23 @@ export class SecureMessage {
     privateKey: string,
     publicKey: string
   ): PlainMessage {
-    const decryptedMessage = CryptoHelper.decode(
-      message,
-      privateKey,
-      publicKey
+    const decryptedMessage = SecureMessage.decodeHex(
+      crypto.decode(privateKey, publicKey, message)
     );
+
     return PlainMessage.create(decryptedMessage);
+  }
+
+  private static decodeHex(hex: string): string {
+    let str = '';
+    for (let i = 0; i < hex.length; i += 2) {
+      str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    }
+    try {
+      return decode(str);
+    } catch (e) {
+      return str;
+    }
   }
 
   /**

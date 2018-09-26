@@ -15,19 +15,20 @@
  */
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { ConnectionConfig } from '../connection/connection-config';
 import { ProximaxDataModel } from '../model/proximax/data-model';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
-import { UploadParameter } from '../upload/upload-parameter';
-import { UploadResult } from '../upload/upload-result';
-import { BlockchainTransactionService } from './blockchain-transaction-service';
-import { ProximaxDataService } from './proximax-data-service';
+import { BlockchainTransactionService } from '../service/blockchain-transaction-service';
+import { CreateProximaxDataService } from '../service/create-proximax-data-service';
+import { UploadParameter } from './upload-parameter';
+import { UploadResult } from './upload-result';
 
 /**
  * Class represents upload service
  */
-export class UploadService {
+export class Uploader {
   private blockchainTransactionService: BlockchainTransactionService;
-  private proximaxDataService: ProximaxDataService;
+  private createProximaxDataService: CreateProximaxDataService;
 
   /**
    * Constructor
@@ -35,19 +36,26 @@ export class UploadService {
    * @param proximaxDataService the proximax data service
    */
   constructor(
-    blockchainTransactionService: BlockchainTransactionService,
-    proximaxDataService: ProximaxDataService
+    connectionConfig: ConnectionConfig
   ) {
-    this.blockchainTransactionService = blockchainTransactionService;
-    this.proximaxDataService = proximaxDataService;
+     this.blockchainTransactionService = new BlockchainTransactionService(connectionConfig.blockchainNetworkConnection)
+     this.createProximaxDataService = new CreateProximaxDataService(connectionConfig);
+     console.log(this.createProximaxDataService);
+  }
+
+ 
+  public upload(param: UploadParameter): Promise<UploadResult> {
+    return this.doUpload(param).toPromise();
   }
 
   /**
    * Uploads data to Proximax platform
    * @param param the upload parameter
    */
-  public upload(param: UploadParameter): Observable<UploadResult> {
-    return this.proximaxDataService.addData(param).pipe(
+  private doUpload(param: UploadParameter): Observable<UploadResult> {
+    // console.log(param);
+    // throw new Error('Not yet implement');
+    return this.createProximaxDataService.createData(param).pipe(
       switchMap(uploadData =>
         this.createMessagePayload(param, uploadData).pipe(
           switchMap(messagePayload =>

@@ -27,7 +27,7 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Converter } from '../helper/converter';
-import { BlockchainNetworkConnection } from '../model/blockchain/blockchain-network-connection';
+import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { SecureMessage } from '../model/blockchain/secure-message';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { TransactionClient } from './client/transaction-client';
@@ -47,10 +47,9 @@ export class BlockchainTransactionService {
    */
   constructor(
     connection: BlockchainNetworkConnection,
-    client: TransactionClient
-  ) {
+   ) {
     this.connection = connection;
-    this.client = client;
+    this.client = new TransactionClient(connection);
     this.networkType = Converter.getNemNetworkType(this.connection.network);
   }
 

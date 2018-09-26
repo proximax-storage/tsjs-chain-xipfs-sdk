@@ -66,6 +66,7 @@
     "text-encoding-utf-8": "^1.0.2",
     "tweetnacl": "^1.0.0",
     "typescript-base64-arraybuffer": "^0.1.0",
+    "uribuilder": "^1.0.5",
     "utf8": "^3.0.0",
     "xpx2-library": "^0.9.19"
   },

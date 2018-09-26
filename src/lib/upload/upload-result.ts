@@ -14,42 +14,34 @@
  * limitations under the License.
  */
 
+import { ProximaxDataModel } from '../model/proximax/data-model';
+import { PrivacyType } from '../privacy/privacy-type';
+
 /**
- * Class represents download result data
+ * Class represents upload result
  */
-export class DownloadResultData {
+export class UploadResult {
+
+  public static create(transactionHash: string, privacyType: PrivacyType, version: string, dataModel: ProximaxDataModel) {
+    return new UploadResult(transactionHash, privacyType, version, dataModel);
+  }
+
   constructor(
     /**
-     * The data hash
+     * The transaction hash
      */
-    public dataHash: string,
+    public transactionHash: string,
     /**
-     * The timestamp
+     * The privacy type
      */
-    public timestamp: number,
+    public privacyType: PrivacyType,
     /**
-     * The actual data in bytes. This only available for PrivacyType.PLAIN
+     * The version
      */
-    public bytes?: any,
+    public version: string,
     /**
-     * The digest
+     * The proximax data model
      */
-    public digest?: string,
-    /**
-     * The content description
-     */
-    public description?: string,
-    /**
-     * The content type
-     */
-    public contentType?: string,
-    /**
-     * The content name or file name
-     */
-    public name?: string,
-    /**
-     * The content metadata
-     */
-    public metadata?: Map<string, string>
-  ) {}
+    public data: ProximaxDataModel
+  ) { }
 }

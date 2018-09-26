@@ -38,7 +38,7 @@ export class ProximaxDataModel {
     /**
      * The content metadata
      */
-    public readonly metadata?: Map<string, object>,
+    public readonly metadata?: Map<string, string>,
     /**
      * The content name
      */

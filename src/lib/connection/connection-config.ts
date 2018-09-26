@@ -1,3 +1,7 @@
+import { BlockchainNetworkConnection } from './blockchain-network-connection';
+import { IpfsConnection } from './ipfs-connection';
+import { StorageConnection } from './storage-connection';
+
 /*
  * Copyright 2018 ProximaX Limited
  *
@@ -14,21 +18,10 @@
  * limitations under the License.
  */
 
-import { expect } from 'chai';
-import 'mocha';
-import { SchemaVersion } from '../../config/config.spec';
-import { PrivacyType } from '../../privacy/privacy-type';
-import { ProximaxDataModel } from '../proximax/data-model';
-import { UploadResult } from './upload-result';
-
-describe('UploadResult', () => {
-  it('should create upload result', () => {
-    const uploadResult = new UploadResult(
-      '',
-      PrivacyType.PLAIN,
-      SchemaVersion,
-      new ProximaxDataModel('')
-    );
-    expect(uploadResult).to.be.not.equal(undefined);
-  });
-});
+export class ConnectionConfig {
+    
+    constructor(public blockchainNetworkConnection: BlockchainNetworkConnection,
+        public ifpsConnection: IpfsConnection,
+        public storageConnection: StorageConnection) {
+    }
+}

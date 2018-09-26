@@ -1,17 +1,33 @@
-import { crypto } from 'nem2-library';
-export class NemPrivacyStrategy {
-  constructor(
-    public readonly privateKey: string,
-    public readonly publicKey: string
-  ) {}
+import { from, Observable } from 'rxjs';
+import { crypto } from 'xpx2-library';
+import { PrivacyStrategy } from './privacy';
+import { PrivacyType } from './privacy-type';
 
-  public encrypt(message: any): any {
-    crypto.encode(this.privateKey, this.publicKey, message);
-    return message;
+export class NemPrivacyStrategy implements PrivacyStrategy {
+  private privateKey;
+  private publicKey;
+
+  constructor(privateKey: string, publicKey: string) {
+    this.privateKey = privateKey;
+    this.publicKey = publicKey;
   }
 
-  public decrypt(message: any): any {
-    crypto.decode(this.privateKey, this.publicKey, message);
-    return message;
+  public getPrivacyType(): number {
+    return PrivacyType.NEM_KEYS;
+  }
+
+  public encrypt(data: any): Observable<any> {
+    console.log('Encrypting' + this.privateKey + ' ' + this.publicKey);
+
+    return from(crypto.nemEncrypt(this.privateKey, this.publicKey, data));
+    // return from(crypto.nemEncrypt(this.privateKey, this.publicKey, data));
+
+    // return message;
+  }
+
+  public decrypt(data: any): Observable<any> {
+    console.log('Decrypting');
+    return from(crypto.nemDecrypt(this.privateKey, this.publicKey, data));
+    // return message;
   }
 }

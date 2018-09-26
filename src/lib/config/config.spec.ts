@@ -6,9 +6,9 @@ export const IpfsInfo = {
   port: '5001'
 };
 export const BlockchainInfo = {
-  endpointUrl: 'http://' + BaseHost + ':3000',
-  gatewayUrl: 'http://' + BaseHost + ':9000',
-  socketUrl: 'ws://' + BaseHost + ':3000'
+  apiHost: BaseHost,
+  apiPort: 3000,
+  apiProtocol: 'http'
 };
 
 export const SenderAccount = {

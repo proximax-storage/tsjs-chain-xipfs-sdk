@@ -28,7 +28,7 @@ describe('SecureMessage', () => {
       SenderAccount.privateKey,
       RecipientAccount.publicKey
     );
-    console.log(securedMessage.payload);
+    // console.log(securedMessage.payload);
     expect(securedMessage.type).to.be.equal(2);
     expect(securedMessage.payload).to.be.not.equal(message);
   });
@@ -40,19 +40,20 @@ describe('SecureMessage', () => {
       SenderAccount.privateKey,
       RecipientAccount.publicKey
     );
-    // expect(securedMessage.type).to.be.equal(2);
-    // expect(securedMessage.payload).to.be.not.equal(message);
-    console.log('Encrypte ms: ' + securedMessage.payload);
+    expect(securedMessage.type).to.be.equal(2);
+    expect(securedMessage.payload).to.be.not.equal(message);
+    // console.log('Encrypte ms: ' + securedMessage.payload);
     const plainMessage = SecureMessage.decrypt(
       securedMessage.payload,
       SenderAccount.privateKey,
       RecipientAccount.publicKey
     );
 
+    // console.log('decrypt ms: ' + plainMessage.payload);
+
     const expectedPlainMessage = PlainMessage.create(message);
 
-    console.log('decrypt ms: ' + plainMessage.payload);
-    console.log(expectedPlainMessage.payload);
-    // expect(plainMessage.payload).to.be.equal(message);
+    // console.log(expectedPlainMessage.payload);
+    expect(plainMessage.payload).to.be.equal(expectedPlainMessage);
   });
 });

@@ -16,7 +16,7 @@
 
 import { expect } from 'chai';
 import 'mocha';
-import { IpfsInfo } from '../../config/config.spec';
+import { IpfsInfo } from '../config/config.spec';
 import { IpfsConnection } from './ipfs-connection';
 
 describe('IpfsConnection', () => {
@@ -26,7 +26,7 @@ describe('IpfsConnection', () => {
     const options = IpfsInfo.options;
 
     const connection = new IpfsConnection(multiAddress, port, options);
-    connection.validate();
+   
 
     expect(connection.host).to.be.equal(multiAddress);
     expect(connection.port).to.be.equal(port);
@@ -38,7 +38,7 @@ describe('IpfsConnection', () => {
     const multiAddress = '/ip4/127.0.0.1/tcp/5001';
 
     const connection = new IpfsConnection(multiAddress);
-    connection.validate();
+  
     expect(connection.host).to.be.equal(multiAddress);
     expect(connection.getAPI() != null).to.be.true;
   });
@@ -46,8 +46,8 @@ describe('IpfsConnection', () => {
   it('should throw error if host or multiaddress is invalid', () => {
     const multiAddress = '';
     expect(() => {
-      const connection = new IpfsConnection(multiAddress);
-      connection.validate();
+      new IpfsConnection(multiAddress);
+
     }).to.throw();
   });
 });

@@ -5,14 +5,14 @@ import {
   IpfsInfo,
   RecipientAccount
 } from '../config/config.spec';
-import { BlockchainNetworkConnection } from '../model/blockchain/blockchain-network-connection';
+import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
+import { IpfsConnection } from '../connection/ipfs-connection';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { DownloadParameter } from '../model/download/download-parameter';
-import { IpfsConnection } from '../model/ipfs/ipfs-connection';
 import { PrivacyType } from '../privacy/privacy-type';
 import { BlockchainTransactionService } from './blockchain-transaction-service';
 import { IpfsClient } from './client/ipfs-client';
-import { TransactionClient } from './client/transaction-client';
+// import { TransactionClient } from './client/transaction-client';
 import { DownloadService } from './download-service';
 import { ProximaxDataService } from './proximax-data-service';
 
@@ -23,16 +23,16 @@ describe('DownloadService', () => {
   );
   const blockchainNetworkConnection = new BlockchainNetworkConnection(
     BlockchainNetworkType.MIJIN_TEST,
-    BlockchainInfo.endpointUrl,
-    BlockchainInfo.socketUrl
+    BlockchainInfo.apiHost,
+    BlockchainInfo.apiPort,
+    BlockchainInfo.apiProtocol,
   );
 
   const ipfsClient = new IpfsClient(ipfsConnection);
-  const transactionClient = new TransactionClient(blockchainNetworkConnection);
+  // const transactionClient = new TransactionClient(blockchainNetworkConnection);
 
   const blockchainTransactionService = new BlockchainTransactionService(
-    blockchainNetworkConnection,
-    transactionClient
+    blockchainNetworkConnection
   );
   const proximaxDataService = new ProximaxDataService(ipfsClient);
 

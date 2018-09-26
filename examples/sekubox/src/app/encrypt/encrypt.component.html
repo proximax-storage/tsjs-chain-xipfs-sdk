@@ -10,7 +10,12 @@
           </mat-card-title>
           <mat-card-content>
             <form class="encryptForm" [formGroup]="encryptForm">
-
+              <mat-form-field>
+                <mat-select formControlName="privacyStrategy" name="privacyStrategy" required>
+                  <mat-option value="1004">Password Strategy</mat-option>
+                  <mat-option value="1005">Secure NEM Strategy</mat-option>
+                </mat-select>
+              </mat-form-field>
               <mat-form-field>
                 <ngx-mat-file-input id="dataFile" formControlName="dataFile" name="dataFile" required placeholder="Select file to encrypt"></ngx-mat-file-input>
                 <mat-icon matSuffix>folder</mat-icon>
@@ -18,17 +23,23 @@
               <mat-form-field>
                 <input matInput formControlName="password" type="password" required name="password" placeholder="Enter password (max 10 characters)"
                   maxlength="10">
-
               </mat-form-field>
+
+              <mat-form-field>
+                <input matInput formControlName="privateKey" type="privateKey" required name="privateKey" placeholder="Enter private key">
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput formControlName="publicKey" type="publicKey" required name="publicKey" placeholder="Enter public key">
+              </mat-form-field>
+
+
 
               <mat-spinner-button (click)="encrypt()" [options]="encryptBtnOpts"></mat-spinner-button>
             </form>
           </mat-card-content>
         </mat-card>
-
       </div>
     </div>
-   
   </div>
   <br />
 </div>

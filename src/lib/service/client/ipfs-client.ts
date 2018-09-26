@@ -16,7 +16,7 @@
 
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IpfsConnection } from '../../model/ipfs/ipfs-connection';
+import { IpfsConnection } from '../../connection/ipfs-connection';
 import { IpfsContent } from '../../model/ipfs/ipfs-content';
 
 /**

@@ -13,16 +13,17 @@ import {
   SampleTransactionHash,
   SenderAccount
 } from '../../config/config.spec';
+import { BlockchainNetworkConnection } from '../../connection/blockchain-network-connection';
 import { Converter } from '../../helper/converter';
-import { BlockchainNetworkConnection } from '../../model/blockchain/blockchain-network-connection';
 import { BlockchainNetworkType } from '../../model/blockchain/blockchain-network-type';
 import { TransactionClient } from './transaction-client';
 
 describe('TransactionClient', () => {
   const connection = new BlockchainNetworkConnection(
     BlockchainNetworkType.MIJIN_TEST,
-    BlockchainInfo.endpointUrl,
-    BlockchainInfo.socketUrl
+    BlockchainInfo.apiHost,
+    BlockchainInfo.apiPort,
+    BlockchainInfo.apiProtocol,
   );
   const client = new TransactionClient(connection);
 

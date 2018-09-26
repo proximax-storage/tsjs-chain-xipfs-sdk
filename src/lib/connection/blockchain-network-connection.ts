@@ -14,42 +14,57 @@
  * limitations under the License.
  */
 
-import { BlockchainNetworkType } from './blockchain-network-type';
+import { UriBuilder } from 'uribuilder';
+import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 
 /**
  * Class represents the blockchain network connection
  */
 export class BlockchainNetworkConnection {
+  private apiUrl;
+
   constructor(
     /**
      * The blockchain network type
      */
     public network: BlockchainNetworkType,
     /**
-     * The endpoint url
+     * The host url
      */
-    public endpointUrl: string,
+    public apiHost: string,
     /**
-     * The web socket endpoint url
+     * The api port
      */
-    public socketUrl?: string,
+    public apiPort: number,
     /**
-     * The gateway endpoint url
-     * Note: require nem2-camel installed
+     * The api protocol
+     * 
      */
-    public gatewayUrl?: string
-  ) {}
-
-  /**
-   * Validates the blockchain network connection
-   */
-  public validate(): void {
-    if (!this.network || !(this.network in BlockchainNetworkType)) {
+    public apiProtocol: string
+  ) {
+    if (this.network === null) {
       throw new Error('The blockchain network type is required');
     }
 
-    if (!this.endpointUrl || this.endpointUrl.length <= 0) {
-      throw new Error('The blockchain endpoint url is required');
+    if (this.apiHost === null || this.apiHost.length <= 0) {
+      throw new Error('The blockchain api host is required');
     }
+
+    if (this.apiProtocol === null || this.apiHost.length <= 0) {
+      throw new Error('The blockchain api protocol is required');
+    }
+
+    const builder = new UriBuilder();
+    builder.host = apiHost;
+    builder.schema = apiProtocol;
+    builder.port = apiPort;
+
+    this.apiUrl = builder.toString();
   }
+
+  public getApiUrl(): string {
+    return this.apiUrl;
+  }
+
+
 }

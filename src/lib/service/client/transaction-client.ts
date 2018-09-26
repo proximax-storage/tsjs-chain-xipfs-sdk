@@ -22,7 +22,7 @@ import {
 } from 'nem2-sdk';
 import { merge, Observable } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
-import { BlockchainNetworkConnection } from '../../model/blockchain/blockchain-network-connection';
+import { BlockchainNetworkConnection } from '../../connection/blockchain-network-connection';
 
 /**
  * Class represents the blockchain transaction client
@@ -36,15 +36,11 @@ export class TransactionClient {
    * @param connection the blockchain network connection
    */
   constructor(connection: BlockchainNetworkConnection, webSocket?: any) {
-    this.transactionHttp = new TransactionHttp(connection.endpointUrl);
-    if (connection.socketUrl) {
-      this.listener = new Listener(connection.socketUrl, webSocket);
-    } else {
-      const wsEndpoint = connection.endpointUrl
-        .replace('https://', 'https://')
-        .replace('http://', 'ws://');
-      this.listener = new Listener(wsEndpoint, webSocket);
-    }
+    this.transactionHttp = new TransactionHttp(connection.getApiUrl());
+    const wsEndpoint = connection.getApiUrl()
+      .replace('https://', 'https://')
+      .replace('http://', 'ws://');
+    this.listener = new Listener(wsEndpoint, webSocket);
   }
 
   /**

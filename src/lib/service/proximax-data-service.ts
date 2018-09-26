@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DownloadResultData } from '../model/download/download-result-data';
 import { ProximaxDataModel } from '../model/proximax/data-model';
-import { UploadParameter } from '../model/upload/upload-parameter';
+import { UploadParameter } from '../upload/upload-parameter';
 import { IpfsClient } from './client/ipfs-client';
 
 /**

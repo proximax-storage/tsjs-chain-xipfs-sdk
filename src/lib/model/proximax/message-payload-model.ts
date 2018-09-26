@@ -29,11 +29,11 @@ export class ProximaxMessagePayloadModel {
     /**
      * The proximax data model
      */
-    public readonly data?: ProximaxDataModel,
+    public readonly data: ProximaxDataModel,
     /**
      * The message payload version
      */
-    public readonly version?: string
+    public readonly version: string
   ) {}
 
   /**

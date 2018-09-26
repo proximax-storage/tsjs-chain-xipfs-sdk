@@ -16,48 +16,48 @@
 
 import { expect } from 'chai';
 import 'mocha';
-import { BlockchainInfo } from '../../config/config.spec';
+import { BlockchainInfo } from '../config/config.spec';
+import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { BlockchainNetworkConnection } from './blockchain-network-connection';
-import { BlockchainNetworkType } from './blockchain-network-type';
 
 describe('BlockChainNetworkConnection', () => {
   it('should throw error if the blockchain network type is invalid', () => {
     expect(() => {
-      const connection = new BlockchainNetworkConnection(
+      new BlockchainNetworkConnection(
         1,
-        BlockchainInfo.endpointUrl,
-        BlockchainInfo.socketUrl,
-        BlockchainInfo.gatewayUrl
+        BlockchainInfo.apiHost,
+        BlockchainInfo.apiPort,
+        BlockchainInfo.apiProtocol
       );
 
-      connection.validate();
+      
     }).to.throw();
   });
 
-  it('should throw error if the blockchain endpoint url is invalid', () => {
+  it('should throw error if the blockchain api host  is invalid', () => {
     expect(() => {
-      const connection = new BlockchainNetworkConnection(
+     new BlockchainNetworkConnection(
         BlockchainNetworkType.MIJIN_TEST,
         '',
-        BlockchainInfo.socketUrl,
-        BlockchainInfo.gatewayUrl
+        BlockchainInfo.apiPort,
+        BlockchainInfo.apiProtocol
       );
 
-      connection.validate();
+ 
     }).to.throw();
   });
 
   it('should create new instance of BlockchainNetworkConnection', () => {
     const connection = new BlockchainNetworkConnection(
       BlockchainNetworkType.MIJIN_TEST,
-      BlockchainInfo.endpointUrl,
-      BlockchainInfo.socketUrl,
-      BlockchainInfo.gatewayUrl
+      BlockchainInfo.apiHost,
+      BlockchainInfo.apiPort,
+      BlockchainInfo.apiProtocol
     );
 
     expect(connection.network).to.not.be.equal(undefined);
-    expect(connection.endpointUrl).to.not.be.equal(undefined);
-    expect(connection.socketUrl).to.not.be.equal(undefined);
-    expect(connection.gatewayUrl).to.not.be.equal(undefined);
+    expect(connection.apiHost).to.not.be.equal(undefined);
+    expect(connection.apiPort).to.not.be.equal(undefined);
+    expect(connection.apiProtocol).to.not.be.equal(undefined);
   });
 });

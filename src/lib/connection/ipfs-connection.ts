@@ -31,6 +31,11 @@ export class IpfsConnection {
     public readonly port?: string,
     public readonly options?: object
   ) {
+
+    if (!this.host) {
+      throw new Error('Ipfs host or multi adddress is required');
+    }
+
     const API = require('ipfs-api');
     this.API = new API(host, port, options);
   }
@@ -42,12 +47,4 @@ export class IpfsConnection {
     return this.API;
   }
 
-  /**
-   * Validates the ipfs connection
-   */
-  public validate(): void {
-    if (!this.host) {
-      throw new Error('Ipfs host or multi adddress is required');
-    }
-  }
 }
