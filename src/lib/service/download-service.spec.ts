@@ -7,9 +7,10 @@ import {
 } from '../config/config.spec';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { IpfsConnection } from '../connection/ipfs-connection';
+import { Protocol } from '../connection/protocol';
+import { DownloadParameter } from '../download/download-parameter';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
-import { DownloadParameter } from '../model/download/download-parameter';
-import { PrivacyType } from '../privacy/privacy-type';
+import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
 import { BlockchainTransactionService } from './blockchain-transaction-service';
 import { IpfsClient } from './client/ipfs-client';
 // import { TransactionClient } from './client/transaction-client';
@@ -25,7 +26,7 @@ describe('DownloadService', () => {
     BlockchainNetworkType.MIJIN_TEST,
     BlockchainInfo.apiHost,
     BlockchainInfo.apiPort,
-    BlockchainInfo.apiProtocol,
+    Protocol.HTTP
   );
 
   const ipfsClient = new IpfsClient(ipfsConnection);
@@ -49,11 +50,11 @@ describe('DownloadService', () => {
     const expectedText =
       'ProximaX is an advanced extension of the Blockchain and Distributed Ledger Technology' +
       ' (DLT) with utility-rich services and protocols.';
-    const privacyStrategy = PrivacyType.PLAIN;
+
     const downloadParam = new DownloadParameter(
       transactionHash,
       RecipientAccount.privateKey,
-      privacyStrategy
+      new PlainPrivacyStrategy()
     );
 
     await downloadService.download(downloadParam).subscribe(downloadResult => {

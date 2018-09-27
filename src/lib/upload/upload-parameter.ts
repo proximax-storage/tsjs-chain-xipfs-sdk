@@ -18,7 +18,6 @@ import { SchemaVersion } from '../config/config';
 import { PrivacyType } from '../privacy/privacy-type';
 import { UploadParameterData } from './upload-parameter-data';
 
-
 /**
  * Class represetns the upload parameter
  */
@@ -32,11 +31,10 @@ export class UploadParameter {
     public transactionDeadline: number,
     public useBlockhainSecureMessage: boolean,
     public detectContentType: boolean,
-    public version?: string,
+    public version?: string
   ) {
-    if(!this.version) {
-      this.version = SchemaVersion
+    if (!this.version) {
+      this.version = SchemaVersion;
     }
-    
   }
 }

@@ -1,4 +1,3 @@
-import { from, Observable } from 'rxjs';
 import { crypto } from 'xpx2-library';
 import { PrivacyStrategy } from './privacy';
 import { PrivacyType } from './privacy-type';
@@ -16,18 +15,18 @@ export class NemPrivacyStrategy implements PrivacyStrategy {
     return PrivacyType.NEM_KEYS;
   }
 
-  public encrypt(data: any): Observable<any> {
+  public encrypt(data: any): any {
     console.log('Encrypting' + this.privateKey + ' ' + this.publicKey);
 
-    return from(crypto.nemEncrypt(this.privateKey, this.publicKey, data));
+    return crypto.nemEncrypt(this.privateKey, this.publicKey, data);
     // return from(crypto.nemEncrypt(this.privateKey, this.publicKey, data));
 
     // return message;
   }
 
-  public decrypt(data: any): Observable<any> {
+  public decrypt(data: any): any {
     console.log('Decrypting');
-    return from(crypto.nemDecrypt(this.privateKey, this.publicKey, data));
+    return crypto.nemDecrypt(this.privateKey, this.publicKey, data);
     // return message;
   }
 }

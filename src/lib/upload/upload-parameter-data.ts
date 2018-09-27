@@ -51,25 +51,37 @@ export class UploadParameterData {
     /**
      * The ipfs callback options e.g { progress: handle}
      */
-    public options?: object,
+    public options?: object
   ) {
     if (this.description.length > this.MAX_DESCRIPTION_LENGTH) {
-      throw new Error('description cannot be more than ' + this.MAX_DESCRIPTION_LENGTH + ' characters')
+      throw new Error(
+        'description cannot be more than ' +
+          this.MAX_DESCRIPTION_LENGTH +
+          ' characters'
+      );
     }
 
     if (this.name.length > this.MAX_NAME_LENGTH) {
-      throw new Error('name cannot be more than ' + this.MAX_NAME_LENGTH + ' characters')
+      throw new Error(
+        'name cannot be more than ' + this.MAX_NAME_LENGTH + ' characters'
+      );
     }
 
-
     if (this.contentType.length > this.MAX_CONTENT_TYPE_LENGTH) {
-      throw new Error('contentType cannot be more than ' + this.MAX_CONTENT_TYPE_LENGTH + ' characters')
+      throw new Error(
+        'contentType cannot be more than ' +
+          this.MAX_CONTENT_TYPE_LENGTH +
+          ' characters'
+      );
     }
 
     if (JSON.stringify(this.metadata).length > this.MAX_METADATA_JSON_LENGTH) {
-      throw new Error('metadata cannot be more than ' + this.MAX_METADATA_JSON_LENGTH + ' characters')
+      throw new Error(
+        'metadata cannot be more than ' +
+          this.MAX_METADATA_JSON_LENGTH +
+          ' characters'
+      );
     }
-
   }
 
   /**

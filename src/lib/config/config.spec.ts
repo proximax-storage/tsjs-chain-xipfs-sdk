@@ -3,7 +3,7 @@ export const BaseHost = 'localhost';
 export const IpfsInfo = {
   multiaddress: BaseHost,
   options: { protocol: 'http' },
-  port: '5001'
+  port: 5001
 };
 export const BlockchainInfo = {
   apiHost: BaseHost,

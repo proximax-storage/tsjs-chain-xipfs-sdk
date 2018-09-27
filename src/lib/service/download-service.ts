@@ -16,8 +16,8 @@
 import { TransferTransaction } from 'nem2-sdk';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { DownloadParameter } from '../model/download/download-parameter';
-import { DownloadResult } from '../model/download/download-result';
+import { DownloadParameter } from '../download/download-parameter';
+import { DownloadResult } from '../download/download-result';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { BlockchainTransactionService } from './blockchain-transaction-service';
 import { ProximaxDataService } from './proximax-data-service';

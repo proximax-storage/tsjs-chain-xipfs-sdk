@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { PrivacyType } from '../../privacy/privacy-type';
+import { PrivacyStrategy } from '../privacy/privacy';
 
 /**
  * Class represents download parameter
@@ -32,26 +32,10 @@ export class DownloadParameter {
     /**
      * The privacy strategy
      */
-    public privacyStrategy?: PrivacyType,
+    public privacyStrategy?: PrivacyStrategy,
     /**
      * Determines to validate digest
      */
     public validateDigest?: boolean
   ) {}
-
-  /**
-   * Validates the download parameter
-   */
-  public validate(): void {
-    if (this.transactionHash.length <= 0) {
-      throw new Error('The transaction hash is required');
-    }
-
-    if (
-      this.privacyStrategy === PrivacyType.NEM_KEYS &&
-      this.accountPrivateKey!.length <= 0
-    ) {
-      throw new Error('The account private key is required');
-    }
-  }
 }

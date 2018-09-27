@@ -26,7 +26,6 @@ describe('IpfsConnection', () => {
     const options = IpfsInfo.options;
 
     const connection = new IpfsConnection(multiAddress, port, options);
-   
 
     expect(connection.host).to.be.equal(multiAddress);
     expect(connection.port).to.be.equal(port);
@@ -38,7 +37,7 @@ describe('IpfsConnection', () => {
     const multiAddress = '/ip4/127.0.0.1/tcp/5001';
 
     const connection = new IpfsConnection(multiAddress);
-  
+
     expect(connection.host).to.be.equal(multiAddress);
     expect(connection.getAPI() != null).to.be.true;
   });
@@ -47,7 +46,6 @@ describe('IpfsConnection', () => {
     const multiAddress = '';
     expect(() => {
       new IpfsConnection(multiAddress);
-
     }).to.throw();
   });
 });

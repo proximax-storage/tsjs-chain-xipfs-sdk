@@ -22,12 +22,11 @@ describe('BlockchainTransactionService', () => {
     BlockchainNetworkType.MIJIN_TEST,
     BlockchainInfo.apiHost,
     BlockchainInfo.apiPort,
-    BlockchainInfo.apiProtocol,
+    BlockchainInfo.apiProtocol
   );
   // const client = new TransactionClient(connection);
 
-  const transactionService = new BlockchainTransactionService(connection)
- 
+  const transactionService = new BlockchainTransactionService(connection);
 
   it('should create and announce transaction to blockchain', async () => {
     const model = new ProximaxDataModel(

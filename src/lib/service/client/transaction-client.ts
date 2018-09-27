@@ -37,7 +37,8 @@ export class TransactionClient {
    */
   constructor(connection: BlockchainNetworkConnection, webSocket?: any) {
     this.transactionHttp = new TransactionHttp(connection.getApiUrl());
-    const wsEndpoint = connection.getApiUrl()
+    const wsEndpoint = connection
+      .getApiUrl()
       .replace('https://', 'https://')
       .replace('http://', 'ws://');
     this.listener = new Listener(wsEndpoint, webSocket);

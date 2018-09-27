@@ -1,7 +1,5 @@
-import { from, Observable } from 'rxjs';
-
+import { PBECipherEncryptor } from '../cipher/pbe-cipher-encryptor';
 import { Converter } from '../helper/converter';
-import { PBECipherEncryptor } from './pbe-cipher-encryptor';
 import { PrivacyStrategy } from './privacy';
 import { PrivacyType } from './privacy-type';
 export class PasswordPrivacyStrategy implements PrivacyStrategy {
@@ -35,8 +33,8 @@ export class PasswordPrivacyStrategy implements PrivacyStrategy {
    * @param data the raw data
    * @returns Observable<any>
    */
-  public encrypt(data: any): Observable<any> {
-    return from(this.cipher.encrypt(data));
+  public encrypt(data: any): any {
+    return this.cipher.encrypt(data);
   }
 
   /**
@@ -44,7 +42,7 @@ export class PasswordPrivacyStrategy implements PrivacyStrategy {
    * @param data the encrypted data
    * @returns Observable<any>
    */
-  public decrypt(data: any): Observable<any> {
-    return from(this.cipher.decrypt(data));
+  public decrypt(data: any): any {
+    return this.cipher.decrypt(data);
   }
 }

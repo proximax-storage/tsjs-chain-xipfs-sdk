@@ -28,10 +28,9 @@ export class IpfsConnection {
    */
   constructor(
     public readonly host: string,
-    public readonly port?: string,
+    public readonly port?: number,
     public readonly options?: object
   ) {
-
     if (!this.host) {
       throw new Error('Ipfs host or multi adddress is required');
     }
@@ -46,5 +45,4 @@ export class IpfsConnection {
   public getAPI() {
     return this.API;
   }
-
 }

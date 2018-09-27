@@ -16,6 +16,7 @@
 
 import { UriBuilder } from 'uribuilder';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
+import { Protocol } from './protocol';
 
 /**
  * Class represents the blockchain network connection
@@ -38,9 +39,9 @@ export class BlockchainNetworkConnection {
     public apiPort: number,
     /**
      * The api protocol
-     * 
+     *
      */
-    public apiProtocol: string
+    public apiProtocol: Protocol
   ) {
     if (this.network === null) {
       throw new Error('The blockchain network type is required');
@@ -65,6 +66,4 @@ export class BlockchainNetworkConnection {
   public getApiUrl(): string {
     return this.apiUrl;
   }
-
-
 }

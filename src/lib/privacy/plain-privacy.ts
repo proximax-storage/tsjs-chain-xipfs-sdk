@@ -6,11 +6,11 @@ export class PlainPrivacyStrategy implements PrivacyStrategy {
     return PrivacyType.PLAIN;
   }
 
-  public encrypt(data: any) {
+  public encrypt(data: any): any {
     return data;
   }
 
-  public decrypt(data: any) {
+  public decrypt(data: any): any {
     return data;
   }
 }

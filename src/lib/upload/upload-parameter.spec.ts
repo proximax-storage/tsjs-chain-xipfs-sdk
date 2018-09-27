@@ -21,18 +21,30 @@ import { UploadParameter } from './upload-parameter';
 import { UploadParameterData } from './upload-parameter-data';
 
 describe('UploadParameter', () => {
-
-
   it('should create upload parameter data', () => {
     const name = 'Proximax Test';
     const description = 'Proximax description';
     const contentType = 'text/plain';
-    const metadata = new Map<string,string>();
-    metadata.set('Author','Proximax');
-    const uploadParameterData =  new UploadParameterData(name,description,contentType,metadata);
+    const metadata = new Map<string, string>();
+    metadata.set('Author', 'Proximax');
+    const uploadParameterData = new UploadParameterData(
+      name,
+      description,
+      contentType,
+      metadata
+    );
     expect(uploadParameterData).to.be.a.instanceof(UploadParameterData);
 
-    const uploadParameter = new UploadParameter(uploadParameterData,'','','',PrivacyType.PLAIN,1,false,false);
+    const uploadParameter = new UploadParameter(
+      uploadParameterData,
+      '',
+      '',
+      '',
+      PrivacyType.PLAIN,
+      1,
+      false,
+      false
+    );
     expect(uploadParameter).to.be.a.instanceof(UploadParameter);
   });
 });

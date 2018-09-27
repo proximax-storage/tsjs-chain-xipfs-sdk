@@ -35,9 +35,10 @@ describe('ProximaxMessagePayloadModel', () => {
 
   it('should throw error if the proximax message payload model did not have valid proximax data model', () => {
     expect(() => {
+      const data = new ProximaxDataModel('');
       const messagePayloadModel = new ProximaxMessagePayloadModel(
         PrivacyType.PLAIN,
-        undefined,
+        data,
         SchemaVersion
       );
       messagePayloadModel.validate();

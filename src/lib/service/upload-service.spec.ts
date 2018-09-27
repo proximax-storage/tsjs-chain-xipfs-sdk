@@ -29,14 +29,15 @@ describe('UploadService', () => {
     BlockchainNetworkType.MIJIN_TEST,
     BlockchainInfo.apiHost,
     BlockchainInfo.apiPort,
-    BlockchainInfo.apiProtocol,
+    BlockchainInfo.apiProtocol
   );
 
   const ipfsClient = new IpfsClient(ipfsConnection);
   // const transactionClient = new TransactionClient(blockchainNetworkConnection);
 
   const blockchainTransactionService = new BlockchainTransactionService(
-    blockchainNetworkConnection);
+    blockchainNetworkConnection
+  );
 
   const proximaxDataService = new ProximaxDataService(ipfsClient);
 
@@ -85,7 +86,6 @@ describe('UploadService', () => {
       true,
       SchemaVersion
     );
-    
 
     await uploadService.upload(uploadParam).subscribe(uploadResult => {
       // console.log(response);

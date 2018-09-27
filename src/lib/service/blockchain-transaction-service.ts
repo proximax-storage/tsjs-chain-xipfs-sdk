@@ -26,8 +26,8 @@ import {
 } from 'nem2-sdk';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Converter } from '../helper/converter';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
+import { Converter } from '../helper/converter';
 import { SecureMessage } from '../model/blockchain/secure-message';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { TransactionClient } from './client/transaction-client';
@@ -45,9 +45,7 @@ export class BlockchainTransactionService {
    * @param connection the blockchain network connection
    * @param client the transaction client
    */
-  constructor(
-    connection: BlockchainNetworkConnection,
-   ) {
+  constructor(connection: BlockchainNetworkConnection) {
     this.connection = connection;
     this.client = new TransactionClient(connection);
     this.networkType = Converter.getNemNetworkType(this.connection.network);

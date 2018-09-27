@@ -47,12 +47,7 @@ export class ProximaxDataModel {
      * The timestamp
      */
     public readonly timestamp?: number
-  ) {}
-
-  /**
-   * Validates Proximax data model
-   */
-  public validate(): void {
+  ) {
     if (!this.dataHash || this.dataHash.length <= 0) {
       throw new Error('Data hash is required');
     }

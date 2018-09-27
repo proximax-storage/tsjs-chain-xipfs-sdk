@@ -18,11 +18,12 @@ import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IpfsConnection } from '../../connection/ipfs-connection';
 import { IpfsContent } from '../../model/ipfs/ipfs-content';
+import { FileRepository } from '../repository/file-repository';
 
 /**
  * Class represents Ipfs client
  */
-export class IpfsClient {
+export class IpfsClient implements FileRepository {
   private connection: IpfsConnection;
 
   /**
@@ -79,7 +80,7 @@ export class IpfsClient {
    * Gets stream from ipfs storage by datahash
    * @param hash the data hash
    */
-  public getStream(hash: string): Observable<IpfsContent> {
+  public getStream(hash: string): Observable<any> {
     if (!hash) {
       throw new Error('hash is required');
     }

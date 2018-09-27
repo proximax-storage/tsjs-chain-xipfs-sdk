@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import 'mocha';
-import { IpfsInfo,} from '../config/config.spec';
+import { IpfsInfo } from '../config/config.spec';
 import { IpfsConnection } from '../connection/ipfs-connection';
 import { ProximaxDataModel } from '../model/proximax/data-model';
 // import { PrivacyType } from '../privacy/privacy-type';
@@ -15,7 +15,7 @@ describe('ProximaxDataService', () => {
   const dataService = new ProximaxDataService(client);
 
   it('should add data to ipfs storage via upload parameter', async () => {
-  /*  const uploadParamData = new UploadParameterData(
+    /*  const uploadParamData = new UploadParameterData(
       Buffer.from('Proximax P2P storage')
     );
 

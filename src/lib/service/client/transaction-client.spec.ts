@@ -23,7 +23,7 @@ describe('TransactionClient', () => {
     BlockchainNetworkType.MIJIN_TEST,
     BlockchainInfo.apiHost,
     BlockchainInfo.apiPort,
-    BlockchainInfo.apiProtocol,
+    BlockchainInfo.apiProtocol
   );
   const client = new TransactionClient(connection);
 

@@ -16,31 +16,26 @@
 
 import { expect } from 'chai';
 import 'mocha';
-import { PrivacyType } from '../../privacy/privacy-type';
+import { NemPrivacyStrategy } from '../privacy/nem-privacy';
+import { PasswordPrivacyStrategy } from '../privacy/password-privacy';
+import { PrivacyType } from '../privacy/privacy-type';
 import { DownloadParameter } from './download-parameter';
 
 describe('DownloadParameter', () => {
   it('should throw error if the download parameter did not have transaction hash', () => {
     expect(() => {
-      const downloadParameter = new DownloadParameter(
-        '',
-        '',
-        PrivacyType.PLAIN,
-        false
-      );
-      downloadParameter.validate();
+      new DownloadParameter('', '', new PasswordPrivacyStrategy(''), false);
     }).to.throw();
   });
 
   it('should throw error if the account private key is invalid for PrivacyType.NEM_KEYS', () => {
     expect(() => {
-      const downloadParameter = new DownloadParameter(
+      new DownloadParameter(
         'F6F901704BB271F7CE2E4FD6BC38A9715EC3752000AEDF0AA67CE38BD07EC42E',
         undefined,
-        PrivacyType.NEM_KEYS,
+        new NemPrivacyStrategy('', ''),
         false
       );
-      downloadParameter.validate();
     }).to.throw();
   });
 
@@ -48,10 +43,10 @@ describe('DownloadParameter', () => {
     const downloadParameter = new DownloadParameter(
       'F6F901704BB271F7CE2E4FD6BC38A9715EC3752000AEDF0AA67CE38BD07EC42E',
       '0DC05CB635D5DA08C190C3FB1BA15EC0E27A15CD90A91E97FB7DD2D5E7C30392',
-      PrivacyType.NEM_KEYS,
+      new PasswordPrivacyStrategy(''),
       false
     );
-    downloadParameter.validate();
+
     expect(downloadParameter.transactionHash).to.not.be.equal(undefined);
     expect(downloadParameter.accountPrivateKey).to.not.be.equal(undefined);
     expect(downloadParameter.privacyStrategy).to.be.equal(PrivacyType.NEM_KEYS);

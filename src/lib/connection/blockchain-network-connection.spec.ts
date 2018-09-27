@@ -19,6 +19,7 @@ import 'mocha';
 import { BlockchainInfo } from '../config/config.spec';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { BlockchainNetworkConnection } from './blockchain-network-connection';
+import { Protocol } from './protocol';
 
 describe('BlockChainNetworkConnection', () => {
   it('should throw error if the blockchain network type is invalid', () => {
@@ -27,23 +28,19 @@ describe('BlockChainNetworkConnection', () => {
         1,
         BlockchainInfo.apiHost,
         BlockchainInfo.apiPort,
-        BlockchainInfo.apiProtocol
+        Protocol.HTTP
       );
-
-      
     }).to.throw();
   });
 
   it('should throw error if the blockchain api host  is invalid', () => {
     expect(() => {
-     new BlockchainNetworkConnection(
+      new BlockchainNetworkConnection(
         BlockchainNetworkType.MIJIN_TEST,
         '',
         BlockchainInfo.apiPort,
-        BlockchainInfo.apiProtocol
+        Protocol.HTTP
       );
-
- 
     }).to.throw();
   });
 
@@ -52,7 +49,7 @@ describe('BlockChainNetworkConnection', () => {
       BlockchainNetworkType.MIJIN_TEST,
       BlockchainInfo.apiHost,
       BlockchainInfo.apiPort,
-      BlockchainInfo.apiProtocol
+      Protocol.HTTP
     );
 
     expect(connection.network).to.not.be.equal(undefined);

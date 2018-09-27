@@ -35,15 +35,16 @@ export class Uploader {
    * @param blockchainTransactionService the blockchain transaction service
    * @param proximaxDataService the proximax data service
    */
-  constructor(
-    connectionConfig: ConnectionConfig
-  ) {
-     this.blockchainTransactionService = new BlockchainTransactionService(connectionConfig.blockchainNetworkConnection)
-     this.createProximaxDataService = new CreateProximaxDataService(connectionConfig);
-     console.log(this.createProximaxDataService);
+  constructor(connectionConfig: ConnectionConfig) {
+    this.blockchainTransactionService = new BlockchainTransactionService(
+      connectionConfig.blockchainNetworkConnection
+    );
+    this.createProximaxDataService = new CreateProximaxDataService(
+      connectionConfig
+    );
+    console.log(this.createProximaxDataService);
   }
 
- 
   public upload(param: UploadParameter): Promise<UploadResult> {
     return this.doUpload(param).toPromise();
   }

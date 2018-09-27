@@ -21,8 +21,12 @@ import { PrivacyType } from '../privacy/privacy-type';
  * Class represents upload result
  */
 export class UploadResult {
-
-  public static create(transactionHash: string, privacyType: PrivacyType, version: string, dataModel: ProximaxDataModel) {
+  public static create(
+    transactionHash: string,
+    privacyType: PrivacyType,
+    version: string,
+    dataModel: ProximaxDataModel
+  ) {
     return new UploadResult(transactionHash, privacyType, version, dataModel);
   }
 
@@ -43,5 +47,5 @@ export class UploadResult {
      * The proximax data model
      */
     public data: ProximaxDataModel
-  ) { }
+  ) {}
 }

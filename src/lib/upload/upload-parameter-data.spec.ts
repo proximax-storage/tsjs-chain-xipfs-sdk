@@ -18,43 +18,48 @@ import { expect } from 'chai';
 import 'mocha';
 import { UploadParameterData } from './upload-parameter-data';
 
-
 describe('UploadParameterData', () => {
   it('should throw error if the upload parameter data name length more than 100 characters', () => {
     expect(() => {
-      const name = 'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHCpwe3i9Ac1TujbVoW4Zi8P4lFTrPOYMD60yBqM7YgTAopA3vS20GGThYZpDm12';
-      const metadata = new Map<string,string>();
-      metadata.set('Author','Proximax');
-      new UploadParameterData(name,'','',metadata);
+      const name =
+        'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHCpwe3i9Ac1TujbVoW4Zi8P4lFTrPOYMD60yBqM7YgTAopA3vS20GGThYZpDm12';
+      const metadata = new Map<string, string>();
+      metadata.set('Author', 'Proximax');
+      new UploadParameterData(name, '', '', metadata);
     }).to.throw();
   });
 
   it('should throw error if the upload parameter data description length more than 100 characters', () => {
     expect(() => {
-      const description = 'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHCpwe3i9Ac1TujbVoW4Zi8P4lFTrPOYMD60yBqM7YgTAopA3vS20GGThYZpDm12';
-      const metadata = new Map<string,string>();
-      metadata.set('Author','Proximax');
-      new UploadParameterData('',description,'',metadata);
+      const description =
+        'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHCpwe3i9Ac1TujbVoW4Zi8P4lFTrPOYMD60yBqM7YgTAopA3vS20GGThYZpDm12';
+      const metadata = new Map<string, string>();
+      metadata.set('Author', 'Proximax');
+      new UploadParameterData('', description, '', metadata);
     }).to.throw();
   });
 
   it('should throw error if the upload parameter data content length more than 30 characters', () => {
     expect(() => {
       const contentType = 'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHC';
-      const metadata = new Map<string,string>();
-      metadata.set('Author','Proximax');
-      new UploadParameterData('','',contentType,metadata);
+      const metadata = new Map<string, string>();
+      metadata.set('Author', 'Proximax');
+      new UploadParameterData('', '', contentType, metadata);
     }).to.throw();
   });
 
   it('should create upload parameter data', () => {
-   
-      const name = 'Proximax Test';
-      const description = 'Proximax description';
-      const contentType = 'text/plain';
-      const metadata = new Map<string,string>();
-      metadata.set('Author','Proximax');
-      const uploadParameterData =  new UploadParameterData(name,description,contentType,metadata);
-      expect(uploadParameterData).to.be.a.instanceof(UploadParameterData);
+    const name = 'Proximax Test';
+    const description = 'Proximax description';
+    const contentType = 'text/plain';
+    const metadata = new Map<string, string>();
+    metadata.set('Author', 'Proximax');
+    const uploadParameterData = new UploadParameterData(
+      name,
+      description,
+      contentType,
+      metadata
+    );
+    expect(uploadParameterData).to.be.a.instanceof(UploadParameterData);
   });
 });
