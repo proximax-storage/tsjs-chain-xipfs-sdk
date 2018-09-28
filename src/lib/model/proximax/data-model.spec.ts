@@ -21,8 +21,7 @@ import { ProximaxDataModel } from './data-model';
 describe('ProximaxDataModel', () => {
   it('should throw error if the proximax data model did not have valid data hash', () => {
     expect(() => {
-      const dataModel = new ProximaxDataModel('');
-      dataModel.validate();
+      new ProximaxDataModel('');
     }).to.throw();
   });
 
@@ -30,7 +29,7 @@ describe('ProximaxDataModel', () => {
     const dataModel = new ProximaxDataModel(
       'QmWDQegEhLdCUWF6aQZcLM6ELPTuWHfvjLYBeG6Kxy8hjs'
     );
-    dataModel.validate();
+
     expect(dataModel.dataHash).to.be.not.equal(undefined);
   });
 });

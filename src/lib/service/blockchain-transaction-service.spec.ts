@@ -13,16 +13,17 @@ import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-m
 
 import { expect } from 'chai';
 import { TransactionType } from 'nem2-sdk';
+// import { TransactionClient } from './client/transaction-client';
+import { Protocol } from '../connection/protocol';
 import { PrivacyType } from '../privacy/privacy-type';
 import { BlockchainTransactionService } from './blockchain-transaction-service';
-// import { TransactionClient } from './client/transaction-client';
 
 describe('BlockchainTransactionService', () => {
   const connection = new BlockchainNetworkConnection(
     BlockchainNetworkType.MIJIN_TEST,
     BlockchainInfo.apiHost,
     BlockchainInfo.apiPort,
-    BlockchainInfo.apiProtocol
+    Protocol.HTTP
   );
   // const client = new TransactionClient(connection);
 

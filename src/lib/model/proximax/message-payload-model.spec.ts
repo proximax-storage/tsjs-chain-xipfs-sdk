@@ -24,24 +24,18 @@ import { ProximaxMessagePayloadModel } from './message-payload-model';
 describe('ProximaxMessagePayloadModel', () => {
   it('should throw error if the proximax message payload model did not have valid privacy type', () => {
     expect(() => {
-      const messagePayloadModel = new ProximaxMessagePayloadModel(
+      new ProximaxMessagePayloadModel(
         12,
         new ProximaxDataModel(''),
         SchemaVersion
       );
-      messagePayloadModel.validate();
     }).to.throw();
   });
 
   it('should throw error if the proximax message payload model did not have valid proximax data model', () => {
     expect(() => {
       const data = new ProximaxDataModel('');
-      const messagePayloadModel = new ProximaxMessagePayloadModel(
-        PrivacyType.PLAIN,
-        data,
-        SchemaVersion
-      );
-      messagePayloadModel.validate();
+      new ProximaxMessagePayloadModel(PrivacyType.PLAIN, data, SchemaVersion);
     }).to.throw();
   });
 
@@ -49,13 +43,13 @@ describe('ProximaxMessagePayloadModel', () => {
     const dataModel = new ProximaxDataModel(
       'QmWDQegEhLdCUWF6aQZcLM6ELPTuWHfvjLYBeG6Kxy8hjs'
     );
-    dataModel.validate();
+
     const messagePayloadModel = new ProximaxMessagePayloadModel(
       PrivacyType.PLAIN,
       dataModel,
       SchemaVersion
     );
-    messagePayloadModel.validate();
+
     expect(messagePayloadModel.data).to.be.not.equal(undefined);
     expect(messagePayloadModel.privacyType).to.be.equal(PrivacyType.PLAIN);
   });

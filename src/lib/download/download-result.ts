@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { PrivacyType } from '../../privacy/privacy-type';
+
+import { PrivacyType } from '../privacy/privacy-type';
 import { DownloadResultData } from './download-result-data';
 
 /**

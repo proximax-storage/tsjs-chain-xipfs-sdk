@@ -1,3 +1,9 @@
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { DownloadResultData } from '../download/download-result-data';
+import { ProximaxDataModel } from '../model/proximax/data-model';
+import { UploadParameter } from '../upload/upload-parameter';
+import { IpfsClient } from './client/ipfs-client';
 /*
  * Copyright 2018 ProximaX Limited
  *
@@ -13,13 +19,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { DownloadResultData } from '../model/download/download-result-data';
-import { ProximaxDataModel } from '../model/proximax/data-model';
-import { UploadParameter } from '../upload/upload-parameter';
-import { IpfsClient } from './client/ipfs-client';
 
 /**
  * Class represents Proximax data service

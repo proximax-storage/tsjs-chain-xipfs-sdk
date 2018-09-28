@@ -9,6 +9,7 @@ import {
 } from '../config/config.spec';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { IpfsConnection } from '../connection/ipfs-connection';
+import { Protocol } from '../connection/protocol';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { PrivacyType } from '../privacy/privacy-type';
 import { UploadParameter } from '../upload/upload-parameter';
@@ -29,7 +30,7 @@ describe('UploadService', () => {
     BlockchainNetworkType.MIJIN_TEST,
     BlockchainInfo.apiHost,
     BlockchainInfo.apiPort,
-    BlockchainInfo.apiProtocol
+    Protocol.HTTP
   );
 
   const ipfsClient = new IpfsClient(ipfsConnection);

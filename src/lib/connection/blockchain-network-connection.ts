@@ -51,6 +51,10 @@ export class BlockchainNetworkConnection {
       throw new Error('The blockchain api host is required');
     }
 
+    if (this.apiPort > 0) {
+      throw new Error('The api port should not be negative');
+    }
+
     if (this.apiProtocol === null || this.apiHost.length <= 0) {
       throw new Error('The blockchain api protocol is required');
     }

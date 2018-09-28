@@ -8,7 +8,7 @@ import { ProximaxDataModel } from '../model/proximax/data-model';
 export class CreateProximaxDataService {
   private ipfsClient: IpfsClient;
   constructor(connectionConfig: ConnectionConfig) {
-    this.ipfsClient = new IpfsClient(connectionConfig.ifpsConnection);
+    this.ipfsClient = new IpfsClient(connectionConfig.ifpsConnection!);
     console.log(this.ipfsClient);
   }
 

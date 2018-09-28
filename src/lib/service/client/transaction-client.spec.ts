@@ -14,6 +14,7 @@ import {
   SenderAccount
 } from '../../config/config.spec';
 import { BlockchainNetworkConnection } from '../../connection/blockchain-network-connection';
+import { Protocol } from '../../connection/protocol';
 import { Converter } from '../../helper/converter';
 import { BlockchainNetworkType } from '../../model/blockchain/blockchain-network-type';
 import { TransactionClient } from './transaction-client';
@@ -23,7 +24,7 @@ describe('TransactionClient', () => {
     BlockchainNetworkType.MIJIN_TEST,
     BlockchainInfo.apiHost,
     BlockchainInfo.apiPort,
-    BlockchainInfo.apiProtocol
+    Protocol.HTTP
   );
   const client = new TransactionClient(connection);
 
