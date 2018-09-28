@@ -34,7 +34,7 @@ export class IpfsConnection {
     if (!this.apiHost) {
       throw new Error('Ipfs host or multi adddress is required');
     }
-   
+
     if (this.apiPort && this.apiPort <= 0) {
       throw new Error('Ipfs port should not be negative');
     }

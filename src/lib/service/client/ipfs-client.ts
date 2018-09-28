@@ -19,12 +19,14 @@ import { map } from 'rxjs/operators';
 import { IpfsConnection } from '../../connection/ipfs-connection';
 import { IpfsContent } from '../../model/ipfs/ipfs-content';
 import { FileRepository } from '../repository/file-repository';
-
+// tslint:disable-next-line:no-var-requires
+const Buffer = require('buffer').Buffer;
 /**
  * Class represents Ipfs client
  */
 export class IpfsClient implements FileRepository {
   private connection: IpfsConnection;
+  // private Buffer: any;
 
   /**
    * Constructor
@@ -32,31 +34,8 @@ export class IpfsClient implements FileRepository {
    */
   constructor(connection: IpfsConnection) {
     this.connection = connection;
+    // this.Buffer = require('buffer').Buffer;
   }
-
-  /*public isConnect(): Observable<IpfsNetworkInfo> {
-    return from<IpfsVersion>(this.connection.getAPI().version()).pipe(
-      map(response => {
-        if (!response) {
-          return new IpfsNetworkInfo(
-            this.connection.host,
-            this.connection.port,
-            this.connection.options,
-            'Disconnected'
-          );
-        }
-
-        return new IpfsNetworkInfo(
-          this.connection.host,
-          this.connection.port,
-          this.connection.options,
-          'Connected',
-          response.version,
-          response.repo
-        );
-      })
-    );
-  }*/
 
   /**
    * Add stream to ipfs storage
@@ -69,7 +48,7 @@ export class IpfsClient implements FileRepository {
     }
 
     // convert to buffer
-    const bufferData = Buffer.from(data);
+    const bufferData = Buffer.from(data); // Buffer.from(data);
 
     return from<IpfsContent[]>(
       this.connection.getIpfs().files.add(bufferData, options)

@@ -21,6 +21,7 @@ import { PrivacyType } from '../privacy/privacy-type';
  * Class represents upload result
  */
 export class UploadResult {
+
   public static create(
     transactionHash: string,
     privacyType: PrivacyType,
@@ -30,7 +31,7 @@ export class UploadResult {
     return new UploadResult(transactionHash, privacyType, version, dataModel);
   }
 
-  constructor(
+  private constructor(
     /**
      * The transaction hash
      */

@@ -1,11 +1,13 @@
 import 'mocha';
 
 import { expect } from 'chai';
+import { StorageInfo } from '../config/config.spec';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { BlockchainNetworkConnection } from './blockchain-network-connection';
 import { ConnectionConfig } from './connection-config';
 import { IpfsConnection } from './ipfs-connection';
 import { Protocol } from './protocol';
+import { StorageConnection } from './storage-connection';
 /*
  * Copyright 2018 ProximaX Limited
  *
@@ -31,6 +33,26 @@ describe('ConnectionConfig', () => {
         Protocol.HTTP
       ),
       new IpfsConnection('127.0.0.1', 5001)
+    );
+
+    expect(connectionConfig).to.be.a.instanceof(ConnectionConfig);
+  });
+
+  it('should createWithStorageConnection', () => {
+    const connectionConfig = ConnectionConfig.createWithStorageConnection(
+      new BlockchainNetworkConnection(
+        BlockchainNetworkType.MIJIN_TEST,
+        '52.221.231.207',
+        3000,
+        Protocol.HTTP
+      ),
+      new StorageConnection(
+        StorageInfo.apiHost,
+        StorageInfo.apiPort,
+        Protocol.HTTP,
+        StorageInfo.bearerToken,
+        StorageInfo.address
+      )
     );
 
     expect(connectionConfig).to.be.a.instanceof(ConnectionConfig);

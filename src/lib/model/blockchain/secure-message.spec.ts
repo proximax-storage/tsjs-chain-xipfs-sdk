@@ -51,9 +51,9 @@ describe('SecureMessage', () => {
 
     // console.log('decrypt ms: ' + plainMessage.payload);
 
-    const expectedPlainMessage = PlainMessage.create(message);
+    // const expectedPlainMessage = PlainMessage.create(message);
 
     // console.log(expectedPlainMessage.payload);
-    expect(plainMessage.payload).to.be.equal(expectedPlainMessage);
+    expect(plainMessage.payload).to.be.equal(message);
   });
 });

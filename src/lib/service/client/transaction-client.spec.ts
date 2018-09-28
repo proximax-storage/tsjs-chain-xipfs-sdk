@@ -56,14 +56,14 @@ describe('TransactionClient', () => {
     const signedTransaction = signerAccount.sign(transferTransaction);
 
     await client.announce(signedTransaction).subscribe(trxHash => {
-      // console.log(trxHash);
+      console.log('Transaction hash ' + trxHash);
       expect(trxHash).to.be.not.equal(undefined);
     });
   });
 
   it('should return transaction by transaction hash from blockchain', async () => {
     await client.getTransaction(transactionHash).subscribe(trx => {
-      // console.log(response);
+      // console.log('Transaction ' + JSON.stringify(trx));
       expect(trx.isConfirmed()).to.be.true;
     });
   });

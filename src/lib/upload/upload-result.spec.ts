@@ -23,12 +23,7 @@ import { UploadResult } from './upload-result';
 
 describe('UploadResult', () => {
   it('should create upload result', () => {
-    const uploadResult = new UploadResult(
-      '',
-      PrivacyType.PLAIN,
-      SchemaVersion,
-      new ProximaxDataModel('')
-    );
-    expect(uploadResult).to.be.not.equal(undefined);
+    const uploadResult = UploadResult.create('',PrivacyType.PLAIN, SchemaVersion,new ProximaxDataModel(''));
+    expect(uploadResult).to.be.a.instanceof(UploadResult);
   });
 });
