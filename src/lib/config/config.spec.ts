@@ -5,6 +5,7 @@ export const IpfsInfo = {
   options: { protocol: 'http' },
   port: 5001
 };
+
 export const BlockchainInfo = {
   apiHost: BaseHost,
   apiPort: 3000,

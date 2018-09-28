@@ -27,10 +27,7 @@ describe('IpfsConnection', () => {
 
     const connection = new IpfsConnection(multiAddress, port, options);
 
-    expect(connection.host).to.be.equal(multiAddress);
-    expect(connection.port).to.be.equal(port);
-    expect(connection.options).to.be.equal(options);
-    expect(connection.getAPI() != null).to.be.true;
+    expect(connection.getIpfs() != null).to.be.true;
   });
 
   it('should create new ipfs connection with multiaddress', () => {
@@ -38,14 +35,21 @@ describe('IpfsConnection', () => {
 
     const connection = new IpfsConnection(multiAddress);
 
-    expect(connection.host).to.be.equal(multiAddress);
-    expect(connection.getAPI() != null).to.be.true;
+    expect(connection.getIpfs() != null).to.be.true;
   });
 
   it('should throw error if host or multiaddress is invalid', () => {
     const multiAddress = '';
     expect(() => {
       new IpfsConnection(multiAddress);
+    }).to.throw();
+  });
+
+  it('should throw error if port is not valid', () => {
+    const multiAddress = IpfsInfo.multiaddress;
+    const port = -1;
+    expect(() => {
+      new IpfsConnection(multiAddress, port);
     }).to.throw();
   });
 });

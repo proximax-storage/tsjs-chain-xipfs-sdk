@@ -72,7 +72,7 @@ export class IpfsClient implements FileRepository {
     const bufferData = Buffer.from(data);
 
     return from<IpfsContent[]>(
-      this.connection.getAPI().files.add(bufferData, options)
+      this.connection.getIpfs().files.add(bufferData, options)
     ).pipe(map(hashList => hashList[0].hash));
   }
 
@@ -85,6 +85,6 @@ export class IpfsClient implements FileRepository {
       throw new Error('hash is required');
     }
 
-    return from<IpfsContent>(this.connection.getAPI().files.get(hash));
+    return from<IpfsContent>(this.connection.getIpfs().files.get(hash));
   }
 }

@@ -44,6 +44,28 @@ describe('BlockChainNetworkConnection', () => {
     }).to.throw();
   });
 
+  it('should throw error if the blockchain api port  is invalid', () => {
+    expect(() => {
+      new BlockchainNetworkConnection(
+        BlockchainNetworkType.MIJIN_TEST,
+        BlockchainInfo.apiHost,
+        -1,
+        Protocol.HTTP
+      );
+    }).to.throw();
+  });
+
+  it('should throw error if the blockchain api protocol  is invalid', () => {
+    expect(() => {
+      new BlockchainNetworkConnection(
+        BlockchainNetworkType.MIJIN_TEST,
+        BlockchainInfo.apiHost,
+        BlockchainInfo.apiPort,
+        Protocol.UNKNOWN
+      );
+    }).to.throw();
+  });
+
   it('should create new instance of BlockchainNetworkConnection', () => {
     const connection = new BlockchainNetworkConnection(
       BlockchainNetworkType.MIJIN_TEST,
@@ -52,9 +74,16 @@ describe('BlockChainNetworkConnection', () => {
       Protocol.HTTP
     );
 
-    expect(connection.network).to.not.be.equal(undefined);
-    expect(connection.apiHost).to.not.be.equal(undefined);
-    expect(connection.apiPort).to.not.be.equal(undefined);
-    expect(connection.apiProtocol).to.not.be.equal(undefined);
+    const expectedUrl =
+      Protocol.HTTP +
+      '://' +
+      BlockchainInfo.apiHost +
+      ':' +
+      BlockchainInfo.apiPort +
+      '/';
+    // console.log(expectedUrl);
+    // console.log(connection.getApiUrl());
+    expect(connection).to.be.a.instanceof(BlockchainNetworkConnection);
+    expect(connection.getApiUrl()).to.be.equal(expectedUrl);
   });
 });

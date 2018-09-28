@@ -43,7 +43,7 @@ export class BlockchainNetworkConnection {
      */
     public apiProtocol: Protocol
   ) {
-    if (this.network === null) {
+    if (this.network === null || !(this.network in BlockchainNetworkType)) {
       throw new Error('The blockchain network type is required');
     }
 
@@ -51,11 +51,11 @@ export class BlockchainNetworkConnection {
       throw new Error('The blockchain api host is required');
     }
 
-    if (this.apiPort > 0) {
+    if (this.apiPort <= 0) {
       throw new Error('The api port should not be negative');
     }
 
-    if (this.apiProtocol === null || this.apiHost.length <= 0) {
+    if (this.apiProtocol === null || this.apiProtocol === Protocol.UNKNOWN) {
       throw new Error('The blockchain api protocol is required');
     }
 
@@ -67,6 +67,9 @@ export class BlockchainNetworkConnection {
     this.apiUrl = builder.toString();
   }
 
+  /**
+   * Gets the api url
+   */
   public getApiUrl(): string {
     return this.apiUrl;
   }
