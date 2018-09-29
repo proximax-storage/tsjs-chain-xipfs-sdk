@@ -15,11 +15,16 @@
  */
 
 import { PrivacyStrategy } from '../privacy/privacy';
+import { DownloadParameterBuilder } from './download-parameter-builder';
 
 /**
  * Class represents download parameter
  */
 export class DownloadParameter {
+  public static create(transactionHash: string): DownloadParameterBuilder {
+    return new DownloadParameterBuilder(transactionHash);
+  }
+
   constructor(
     /**
      * The transaction has

@@ -53,7 +53,7 @@ export class UploadService {
           switchMap(messagePayload =>
             this.createAndAnnounceTransaction(param, messagePayload).pipe(
               map(transactionHash => {
-                return new UploadResult(
+                return UploadResult.create(
                   transactionHash,
                   messagePayload.privacyType,
                   messagePayload.version,

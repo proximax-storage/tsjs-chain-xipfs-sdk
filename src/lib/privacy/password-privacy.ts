@@ -3,13 +3,17 @@ import { Converter } from '../helper/converter';
 import { PrivacyStrategy } from './privacy';
 import { PrivacyType } from './privacy-type';
 export class PasswordPrivacyStrategy implements PrivacyStrategy {
+  public static create(password: string): any {
+    return new PasswordPrivacyStrategy(password);
+  }
+
   private cipher: any;
 
   /**
    * Constructor
    * @param password the password
    */
-  constructor(password: string) {
+  private constructor(password: string) {
     if (password === null || password === undefined) {
       throw new Error('The password is required');
     }

@@ -54,7 +54,7 @@ describe('DownloadService', () => {
     const downloadParam = new DownloadParameter(
       transactionHash,
       RecipientAccount.privateKey,
-      new PlainPrivacyStrategy()
+      PlainPrivacyStrategy.create()
     );
 
     await downloadService.download(downloadParam).subscribe(downloadResult => {

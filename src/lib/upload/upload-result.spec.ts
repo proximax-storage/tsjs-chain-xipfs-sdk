@@ -23,7 +23,12 @@ import { UploadResult } from './upload-result';
 
 describe('UploadResult', () => {
   it('should create upload result', () => {
-    const uploadResult = UploadResult.create('',PrivacyType.PLAIN, SchemaVersion,new ProximaxDataModel(''));
+    const uploadResult = UploadResult.create(
+      '',
+      PrivacyType.PLAIN,
+      SchemaVersion,
+      new ProximaxDataModel('qmsc')
+    );
     expect(uploadResult).to.be.a.instanceof(UploadResult);
   });
 });

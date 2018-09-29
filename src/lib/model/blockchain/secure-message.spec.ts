@@ -16,7 +16,6 @@
 
 import { expect } from 'chai';
 import 'mocha';
-import { PlainMessage } from 'nem2-sdk';
 import { RecipientAccount, SenderAccount } from '../../config/config.spec';
 import { SecureMessage } from './secure-message';
 

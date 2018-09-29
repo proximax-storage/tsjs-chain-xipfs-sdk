@@ -58,4 +58,9 @@ export class Converter {
     }
     return buf;
   }
+
+  public static isHex(h: string) {
+    const a = parseInt(h, 16);
+    return a.toString(16) === h.toLowerCase();
+  }
 }
