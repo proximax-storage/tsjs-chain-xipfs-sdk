@@ -63,11 +63,10 @@ export class IpfsClient implements FileRepository {
     if (!hash) {
       throw new Error('hash is required');
     }
-    
-    if(options) {
+
+    if (options) {
       console.log(options);
     }
-    
 
     return from<IpfsContent>(this.connection.getIpfs().files.get(hash));
   }

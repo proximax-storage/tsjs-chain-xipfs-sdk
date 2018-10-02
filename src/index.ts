@@ -1,6 +1,3 @@
-export * from './lib/service/upload-service';
-export * from './lib/service/download-service';
-export * from './lib/service/proximax-data-service';
 export * from './lib/service/blockchain-transaction-service';
 export * from './lib/service/client/ipfs-client';
 export * from './lib/service/client/transaction-client';

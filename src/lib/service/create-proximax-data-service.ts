@@ -61,21 +61,23 @@ export class CreateProximaxDataService {
       digestHash = DigestUtils.computeDigest(encryptedData);
     }
 
-    return this.fileUploadService.uploadStream(encryptedData, param.data.options).pipe(
-      map(fur => {
-        const digest = digestHash;
+    return this.fileUploadService
+      .uploadStream(encryptedData, param.data.options)
+      .pipe(
+        map(fur => {
+          const digest = digestHash;
 
-        return new ProximaxDataModel(
-          fur.hash,
-          digest,
-          param.data.description,
-          contentType,
-          param.data.metadata,
-          param.data.name,
-          fur.timestamp
-        );
-      })
-    );
+          return new ProximaxDataModel(
+            fur.hash,
+            digest,
+            param.data.description,
+            contentType,
+            param.data.metadata,
+            param.data.name,
+            fur.timestamp
+          );
+        })
+      );
 
     /*
     return this.ipfsClient.addStream(encryptedData, param.data.options).pipe(
