@@ -1,15 +1,33 @@
 import { Observable } from 'rxjs';
-import { ConnectionConfig } from '../connection/connection-config';
-import { UploadParameter } from '../upload/upload-parameter';
-import { IpfsClient } from './client/ipfs-client';
-
 import { map } from 'rxjs/operators';
+import { ConnectionConfig } from '../connection/connection-config';
+import { DigestUtils } from '../helper/digest-util';
 import { ProximaxDataModel } from '../model/proximax/data-model';
+import { UploadParameter } from '../upload/upload-parameter';
+import { FileUploadService } from './file-upload-service';
+
+/*
+ * Copyright 2018 ProximaX Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 export class CreateProximaxDataService {
-  private ipfsClient: IpfsClient;
+  private fileUploadService: FileUploadService;
+
   constructor(connectionConfig: ConnectionConfig) {
-    this.ipfsClient = new IpfsClient(connectionConfig.ifpsConnection!);
-    console.log(this.ipfsClient);
+    this.fileUploadService = new FileUploadService(connectionConfig);
+    // console.log(this.ipfsClient);
   }
 
   public createData(param: UploadParameter): Observable<ProximaxDataModel> {
@@ -20,6 +38,7 @@ export class CreateProximaxDataService {
     // console.log('Add data to ipfs')
     // console.log(param.data);
 
+    // auto detect content type
     let contentType = param.data.contentType;
     if (
       (contentType === undefined ||
@@ -33,24 +52,47 @@ export class CreateProximaxDataService {
       console.log(contentType);
     }
 
-    return this.ipfsClient
-      .addStream(param.data.byteStreams, param.data.options)
-      .pipe(
-        map(hash => {
-          // TODO : need to calculate the digest
-          const digest = '';
-          const dataHash = hash;
+    // encrypt data
+    const encryptedData = param.privacyStrategy.encrypt(param.data.byteStreams);
 
-          return new ProximaxDataModel(
-            dataHash,
-            digest,
-            param.data.description,
-            contentType,
-            param.data.metadata,
-            param.data.name,
-            Date.now()
-          );
-        })
-      );
+    // calculate digest
+    let digestHash = '';
+    if (param.computeDigest) {
+      digestHash = DigestUtils.computeDigest(encryptedData);
+    }
+
+    return this.fileUploadService.uploadStream(encryptedData, param.data.options).pipe(
+      map(fur => {
+        const digest = digestHash;
+
+        return new ProximaxDataModel(
+          fur.hash,
+          digest,
+          param.data.description,
+          contentType,
+          param.data.metadata,
+          param.data.name,
+          fur.timestamp
+        );
+      })
+    );
+
+    /*
+    return this.ipfsClient.addStream(encryptedData, param.data.options).pipe(
+      map(hash => {
+        const digest = digestHash;
+        const dataHash = hash;
+
+        return new ProximaxDataModel(
+          dataHash,
+          digest,
+          param.data.description,
+          contentType,
+          param.data.metadata,
+          param.data.name,
+          Date.now()
+        );
+      })
+    );*/
   }
 }

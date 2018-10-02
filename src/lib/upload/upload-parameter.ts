@@ -15,7 +15,7 @@
  */
 
 import { SchemaVersion } from '../config/config';
-import { PrivacyType } from '../privacy/privacy-type';
+import { PrivacyStrategy } from '../privacy/privacy';
 import { UploadParameterData } from './upload-parameter-data';
 
 /**
@@ -27,10 +27,11 @@ export class UploadParameter {
     public signerPrivateKey: string,
     public recipientPublicKey: string,
     public recipientAddress: string,
-    public privacyStrategy: PrivacyType,
+    public privacyStrategy: PrivacyStrategy,
     public transactionDeadline: number,
     public useBlockhainSecureMessage: boolean,
     public detectContentType: boolean,
+    public computeDigest: boolean,
     public version?: string
   ) {
     if (!this.version) {

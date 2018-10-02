@@ -1,3 +1,4 @@
+import { expect } from 'chai';
 import 'mocha';
 import { SchemaVersion } from '../config/config';
 import {
@@ -11,7 +12,8 @@ import { ConnectionConfig } from '../connection/connection-config';
 import { IpfsConnection } from '../connection/ipfs-connection';
 import { Protocol } from '../connection/protocol';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
-import { PrivacyType } from '../privacy/privacy-type';
+
+import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
 import { UploadParameter } from './upload-parameter';
 import { UploadParameterData } from './upload-parameter-data';
 import { Uploader } from './uploader';
@@ -43,9 +45,10 @@ describe('Uploader', () => {
       SenderAccount.privateKey,
       RecipientAccount.publicKey,
       RecipientAccount.address,
-      PrivacyType.PLAIN,
+      PlainPrivacyStrategy.create(),
       1,
       false,
+      true,
       true,
       SchemaVersion
     );
@@ -53,7 +56,8 @@ describe('Uploader', () => {
     const uploader = new Uploader(connectionConfig);
     await uploader.upload(param).then(response => {
       console.log(response);
+      expect(response.transactionHash.length > 0).to.be.true;
+      expect(response.data.dataHash.length > 0).to.be.true;
     });
-    // const uploadParam = new UploadParameter()
   });
 });

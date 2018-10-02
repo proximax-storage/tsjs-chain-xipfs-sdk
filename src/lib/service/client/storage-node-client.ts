@@ -6,13 +6,15 @@ export class StorageNodeClient implements FileRepository {
     console.log(storageConnection);
   }
 
-  public addStream(data: any): Observable<string> {
+  public addStream(data: any, options?: object): Observable<string> {
     console.log(data);
+    console.log(options);
     throw new Error('Method not implemented.');
   }
 
-  public getStream(dataHash: string): Observable<any> {
+  public getStream(dataHash: string, options?: object): Observable<any> {
     console.log(dataHash);
+    console.log(options);
     throw new Error('Method not implemented.');
   }
 }

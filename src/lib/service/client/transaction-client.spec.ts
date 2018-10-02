@@ -56,7 +56,7 @@ describe('TransactionClient', () => {
     const signedTransaction = signerAccount.sign(transferTransaction);
 
     await client.announce(signedTransaction).subscribe(trxHash => {
-      console.log('Transaction hash ' + trxHash);
+      // console.log('Transaction hash ' + trxHash);
       expect(trxHash).to.be.not.equal(undefined);
     });
   });

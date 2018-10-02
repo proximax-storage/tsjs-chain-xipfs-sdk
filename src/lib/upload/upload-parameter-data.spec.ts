@@ -25,7 +25,7 @@ describe('UploadParameterData', () => {
         'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHCpwe3i9Ac1TujbVoW4Zi8P4lFTrPOYMD60yBqM7YgTAopA3vS20GGThYZpDm12';
       const metadata = new Map<string, string>();
       metadata.set('Author', 'Proximax');
-      new UploadParameterData(name, '', '', metadata);
+      new UploadParameterData(name, 'test', 'test', metadata);
     }).to.throw();
   });
 
@@ -35,7 +35,7 @@ describe('UploadParameterData', () => {
         'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHCpwe3i9Ac1TujbVoW4Zi8P4lFTrPOYMD60yBqM7YgTAopA3vS20GGThYZpDm12';
       const metadata = new Map<string, string>();
       metadata.set('Author', 'Proximax');
-      new UploadParameterData('', description, '', metadata);
+      new UploadParameterData('Test', description, 'text/plain', metadata);
     }).to.throw();
   });
 
@@ -44,7 +44,7 @@ describe('UploadParameterData', () => {
       const contentType = 'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHC';
       const metadata = new Map<string, string>();
       metadata.set('Author', 'Proximax');
-      new UploadParameterData('', '', contentType, metadata);
+      new UploadParameterData('Testing', 'Description', contentType, metadata);
     }).to.throw();
   });
 
@@ -60,6 +60,7 @@ describe('UploadParameterData', () => {
       contentType,
       metadata
     );
+    // console.log(uploadParameterData);
     expect(uploadParameterData).to.be.a.instanceof(UploadParameterData);
   });
 });

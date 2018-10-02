@@ -23,7 +23,11 @@ export class ConnectionConfig {
     blockchainNetworkConnection: BlockchainNetworkConnection,
     ifpsConnection: IpfsConnection
   ): ConnectionConfig {
-    return new ConnectionConfig(blockchainNetworkConnection, ifpsConnection);
+    return new ConnectionConfig(
+      blockchainNetworkConnection,
+      ifpsConnection,
+      undefined
+    );
   }
 
   public static createWithStorageConnection(

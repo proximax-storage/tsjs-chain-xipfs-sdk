@@ -53,17 +53,17 @@ export class UploadParameterData {
      */
     public options?: object
   ) {
+    if (this.name.length > this.MAX_NAME_LENGTH) {
+      throw new Error(
+        'name cannot be more than ' + this.MAX_NAME_LENGTH + ' characters'
+      );
+    }
+
     if (this.description.length > this.MAX_DESCRIPTION_LENGTH) {
       throw new Error(
         'description cannot be more than ' +
           this.MAX_DESCRIPTION_LENGTH +
           ' characters'
-      );
-    }
-
-    if (this.name.length > this.MAX_NAME_LENGTH) {
-      throw new Error(
-        'name cannot be more than ' + this.MAX_NAME_LENGTH + ' characters'
       );
     }
 
@@ -81,15 +81,6 @@ export class UploadParameterData {
           this.MAX_METADATA_JSON_LENGTH +
           ' characters'
       );
-    }
-  }
-
-  /**
-   * Validates the upload parameter data
-   */
-  public validate(): void {
-    if (!this.byteStreams) {
-      throw new Error('The content stream is required');
     }
   }
 }

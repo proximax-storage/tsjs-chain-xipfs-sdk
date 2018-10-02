@@ -24,7 +24,7 @@ import { UploadResult } from './upload-result';
 describe('UploadResult', () => {
   it('should create upload result', () => {
     const uploadResult = UploadResult.create(
-      '',
+      'test',
       PrivacyType.PLAIN,
       SchemaVersion,
       new ProximaxDataModel('qmsc')

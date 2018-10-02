@@ -16,7 +16,7 @@
 
 import { expect } from 'chai';
 import 'mocha';
-import { PrivacyType } from '../privacy/privacy-type';
+import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
 import { UploadParameter } from './upload-parameter';
 import { UploadParameterData } from './upload-parameter-data';
 
@@ -37,13 +37,14 @@ describe('UploadParameter', () => {
 
     const uploadParameter = new UploadParameter(
       uploadParameterData,
-      '',
-      '',
-      '',
-      PrivacyType.PLAIN,
+      'test',
+      'test',
+      'test',
+      PlainPrivacyStrategy.create(),
       1,
       false,
-      false
+      false,
+      true
     );
     expect(uploadParameter).to.be.a.instanceof(UploadParameter);
   });

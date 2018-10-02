@@ -59,10 +59,15 @@ export class IpfsClient implements FileRepository {
    * Gets stream from ipfs storage by datahash
    * @param hash the data hash
    */
-  public getStream(hash: string): Observable<any> {
+  public getStream(hash: string, options?: object): Observable<any> {
     if (!hash) {
       throw new Error('hash is required');
     }
+    
+    if(options) {
+      console.log(options);
+    }
+    
 
     return from<IpfsContent>(this.connection.getIpfs().files.get(hash));
   }

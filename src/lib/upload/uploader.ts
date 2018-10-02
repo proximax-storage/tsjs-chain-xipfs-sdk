@@ -45,6 +45,10 @@ export class Uploader {
     console.log(this.createProximaxDataService);
   }
 
+  /**
+   * Upload data to Proximax platform
+   * @param param the upload parameter
+   */
   public upload(param: UploadParameter): Promise<UploadResult> {
     return this.doUpload(param).toPromise();
   }
@@ -105,7 +109,7 @@ export class Uploader {
     data: ProximaxDataModel
   ): Observable<ProximaxMessagePayloadModel> {
     const messagePayload = new ProximaxMessagePayloadModel(
-      param.privacyStrategy,
+      param.privacyStrategy.getPrivacyType(),
       data,
       param.version!
     );

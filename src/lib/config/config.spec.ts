@@ -13,11 +13,11 @@ export const BlockchainInfo = {
 };
 
 export const StorageInfo = {
-  address: '',
+  address: 'SAVQU4LEDFRBXNPJ5UQJOGFWAC7K72QF3RIJSEJG',
   apiHost: BaseHost,
   apiPort: 3000,
   apiProtocol: 'http',
-  bearerToken: ''
+  bearerToken: 'ZZZZZ'
 };
 
 export const SenderAccount = {

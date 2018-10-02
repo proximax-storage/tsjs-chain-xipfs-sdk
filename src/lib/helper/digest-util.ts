@@ -6,4 +6,10 @@ export class DigestUtils {
     console.log(digest);
     return of(true);
   }
+
+  public static computeDigest(data: any): string {
+    const CryptoJS = require('crypto-js');
+    const hashDigest = CryptoJS.SHA256(data);
+    return hashDigest.toString(CryptoJS.enc.Hex);
+  }
 }
