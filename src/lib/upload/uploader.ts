@@ -42,7 +42,6 @@ export class Uploader {
     this.createProximaxDataService = new CreateProximaxDataService(
       connectionConfig
     );
-    console.log(this.createProximaxDataService);
   }
 
   /**

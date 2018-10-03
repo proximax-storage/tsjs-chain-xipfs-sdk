@@ -30,7 +30,7 @@ export class FileRepositoryFactory {
     if (connectionConfig.ifpsConnection !== undefined) {
       return new IpfsClient(connectionConfig.ifpsConnection!);
     } else {
-      console.log('####');
+      // console.log('####');
       return new StorageNodeClient(connectionConfig.storageConnection!);
     }
   }

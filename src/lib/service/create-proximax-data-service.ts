@@ -35,9 +35,6 @@ export class CreateProximaxDataService {
       throw new Error('upload parameter is required');
     }
 
-    // console.log('Add data to ipfs')
-    // console.log(param.data);
-
     // auto detect content type
     let contentType = param.data.contentType;
     if (
@@ -48,7 +45,13 @@ export class CreateProximaxDataService {
     ) {
       const fileType = require('file-type');
 
-      contentType = fileType(Buffer.from(param.data.byteStreams)).mime;
+      const mimeType = fileType(param.data.byteStreams);
+
+      contentType =
+        mimeType === null || mimeType === undefined
+          ? 'text/plain'
+          : mimeType.mime;
+
       console.log(contentType);
     }
 
@@ -78,23 +81,5 @@ export class CreateProximaxDataService {
           );
         })
       );
-
-    /*
-    return this.ipfsClient.addStream(encryptedData, param.data.options).pipe(
-      map(hash => {
-        const digest = digestHash;
-        const dataHash = hash;
-
-        return new ProximaxDataModel(
-          dataHash,
-          digest,
-          param.data.description,
-          contentType,
-          param.data.metadata,
-          param.data.name,
-          Date.now()
-        );
-      })
-    );*/
   }
 }
