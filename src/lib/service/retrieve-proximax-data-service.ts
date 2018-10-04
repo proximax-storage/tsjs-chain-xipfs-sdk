@@ -1,7 +1,9 @@
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+
 import { ConnectionConfig } from '../connection/connection-config';
 import { DigestUtils } from '../helper/digest-util';
+import { IpfsContent } from '../model/ipfs/ipfs-content';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { FileRepositoryFactory } from './factory/file-repository-factory';
 import { FileRepository } from './repository/file-repository';
@@ -20,7 +22,7 @@ export class RetrieveProximaxDataService {
     validateDigest: boolean,
     digest: string,
     contentType: string
-  ): Observable<any> {
+  ): Observable<IpfsContent[]> {
     if (datahash === null) {
       throw new Error('dataHash is required');
     }

@@ -1,4 +1,4 @@
-export const BaseHost = '192.168.0.3';
+export const BaseHost = '192.168.0.6';
 
 export const IpfsInfo = {
   multiaddress: BaseHost,

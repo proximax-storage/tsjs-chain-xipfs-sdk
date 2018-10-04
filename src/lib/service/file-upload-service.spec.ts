@@ -21,9 +21,11 @@ describe('FileUploadService', () => {
     );
 
     const fileRepo = new FileUploadService(connectionConfig);
-    await fileRepo.uploadStream('Proximax P2P test').subscribe(hash => {
+    await fileRepo.uploadStream('Proximax P2P test').subscribe(fileResponse => {
       // console.log(hash);
-      expect(hash).to.be.equal('QmTjC5q7fFkUh4spfXjzfahWVfkLMLcnsbnQ7ZhZwCNfq6');
+      expect(fileResponse.hash).to.be.equal(
+        'QmTjC5q7fFkUh4spfXjzfahWVfkLMLcnsbnQ7ZhZwCNfq6'
+      );
     });
   });
 });

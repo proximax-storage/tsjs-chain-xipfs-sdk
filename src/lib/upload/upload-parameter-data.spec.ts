@@ -22,7 +22,7 @@ describe('UploadParameterData', () => {
   it('should throw error if the upload parameter data name length more than 100 characters', () => {
     expect(() => {
       const name =
-        'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHCpwe3i9Ac1TujbVoW4Zi8P4lFTrPOYMD60yBqM7YgTAopA3vS20GGThYZpDm12';
+        'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHCpwe3i9Ac1TujbVoW4Zi8P4lFTrPOYMD60yBqM7YgTAopA3vS20GGThYZpDm126464';
       const metadata = new Map<string, string>();
       metadata.set('Author', 'Proximax');
       new UploadParameterData(name, 'test', 'test', metadata);

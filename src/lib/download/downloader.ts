@@ -5,7 +5,7 @@ import { ConnectionConfig } from '../connection/connection-config';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { BlockchainTransactionService } from '../service/blockchain-transaction-service';
-import { RetrieveProximaxDataService } from '../service/retrieve-proximax.data-service';
+import { RetrieveProximaxDataService } from '../service/retrieve-proximax-data-service';
 import { DownloadParameter } from './download-parameter';
 import { DownloadResult } from './download-result';
 import { DownloadResultData } from './download-result-data';
