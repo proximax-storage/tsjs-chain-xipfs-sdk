@@ -40,6 +40,7 @@ describe('Uploader', () => {
       metadata,
       byteStream
     );
+
     const param = new UploadParameter(
       paramData,
       SenderAccount.privateKey,
@@ -55,7 +56,7 @@ describe('Uploader', () => {
 
     const uploader = new Uploader(connectionConfig);
     await uploader.upload(param).then(response => {
-      // console.log(response);
+      console.log(response);
       expect(response.transactionHash.length > 0).to.be.true;
       expect(response.data.dataHash.length > 0).to.be.true;
     });

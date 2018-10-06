@@ -51,5 +51,9 @@ export class DownloadResultData {
      * The content metadata
      */
     public metadata?: Map<string, string>
-  ) {}
+  ) {
+    if (this.dataHash === null || this.dataHash.length <= 0) {
+      throw new Error('Datahash is required');
+    }
+  }
 }

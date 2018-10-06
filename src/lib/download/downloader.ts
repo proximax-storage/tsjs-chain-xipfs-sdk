@@ -1,6 +1,6 @@
 import { TransferTransaction } from 'nem2-sdk';
 import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { ConnectionConfig } from '../connection/connection-config';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { PrivacyStrategy } from '../privacy/privacy';
@@ -9,6 +9,23 @@ import { RetrieveProximaxDataService } from '../service/retrieve-proximax-data-s
 import { DownloadParameter } from './download-parameter';
 import { DownloadResult } from './download-result';
 import { DownloadResultData } from './download-result-data';
+
+/*
+ * Copyright 2018 ProximaX Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 export class Downloader {
   private blockchainTransactionService: BlockchainTransactionService;
   private retrieveProximaxDataService: RetrieveProximaxDataService;
@@ -36,22 +53,24 @@ export class Downloader {
             param.accountPrivateKey!
           );
         }),
-        map(messagePayload =>
-          this.createCompleteDownloadResult(
-            messagePayload,
-            () => {
-              this.getStream(
-                '',
-                param.privacyStrategy!,
-                param.validateDigest!,
-                '',
-                messagePayload
+        switchMap(messagePayload => {
+          return this.getStream(
+            messagePayload.data.dataHash,
+            param.privacyStrategy!,
+            param.validateDigest!,
+            messagePayload.data.digest!,
+            messagePayload
+          ).pipe(
+            map(contents => {
+              const bytes = contents[0].content;
+              return this.createCompleteDownloadResult(
+                messagePayload,
+                bytes,
+                param.transactionHash
               );
-            },
-            param.transactionHash
-          )
-        ),
-        first()
+            })
+          );
+        })
       );
 
     return downloadResult$;
@@ -146,6 +165,7 @@ export class Downloader {
       resolvedDigest = messagePayload.data.digest!;
       resolvedContentType = messagePayload.data.contentType;
     }
+
     return this.retrieveProximaxDataService.getStream(
       resolvedDataHash,
       privacyStrategy,
