@@ -33,7 +33,7 @@ describe('TransactionClient', () => {
   it('should announce transaction to blockchain network', async () => {
     const message = 'Test announce transaction';
 
-    const networkType = Converter.getNemNetworkType(connection.network);
+    const networkType = Converter.getNemNetworkType(connection.networkType);
 
     const signerAccount = Account.createFromPrivateKey(
       SenderAccount.privateKey,

@@ -1,5 +1,6 @@
 // import { crypto } from 'nem2-library';
 import * as nemSDK from 'nem-sdk';
+
 import * as utf8 from 'utf8';
 
 export class CryptoHelper {

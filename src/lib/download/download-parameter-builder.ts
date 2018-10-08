@@ -1,3 +1,4 @@
+import { convert, KeyPair } from 'xpx2-library';
 import { Converter } from '../helper/converter';
 import { PasswordPrivacyStrategy } from '../privacy/password-privacy';
 import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
@@ -7,6 +8,7 @@ import { DownloadParameter } from './download-parameter';
 export class DownloadParameterBuilder {
   private transactionHash;
   private accountPrivateKey;
+  private accountPublicKey;
   private privacyStrategy;
   private validateDigest;
 
@@ -30,6 +32,13 @@ export class DownloadParameterBuilder {
     }
 
     this.accountPrivateKey = accountPrivateKey;
+
+    // create account public key
+    const accountKeyPair: PKeyPair = KeyPair.createKeyPairFromPrivateKeyString(
+      accountPrivateKey
+    );
+    this.accountPublicKey = convert.uint8ToHex(accountKeyPair.publicKey);
+
     return this;
   }
 
@@ -67,6 +76,7 @@ export class DownloadParameterBuilder {
     return new DownloadParameter(
       this.transactionHash,
       this.accountPrivateKey,
+      this.accountPublicKey,
       this.privacyStrategy,
       this.validateDigest
     );

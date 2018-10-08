@@ -16,6 +16,7 @@
 
 import { expect } from 'chai';
 import 'mocha';
+import { NetworkType, PublicAccount } from 'nem2-sdk';
 import { RecipientAccount, SenderAccount } from '../../config/config.spec';
 import { SecureMessage } from './secure-message';
 
@@ -34,25 +35,27 @@ describe('SecureMessage', () => {
 
   it('should create SecureMessage and convert to Plain Message', () => {
     const message = 'Proximax P2P storage';
-    const securedMessage = SecureMessage.encrypt(
+    const recipientPublicAccount = PublicAccount.createFromPublicKey(
+      RecipientAccount.publicKey,
+      NetworkType.MIJIN_TEST
+    );
+
+    const encryptedMessage = SecureMessage.encrypt(
       message,
       SenderAccount.privateKey,
-      RecipientAccount.publicKey
+      recipientPublicAccount.publicKey
     );
-    expect(securedMessage.type).to.be.equal(2);
-    expect(securedMessage.payload).to.be.not.equal(message);
-    // console.log('Encrypte ms: ' + securedMessage.payload);
+    // console.log(encryptedMessage);
+    expect(encryptedMessage.type).to.be.equal(2);
+    expect(encryptedMessage.payload).to.be.not.equal(message);
+
     const plainMessage = SecureMessage.decrypt(
-      securedMessage.payload,
-      SenderAccount.privateKey,
-      RecipientAccount.publicKey
+      encryptedMessage.payload,
+      RecipientAccount.privateKey,
+      recipientPublicAccount.publicKey
     );
-
-    // console.log('decrypt ms: ' + plainMessage.payload);
-
-    // const expectedPlainMessage = PlainMessage.create(message);
-
-    // console.log(expectedPlainMessage.payload);
     expect(plainMessage.payload).to.be.equal(message);
+    // console.log(plainMessage);
+    // console.log(plainMessage.payload);
   });
 });

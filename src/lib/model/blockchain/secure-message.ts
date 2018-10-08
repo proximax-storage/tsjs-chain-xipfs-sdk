@@ -1,4 +1,4 @@
-import { PlainMessage } from 'nem2-sdk';
+import { Message, PlainMessage } from 'nem2-sdk';
 import { decode } from 'utf8';
 import { crypto } from 'xpx2-library';
 /*
@@ -20,7 +20,7 @@ import { crypto } from 'xpx2-library';
 /**
  * Class represents secure message
  */
-export class SecureMessage {
+export class SecureMessage extends Message {
   /**
    * Encrypts the message
    * @param message the message to be secured
@@ -29,12 +29,16 @@ export class SecureMessage {
    */
   public static encrypt(
     message: string,
-    privateKey: string,
-    publicKey: string
+    senderPrivateKey: string,
+    recipientPublicKey: string
   ): SecureMessage {
-    const encryptedMessage = crypto.encode(privateKey, publicKey, message);
+    const payload = crypto.encode(
+      senderPrivateKey,
+      recipientPublicKey,
+      message
+    );
 
-    return new SecureMessage(2, encryptedMessage);
+    return new SecureMessage(2, payload);
   }
 
   /**
@@ -44,15 +48,15 @@ export class SecureMessage {
    * @param publicKey the public key
    */
   public static decrypt(
-    message: string,
+    encryptedMessage: string,
     privateKey: string,
-    publicKey: string
+    recipientPublicKey: string
   ): PlainMessage {
-    const decryptedMessage = SecureMessage.decodeHex(
-      crypto.decode(privateKey, publicKey, message)
+    return PlainMessage.create(
+      this.decodeHex(
+        crypto.decode(privateKey, recipientPublicKey, encryptedMessage)
+      )
     );
-
-    return PlainMessage.create(decryptedMessage);
   }
 
   private static decodeHex(hex: string): string {
@@ -71,8 +75,7 @@ export class SecureMessage {
    * @param type the secure message type
    * @param payload the message payload
    */
-  private constructor(
-    public readonly type: number,
-    public readonly payload: string
-  ) {}
+  private constructor(public type: number, public payload: string) {
+    super();
+  }
 }

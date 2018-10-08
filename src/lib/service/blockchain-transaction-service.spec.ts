@@ -59,7 +59,7 @@ describe('BlockchainTransactionService', () => {
     await transactionService
       .getTransferTransaction(SampleTransactionHash)
       .subscribe(transferedTransaction => {
-        // console.log(transferedTransaction);
+        console.log(transferedTransaction);
         expect(transferedTransaction.type === TransactionType.TRANSFER).to.be
           .true;
       });

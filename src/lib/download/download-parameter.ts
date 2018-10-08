@@ -35,6 +35,10 @@ export class DownloadParameter {
      */
     public accountPrivateKey?: string,
     /**
+     * The sender or recipient account public key
+     */
+    public accountPublicKey?: string,
+    /**
      * The privacy strategy
      */
     public privacyStrategy?: PrivacyStrategy,

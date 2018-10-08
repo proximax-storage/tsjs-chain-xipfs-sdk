@@ -48,7 +48,7 @@ export class BlockchainTransactionService {
   constructor(connection: BlockchainNetworkConnection) {
     this.connection = connection;
     this.client = new TransactionClient(connection);
-    this.networkType = Converter.getNemNetworkType(this.connection.network);
+    this.networkType = Converter.getNemNetworkType(this.connection.networkType);
   }
 
   /**
@@ -77,9 +77,11 @@ export class BlockchainTransactionService {
     }
 
     const jsonPayload = JSON.stringify(payload);
+
     const message = useBlockchainSecureMessage
       ? SecureMessage.encrypt(jsonPayload, signerPrivateKey, recipientPublicKey)
       : PlainMessage.create(jsonPayload);
+
     // const networkType = this.getNemNetworkType(this.connection.network);
 
     const signerAccount = Account.createFromPrivateKey(
@@ -103,6 +105,9 @@ export class BlockchainTransactionService {
       message,
       this.networkType
     );
+
+    console.log('Tranfer transaction ..');
+    console.log(transferTransaction.message);
 
     const signedTransaction = signerAccount.sign(transferTransaction);
     /*

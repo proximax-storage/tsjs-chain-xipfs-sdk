@@ -1,6 +1,10 @@
 import { expect } from 'chai';
 import 'mocha';
-import { BlockchainInfo, IpfsInfo } from '../config/config.spec';
+import {
+  BlockchainInfo,
+  IpfsInfo,
+  RecipientAccount
+} from '../config/config.spec';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { ConnectionConfig } from '../connection/connection-config';
 import { IpfsConnection } from '../connection/ipfs-connection';
@@ -11,7 +15,7 @@ import { DownloadParameter } from './download-parameter';
 import { Downloader } from './downloader';
 
 describe('Downloader', () => {
-  it('should download content based on transaction hash', async () => {
+  /* it('should download content based on transaction hash', async () => {
     const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
       new BlockchainNetworkConnection(
         BlockchainNetworkType.MIJIN_TEST,
@@ -30,6 +34,40 @@ describe('Downloader', () => {
     const downloader = new Downloader(connectionConfig);
 
     const paramBuilder = DownloadParameter.create(transactionHash);
+    paramBuilder.withPlainPrivacy();
+    const param = paramBuilder.build();
+
+    await downloader.download(param).then(response => {
+      // console.log(response);
+
+      const data = response.data.bytes;
+      // console.log(data);
+      const actual = Converter.ab2str(data);
+      // console.log(actual);
+      expect(actual).to.be.equal(expectedText);
+    });
+  });*/
+
+  it('should download content based on transaction hash with secure message', async () => {
+    const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
+      new BlockchainNetworkConnection(
+        BlockchainNetworkType.MIJIN_TEST,
+        BlockchainInfo.apiHost,
+        BlockchainInfo.apiPort,
+        Protocol.HTTP
+      ),
+      new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
+    );
+
+    const transactionHash =
+      '467F757122D883881BC8EA0213287C6476C6593CBC79B43AF4170A4657F7211E';
+
+    const expectedText = 'Proximax P2P Uploader test';
+
+    const downloader = new Downloader(connectionConfig);
+
+    const paramBuilder = DownloadParameter.create(transactionHash);
+    paramBuilder.withAccountPrivateKey(RecipientAccount.privateKey);
     paramBuilder.withPlainPrivacy();
     const param = paramBuilder.build();
 
