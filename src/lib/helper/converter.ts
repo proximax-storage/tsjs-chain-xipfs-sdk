@@ -46,17 +46,34 @@ export class Converter {
     return result;
   }
 
-  public static ab2str(buf) {
-    return String.fromCharCode.apply(null, new Uint16Array(buf));
+  /**
+   * Converts ArrayBuffer to string (supports UTF-8 only)
+   * @param buf the ArrayBuffer
+   */
+  public static ab2str(buf: ArrayBuffer): string {
+    return String.fromCharCode.apply(null, new Uint8Array(buf));
   }
 
-  public static str2ab(str) {
-    const buf = new ArrayBuffer(str.length * 2);
-    const bufView = new Uint16Array(buf);
+  /**
+   * Converts string to ArrayBuffer (supports UTF-8 only)
+   * @param str the string
+   */
+  public static str2ab(str: string): ArrayBuffer {
+    const buf = new ArrayBuffer(str.length);
+    const bufView = new Uint8Array(buf);
     for (let i = 0, strLen = str.length; i < strLen; i++) {
       bufView[i] = str.charCodeAt(i);
     }
     return buf;
+  }
+
+  /**
+   * Converts Buffer to ArrayBuffe
+   * @param buf the ArrayBuffer
+   */
+  public static b2ab(buf: Buffer): ArrayBuffer {
+    // @ts-ignore
+    return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
   }
 
   public static isHex(h: string) {
