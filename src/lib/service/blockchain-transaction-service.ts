@@ -20,15 +20,15 @@ import {
   Deadline,
   NetworkType,
   PlainMessage,
+  SecureMessage,
   TransactionType,
   TransferTransaction,
   XEM
-} from 'nem2-sdk';
+} from '@thomas.tran/nem2-sdk';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { Converter } from '../helper/converter';
-import { SecureMessage } from '../model/blockchain/secure-message';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { TransactionClient } from './client/transaction-client';
 
@@ -77,11 +77,12 @@ export class BlockchainTransactionService {
     }
 
     const jsonPayload = JSON.stringify(payload);
-
+    console.log(' recipientPublicKey ' + recipientPublicKey);
+    console.log(' signerPrivateKey ' + signerPrivateKey);
     const message = useBlockchainSecureMessage
-      ? SecureMessage.encrypt(jsonPayload, signerPrivateKey, recipientPublicKey)
+      ? SecureMessage.create(jsonPayload, recipientPublicKey, signerPrivateKey)
       : PlainMessage.create(jsonPayload);
-
+    console.log(message);
     // const networkType = this.getNemNetworkType(this.connection.network);
 
     const signerAccount = Account.createFromPrivateKey(
@@ -97,6 +98,7 @@ export class BlockchainTransactionService {
 
     // TODO: Refactor when levy implement in blockchain
     const mosaic = XEM.createRelative(1);
+    console.log('deadline ' + transactionDeadline);
 
     const transferTransaction = TransferTransaction.create(
       Deadline.create(transactionDeadline),

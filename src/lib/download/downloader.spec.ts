@@ -60,9 +60,9 @@ describe('Downloader', () => {
     );
 
     const transactionHash =
-      '467F757122D883881BC8EA0213287C6476C6593CBC79B43AF4170A4657F7211E';
+      '9DEA81D597D4E00CEE740202711CB193A1DD7BD836CFA5CF91174CAC76645913';
 
-    const expectedText = 'Proximax P2P Uploader test';
+    const expectedText = 'Proximax P2P Uploader with secured message';
 
     const downloader = new Downloader(connectionConfig);
 

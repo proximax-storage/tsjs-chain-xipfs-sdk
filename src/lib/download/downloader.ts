@@ -1,8 +1,8 @@
-import { TransferTransaction } from 'nem2-sdk';
+import { SecureMessage, TransferTransaction } from '@thomas.tran/nem2-sdk';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { ConnectionConfig } from '../connection/connection-config';
-import { SecureMessage } from '../model/blockchain/secure-message';
+import { Converter } from '../helper/converter';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { BlockchainTransactionService } from '../service/blockchain-transaction-service';
@@ -143,15 +143,17 @@ export class Downloader {
     accountPublicKey: string
   ): ProximaxMessagePayloadModel {
     let messagePayloadModel: ProximaxMessagePayloadModel;
+    console.log('accountPrivateKey ' + accountPrivateKey);
+    console.log('accountPublicKey ' + accountPublicKey);
 
-    const payload = transferTransaction.message.payload;
-    // console.log('transferTransaction ...');
-    // console.log(transferTransaction);
-    if (transferTransaction.type === 2) {
+    const payload = Converter.decodeHex(transferTransaction.message.payload);
+    console.log('transferTransaction ...');
+    console.log(transferTransaction);
+    if (transferTransaction.message.type === 2) {
       const payloadDecoded = SecureMessage.decrypt(
         payload,
-        accountPrivateKey,
-        accountPublicKey
+        accountPublicKey,
+        accountPrivateKey
       );
       console.log('decrypt message');
       console.log(payloadDecoded);
@@ -162,29 +164,6 @@ export class Downloader {
     }
 
     return messagePayloadModel;
-    /* // TODO: handle secure message
-    // console.log(accountPrivateKey);
-    // console.log(accountPublicKey);
-    let payload = transferTransaction.message.payload;
-    console.log('payload ..');
-    console.log(payload);
-
-    if (transferTransaction.message.type === 2 && accountPrivateKey !== null) {
-      const payloadDecoded = SecureMessage.decrypt(
-        payload,
-        accountPrivateKey,
-        accountPublicKey
-      );
-      console.log('decrypt message');
-      console.log(payloadDecoded);
-      payload = payloadDecoded.payload;
-    }
-
-    const messagePayloadModel: ProximaxMessagePayloadModel = JSON.parse(
-      payload
-    );
-
-    return messagePayloadModel;*/
   }
 
   private getStream(

@@ -19,7 +19,7 @@ import {
   SignedTransaction,
   Transaction,
   TransactionHttp
-} from 'nem2-sdk';
+} from '@thomas.tran/nem2-sdk';
 import { merge, Observable } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
 import { BlockchainNetworkConnection } from '../../connection/blockchain-network-connection';

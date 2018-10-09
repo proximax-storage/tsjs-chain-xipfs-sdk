@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { NetworkType } from 'nem2-sdk';
+import { NetworkType } from '@thomas.tran/nem2-sdk';
 
 /**
  * Enumerations blockchain network type

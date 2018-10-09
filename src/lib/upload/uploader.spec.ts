@@ -92,7 +92,7 @@ describe('Uploader', () => {
       RecipientAccount.publicKey,
       RecipientAccount.address,
       PlainPrivacyStrategy.create(),
-      1,
+      2,
       true,
       true,
       true,
