@@ -93,8 +93,6 @@ describe('BrowserPBECipherEncryptor', () => {
     const encryptor = new BrowserPBECipherEncryptor(password, crypto);
     const cipherText = await encryptor.encrypt(Converter.str2ab(plainText));
 
-    console.log(new Uint8Array(cipherText));
-    console.log(expected);
     expect(new Uint8Array(cipherText)).to.be.eql(expected);
   });
 
