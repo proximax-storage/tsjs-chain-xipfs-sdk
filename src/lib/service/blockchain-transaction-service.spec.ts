@@ -11,8 +11,8 @@ import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-ty
 import { ProximaxDataModel } from '../model/proximax/data-model';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 
+import { TransactionType } from '@thomas.tran/nem2-sdk';
 import { expect } from 'chai';
-import { TransactionType } from 'nem2-sdk';
 // import { TransactionClient } from './client/transaction-client';
 import { Protocol } from '../connection/protocol';
 import { PrivacyType } from '../privacy/privacy-type';

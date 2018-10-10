@@ -1,7 +1,8 @@
-import { TransferTransaction } from 'nem2-sdk';
+import { SecureMessage, TransferTransaction } from '@thomas.tran/nem2-sdk';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { ConnectionConfig } from '../connection/connection-config';
+import { Converter } from '../helper/converter';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { BlockchainTransactionService } from '../service/blockchain-transaction-service';
@@ -50,7 +51,8 @@ export class Downloader {
         map(transferedTransaction => {
           return this.getMessagePayload(
             transferedTransaction,
-            param.accountPrivateKey!
+            param.accountPrivateKey!,
+            param.accountPublicKey!
           );
         }),
         switchMap(messagePayload => {
@@ -135,16 +137,31 @@ export class Downloader {
    * @param transferTransaction the transfer transaction
    * @param accountPrivateKey the account private key
    */
-  private getMessagePayload(
+  public getMessagePayload(
     transferTransaction: TransferTransaction,
-    accountPrivateKey: string
+    accountPrivateKey: string,
+    accountPublicKey: string
   ): ProximaxMessagePayloadModel {
-    // TODO: handle secure message
-    console.log(accountPrivateKey);
-    const payload = transferTransaction.message.payload;
-    const messagePayloadModel: ProximaxMessagePayloadModel = JSON.parse(
-      payload
-    );
+    let messagePayloadModel: ProximaxMessagePayloadModel;
+    console.log('accountPrivateKey ' + accountPrivateKey);
+    console.log('accountPublicKey ' + accountPublicKey);
+
+    const payload = Converter.decodeHex(transferTransaction.message.payload);
+    console.log('transferTransaction ...');
+    console.log(transferTransaction);
+    if (transferTransaction.message.type === 2) {
+      const payloadDecoded = SecureMessage.decrypt(
+        payload,
+        accountPublicKey,
+        accountPrivateKey
+      );
+      console.log('decrypt message');
+      console.log(payloadDecoded);
+      messagePayloadModel = JSON.parse(payloadDecoded.payload);
+    } else {
+      console.log('plain message ..');
+      messagePayloadModel = JSON.parse(payload);
+    }
 
     return messagePayloadModel;
   }

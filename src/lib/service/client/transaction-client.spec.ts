@@ -1,12 +1,12 @@
-import { expect } from 'chai';
-import 'mocha';
 import {
   Account,
   Deadline,
   PlainMessage,
   TransferTransaction,
   XEM
-} from 'nem2-sdk';
+} from '@thomas.tran/nem2-sdk';
+import { expect } from 'chai';
+import 'mocha';
 import {
   BlockchainInfo,
   RecipientAccount,
@@ -33,7 +33,7 @@ describe('TransactionClient', () => {
   it('should announce transaction to blockchain network', async () => {
     const message = 'Test announce transaction';
 
-    const networkType = Converter.getNemNetworkType(connection.network);
+    const networkType = Converter.getNemNetworkType(connection.networkType);
 
     const signerAccount = Account.createFromPrivateKey(
       SenderAccount.privateKey,

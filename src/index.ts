@@ -8,7 +8,6 @@ export * from './lib/privacy/password-privacy';
 export * from './lib/privacy/nem-privacy';
 export * from './lib/connection/blockchain-network-connection';
 export * from './lib/model/blockchain/blockchain-network-type';
-export * from './lib/model/blockchain/secure-message';
 export * from './lib/download/download-parameter';
 export * from './lib/download/download-result';
 export * from './lib/download/download-result-data';
