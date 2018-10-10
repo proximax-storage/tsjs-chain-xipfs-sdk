@@ -25,12 +25,16 @@ export class BrowserPBECipherEncryptor {
   // The secret hash
   private readonly password: ArrayBuffer;
 
+  // The window crypto module
+  private readonly crypto: Crypto;
+
   /**
    * SecuredCipher constructor
    * @param password the password
    */
-  constructor(password: string) {
+  constructor(password: string, crypto?: any) {
     this.password = Converter.str2ab(password);
+    this.crypto = crypto || window.crypto;
   }
 
   /**
@@ -38,11 +42,11 @@ export class BrowserPBECipherEncryptor {
    * @param data the data to be encrypted
    */
   public async encrypt(data: ArrayBuffer): Promise<ArrayBuffer> {
-    const salt = window.crypto.getRandomValues(new Uint8Array(this.saltLength));
-    const iv = window.crypto.getRandomValues(new Uint8Array(this.ivLength));
+    const salt = this.crypto.getRandomValues(new Uint8Array(this.saltLength));
+    const iv = this.crypto.getRandomValues(new Uint8Array(this.ivLength));
 
     const key = await this.getSecretKey(salt);
-    const cipherBuffer = await window.crypto.subtle.encrypt(
+    const cipherBuffer = await this.crypto.subtle.encrypt(
       { name: 'AES-GCM', iv },
       key,
       data
@@ -76,7 +80,7 @@ export class BrowserPBECipherEncryptor {
     );
     const key = await this.getSecretKey(salt);
 
-    const decryptedCipher = await window.crypto.subtle.decrypt(
+    const decryptedCipher = await this.crypto.subtle.decrypt(
       { name: 'AES-GCM', iv },
       key,
       encryptedCipher
@@ -86,7 +90,7 @@ export class BrowserPBECipherEncryptor {
   }
 
   private async getSecretKey(salt) {
-    const baseKey = await window.crypto.subtle.importKey(
+    const baseKey = await this.crypto.subtle.importKey(
       'raw',
       this.password,
       'PBKDF2',
@@ -101,7 +105,7 @@ export class BrowserPBECipherEncryptor {
       salt
     };
 
-    const key = await window.crypto.subtle.deriveKey(
+    const key = await this.crypto.subtle.deriveKey(
       params,
       baseKey,
       { name: 'AES-GCM', length: 128 },

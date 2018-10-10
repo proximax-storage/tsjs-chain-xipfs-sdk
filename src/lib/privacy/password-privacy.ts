@@ -1,7 +1,7 @@
 import { BrowserPBECipherEncryptor } from '../cipher/browser-pbe-cipher-encryptor';
+import { NodeJsPBECipherEncryptor } from '../cipher/nodejs-pbe-cipher-encryptor';
 import { PrivacyStrategy } from './privacy';
 import { PrivacyType } from './privacy-type';
-import {NodeJsPBECipherEncryptor} from "../cipher/nodejs-pbe-cipher-encryptor";
 
 export class PasswordPrivacyStrategy implements PrivacyStrategy {
   public static create(password: string): any {
@@ -22,11 +22,9 @@ export class PasswordPrivacyStrategy implements PrivacyStrategy {
     const isBrowser =
       typeof window !== 'undefined' && typeof window.document !== 'undefined';
 
-    if (isBrowser) {
-      this.cipher = new BrowserPBECipherEncryptor(password);
-    } else {
-      this.cipher = new NodeJsPBECipherEncryptor(password);
-    }
+    this.cipher = isBrowser
+      ? new BrowserPBECipherEncryptor(password)
+      : new NodeJsPBECipherEncryptor(password);
   }
 
   public getPrivacyType(): number {

@@ -72,8 +72,10 @@ export class Converter {
    * @param buf the ArrayBuffer
    */
   public static b2ab(buf: Buffer): ArrayBuffer {
-    // @ts-ignore
-    return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+    return buf.buffer.slice(
+      buf.byteOffset,
+      buf.byteOffset + buf.byteLength
+    ) as any;
   }
 
   public static isHex(h: string) {
