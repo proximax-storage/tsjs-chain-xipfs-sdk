@@ -1,7 +1,8 @@
-import { PBECipherEncryptor } from '../cipher/pbe-cipher-encryptor';
-import { Converter } from '../helper/converter';
+import { BrowserPBECipherEncryptor } from '../cipher/browser-pbe-cipher-encryptor';
+import { NodeJsPBECipherEncryptor } from '../cipher/nodejs-pbe-cipher-encryptor';
 import { PrivacyStrategy } from './privacy';
 import { PrivacyType } from './privacy-type';
+
 export class PasswordPrivacyStrategy implements PrivacyStrategy {
   public static create(password: string): any {
     return new PasswordPrivacyStrategy(password);
@@ -21,11 +22,9 @@ export class PasswordPrivacyStrategy implements PrivacyStrategy {
     const isBrowser =
       typeof window !== 'undefined' && typeof window.document !== 'undefined';
 
-    if (isBrowser) {
-      this.cipher = new PBECipherEncryptor(Converter.str2ab(password));
-    } else {
-      throw new Error('The password privacy is not available for nodejs');
-    }
+    this.cipher = isBrowser
+      ? new BrowserPBECipherEncryptor(password)
+      : new NodeJsPBECipherEncryptor(password);
   }
 
   public getPrivacyType(): number {
