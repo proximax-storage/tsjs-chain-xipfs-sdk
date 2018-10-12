@@ -1,4 +1,4 @@
-import { crypto } from 'xpx2-library';
+import { crypto } from '@thomas.tran/nem2-library';
 import { PrivacyStrategy } from './privacy';
 import { PrivacyType } from './privacy-type';
 
@@ -15,18 +15,19 @@ export class NemPrivacyStrategy implements PrivacyStrategy {
     return PrivacyType.NEM_KEYS;
   }
 
-  public encrypt(data: any): any {
-    console.log('Encrypting' + this.privateKey + ' ' + this.publicKey);
-
-    return crypto.nemEncrypt(this.privateKey, this.publicKey, data);
-    // return from(crypto.nemEncrypt(this.privateKey, this.publicKey, data));
-
-    // return message;
+  /**
+   * Encrypts data
+   * @param data the data in
+   */
+  public encrypt(data: Uint8Array): Uint8Array {
+    return crypto.nemencrypt(this.privateKey, this.publicKey, data);
   }
 
-  public decrypt(data: any): any {
-    console.log('Decrypting');
-    return crypto.nemDecrypt(this.privateKey, this.publicKey, data);
-    // return message;
+  /**
+   * Decrypts data
+   * @param data the encrypted data
+   */
+  public decrypt(data: Uint8Array): Uint8Array {
+    return crypto.nemdecrypt(this.privateKey, this.publicKey, data);
   }
 }

@@ -58,18 +58,14 @@
     "get-random-values": "^1.2.0",
     "install": "^0.12.1",
     "ipfs-api": "^24.0.2",
-    "nem-sdk": "^1.6.7",
-    "@thomas.tran/nem2-library": "^0.9.6",
+    "@thomas.tran/nem2-library": "^0.9.8",
     "@thomas.tran/nem2-sdk": "^0.10.6",
-    "npm": "^6.4.1",
     "pull-stream": "^3.6.9",
     "rxjs": "^6.3.3",
     "text-encoding-utf-8": "^1.0.2",
-    "tweetnacl": "^1.0.0",
     "typescript-base64-arraybuffer": "^0.1.0",
     "uribuilder": "^1.0.5",
-    "utf8": "^3.0.0",
-    "xpx2-library": "^0.9.19"
+    "utf8": "^3.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.6",

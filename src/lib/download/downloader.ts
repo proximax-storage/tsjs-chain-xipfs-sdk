@@ -1,4 +1,5 @@
 import { SecureMessage, TransferTransaction } from '@thomas.tran/nem2-sdk';
+
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { ConnectionConfig } from '../connection/connection-config';
@@ -143,23 +144,23 @@ export class Downloader {
     accountPublicKey: string
   ): ProximaxMessagePayloadModel {
     let messagePayloadModel: ProximaxMessagePayloadModel;
-    console.log('accountPrivateKey ' + accountPrivateKey);
-    console.log('accountPublicKey ' + accountPublicKey);
+    // console.log('accountPrivateKey ' + accountPrivateKey);
+    // console.log('accountPublicKey ' + accountPublicKey);
 
     const payload = Converter.decodeHex(transferTransaction.message.payload);
-    console.log('transferTransaction ...');
-    console.log(transferTransaction);
+    // console.log('transferTransaction ...');
+    // console.log(transferTransaction);
     if (transferTransaction.message.type === 2) {
       const payloadDecoded = SecureMessage.decrypt(
         payload,
         accountPublicKey,
         accountPrivateKey
       );
-      console.log('decrypt message');
-      console.log(payloadDecoded);
+      // console.log('decrypt message');
+      // console.log(payloadDecoded);
       messagePayloadModel = JSON.parse(payloadDecoded.payload);
     } else {
-      console.log('plain message ..');
+      // console.log('plain message ..');
       messagePayloadModel = JSON.parse(payload);
     }
 
