@@ -24,7 +24,7 @@ import {
   TransactionType,
   TransferTransaction,
   XEM
-} from '@thomas.tran/nem2-sdk';
+} from 'proximax-nem2-sdk';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';

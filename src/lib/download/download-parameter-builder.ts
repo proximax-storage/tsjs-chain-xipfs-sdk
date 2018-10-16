@@ -1,4 +1,4 @@
-import { convert, KeyPair } from '@thomas.tran/nem2-library';
+import { convert, KeyPair } from 'proximax-nem2-library';
 import { Converter } from '../helper/converter';
 import { PasswordPrivacyStrategy } from '../privacy/password-privacy';
 import { PlainPrivacyStrategy } from '../privacy/plain-privacy';

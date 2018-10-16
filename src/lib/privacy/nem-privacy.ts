@@ -1,4 +1,4 @@
-import { crypto } from '@thomas.tran/nem2-library';
+import { crypto } from 'proximax-nem2-library';
 import { PrivacyStrategy } from './privacy';
 import { PrivacyType } from './privacy-type';
 

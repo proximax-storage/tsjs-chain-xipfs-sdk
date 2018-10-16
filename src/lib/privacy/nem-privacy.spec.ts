@@ -17,13 +17,39 @@ describe('NemPrivacy', () => {
       RecipientAccount.publicKey
     );
 
-    const encryptedData = privacy.encrypt(data);
+    const encryptedData: Uint8Array = privacy.encrypt(data);
 
     const decryptedData = privacy.decrypt(encryptedData);
 
     const decryptedText = new TextDecoder().decode(decryptedData);
 
-    // console.log(decryptedText);
+    console.log(decryptedText);
+    expect(decryptedText).to.be.equal(plainText);
+  });
+
+  it('should decrypt data with receiver private key', () => {
+    const plainText =
+      'ProximaX is an advanced extension of the Blockchain and Distributed Ledger Technology (DLT) with utility-rich services and protocols';
+
+    const data = new TextEncoder().encode(plainText);
+
+    const privacy = new NemPrivacyStrategy(
+      SenderAccount.privateKey,
+      RecipientAccount.publicKey
+    );
+
+    const encryptedData: Uint8Array = privacy.encrypt(data);
+
+    const receiverPrivacy = new NemPrivacyStrategy(
+      RecipientAccount.privateKey,
+      SenderAccount.publicKey
+    );
+
+    const decryptedData = receiverPrivacy.decrypt(encryptedData);
+
+    const decryptedText = new TextDecoder().decode(decryptedData);
+
+    console.log(decryptedText);
     expect(decryptedText).to.be.equal(plainText);
   });
 });
