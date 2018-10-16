@@ -1,4 +1,4 @@
-import { SecureMessage, TransferTransaction } from '@thomas.tran/nem2-sdk';
+import { SecureMessage, TransferTransaction } from 'proximax-nem2-sdk';
 
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';

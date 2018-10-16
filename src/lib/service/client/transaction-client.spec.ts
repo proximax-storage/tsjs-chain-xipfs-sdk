@@ -1,12 +1,12 @@
+import { expect } from 'chai';
+import 'mocha';
 import {
   Account,
   Deadline,
   PlainMessage,
   TransferTransaction,
   XEM
-} from '@thomas.tran/nem2-sdk';
-import { expect } from 'chai';
-import 'mocha';
+} from 'proximax-nem2-sdk';
 import {
   BlockchainInfo,
   RecipientAccount,

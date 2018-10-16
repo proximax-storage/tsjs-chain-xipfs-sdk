@@ -1,4 +1,4 @@
-import { NetworkType } from '@thomas.tran/nem2-sdk';
+import { NetworkType } from 'proximax-nem2-sdk';
 import * as utf8 from 'utf8';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 
