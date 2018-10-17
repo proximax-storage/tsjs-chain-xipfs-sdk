@@ -4,6 +4,7 @@ import { PasswordPrivacyStrategy } from '../privacy/password-privacy';
 import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { DownloadParameter } from './download-parameter';
+import { PKeyPair } from '../model/blockchain/keypair';
 
 export class DownloadParameterBuilder {
   private transactionHash;

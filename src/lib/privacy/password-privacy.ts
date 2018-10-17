@@ -4,7 +4,7 @@ import { PrivacyStrategy } from './privacy';
 import { PrivacyType } from './privacy-type';
 
 export class PasswordPrivacyStrategy implements PrivacyStrategy {
-  public static create(password: string): any {
+  public static create(password: string): PasswordPrivacyStrategy {
     return new PasswordPrivacyStrategy(password);
   }
 

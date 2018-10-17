@@ -112,8 +112,7 @@ export class TransactionClient {
               'Failed to announce transaction with status ' + status
             );
           }
-        }),
-        first()
+        })
       );
     } catch (err) {
       throw new Error('Failed to announce transaction ' + err);

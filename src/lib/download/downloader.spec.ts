@@ -60,7 +60,7 @@ describe('Downloader', () => {
     );
 
     const transactionHash =
-      '9DEA81D597D4E00CEE740202711CB193A1DD7BD836CFA5CF91174CAC76645913';
+      'D228AF0AAEEA6B8C8164DE18EE62A90A284DE8D2549D635FDD10EDAFA34AE955';
 
     const expectedText = 'Proximax P2P Uploader with secured message';
 
@@ -79,6 +79,6 @@ describe('Downloader', () => {
       const actual = Converter.ab2str(data);
       // console.log(actual);
       expect(actual).to.be.equal(expectedText);
-    });
+    }).timeout(10000);
   });
 });

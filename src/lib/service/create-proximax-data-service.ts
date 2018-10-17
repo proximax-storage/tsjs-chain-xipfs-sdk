@@ -1,8 +1,9 @@
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConnectionConfig } from '../connection/connection-config';
 import { DigestUtils } from '../helper/digest-util';
 import { ProximaxDataModel } from '../model/proximax/data-model';
+import { AbstractByteStreamParameterData } from '../upload/abstract-byte-stream-parameter-data';
 import { UploadParameter } from '../upload/upload-parameter';
 import { FileUploadService } from './file-upload-service';
 
@@ -35,44 +36,45 @@ export class CreateProximaxDataService {
       throw new Error('upload parameter is required');
     }
 
-    // auto detect content type
-    let contentType = param.data.contentType;
-    if (
-      (contentType === undefined ||
-        contentType === null ||
-        contentType.length <= 0) &&
-      param.detectContentType
-    ) {
-      const fileType = require('file-type');
+    if (param.data instanceof AbstractByteStreamParameterData) {
+      const byteStreamParamData = param.data as AbstractByteStreamParameterData;
 
-      const mimeType = fileType(param.data.byteStreams);
+      // auto detect content type
+      let contentType = byteStreamParamData.contentType;
+      if (
+        (contentType === undefined ||
+          contentType === null ||
+          contentType.length <= 0) &&
+        param.detectContentType
+      ) {
+        const fileType = require('file-type');
 
-      contentType =
-        mimeType === null || mimeType === undefined
-          ? 'text/plain'
-          : mimeType.mime;
+        const mimeType = fileType(byteStreamParamData.getByteStream());
 
-      console.log(contentType);
-    }
+        contentType =
+          mimeType === null || mimeType === undefined
+            ? 'text/plain'
+            : mimeType.mime;
 
-    // encrypt data
-    const encryptedData = param.privacyStrategy.encrypt(param.data.byteStreams);
+        console.log(contentType);
+      }
 
-    // calculate digest
-    let digestHash = '';
-    if (param.computeDigest) {
-      digestHash = DigestUtils.computeDigest(encryptedData);
-    }
+      // encrypt data
+      const encryptedData = param.privacyStrategy.encrypt(
+        byteStreamParamData.getByteStream()
+      );
 
-    return this.fileUploadService
-      .uploadStream(encryptedData, param.data.options)
-      .pipe(
+      // calculate digest
+      let digestHash = '';
+      if (param.computeDigest) {
+        digestHash = DigestUtils.computeDigest(encryptedData);
+      }
+
+      return this.fileUploadService.uploadStream(encryptedData).pipe(
         map(fur => {
-          const digest = digestHash;
-
           return new ProximaxDataModel(
             fur.hash,
-            digest,
+            digestHash,
             param.data.description,
             contentType,
             param.data.metadata,
@@ -81,5 +83,8 @@ export class CreateProximaxDataService {
           );
         })
       );
+    } else {
+      return of(new ProximaxDataModel('replaceme'));
+    }
   }
 }

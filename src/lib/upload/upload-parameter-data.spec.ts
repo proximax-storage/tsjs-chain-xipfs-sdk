@@ -16,6 +16,7 @@
 
 import { expect } from 'chai';
 import 'mocha';
+import { StringParameterData } from './string-parameter-data';
 import { UploadParameterData } from './upload-parameter-data';
 
 describe('UploadParameterData', () => {
@@ -25,7 +26,14 @@ describe('UploadParameterData', () => {
         'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHCpwe3i9Ac1TujbVoW4Zi8P4lFTrPOYMD60yBqM7YgTAopA3vS20GGThYZpDm126464';
       const metadata = new Map<string, string>();
       metadata.set('Author', 'Proximax');
-      new UploadParameterData(name, 'test', 'test', metadata);
+      StringParameterData.create(
+        'test',
+        'utf8',
+        name,
+        'test',
+        'test',
+        metadata
+      );
     }).to.throw();
   });
 
@@ -35,7 +43,14 @@ describe('UploadParameterData', () => {
         'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHCpwe3i9Ac1TujbVoW4Zi8P4lFTrPOYMD60yBqM7YgTAopA3vS20GGThYZpDm12';
       const metadata = new Map<string, string>();
       metadata.set('Author', 'Proximax');
-      new UploadParameterData('Test', description, 'text/plain', metadata);
+      StringParameterData.create(
+        'test',
+        'utf8',
+        'Test',
+        description,
+        'text/plain',
+        metadata
+      );
     }).to.throw();
   });
 
@@ -44,7 +59,14 @@ describe('UploadParameterData', () => {
       const contentType = 'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHC';
       const metadata = new Map<string, string>();
       metadata.set('Author', 'Proximax');
-      new UploadParameterData('Testing', 'Description', contentType, metadata);
+      StringParameterData.create(
+        'test',
+        'utf8',
+        'Testing',
+        'Description',
+        contentType,
+        metadata
+      );
     }).to.throw();
   });
 
@@ -54,7 +76,9 @@ describe('UploadParameterData', () => {
     const contentType = 'text/plain';
     const metadata = new Map<string, string>();
     metadata.set('Author', 'Proximax');
-    const uploadParameterData = new UploadParameterData(
+    const uploadParameterData = StringParameterData.create(
+      'test',
+      'utf8',
       name,
       description,
       contentType,

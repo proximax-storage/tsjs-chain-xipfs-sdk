@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import 'mocha';
-import { SchemaVersion } from '../config/config';
 import {
   BlockchainInfo,
   IpfsInfo,
@@ -12,10 +11,8 @@ import { ConnectionConfig } from '../connection/connection-config';
 import { IpfsConnection } from '../connection/ipfs-connection';
 import { Protocol } from '../connection/protocol';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
-
-import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
+import { Uint8ArrayParameterData } from './uint8-array-parameter-data';
 import { UploadParameter } from './upload-parameter';
-import { UploadParameterData } from './upload-parameter-data';
 import { Uploader } from './uploader';
 
 describe('Uploader', () => {
@@ -30,37 +27,38 @@ describe('Uploader', () => {
       new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
     );
 
-    const byteStream = Buffer.from('Proximax P2P Uploader test');
+    const byteStream = new Uint8Array(
+      Buffer.from('Proximax P2P Uploader test')
+    );
     const metadata = new Map<string, string>();
     metadata.set('author', 'Proximax');
-    const paramData = new UploadParameterData(
+
+    const paramData = Uint8ArrayParameterData.create(
+      byteStream,
       'Test',
       'Test decription',
       'text/plain',
-      metadata,
-      byteStream
+      metadata
     );
 
-    const param = new UploadParameter(
+    const param = UploadParameter.createForUint8ArrayUpload(
       paramData,
-      SenderAccount.privateKey,
-      RecipientAccount.publicKey,
-      RecipientAccount.address,
-      PlainPrivacyStrategy.create(),
-      1,
-      false,
-      true,
-      true,
-      SchemaVersion
-    );
+      SenderAccount.privateKey
+    )
+      .withRecipientPublicKey(RecipientAccount.publicKey)
+      .withRecipientAddress(RecipientAccount.address)
+      .withPlainPrivacy()
+      .withTransactionDeadline(2)
+      .withUseBlockchainSecureMessage(false)
+      .build();
 
     const uploader = new Uploader(connectionConfig);
-    await uploader.upload(param).then(response => {
-      // console.log(response);
-      expect(response.transactionHash.length > 0).to.be.true;
-      expect(response.data.dataHash.length > 0).to.be.true;
+    await uploader.upload(param).then(result => {
+      console.log(result);
+      expect(result.transactionHash.length > 0).to.be.true;
+      expect(result.data.dataHash.length > 0).to.be.true;
     });
-  });
+  }).timeout(10000);
 
   it('should return upload result with secured message', async () => {
     const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
@@ -73,37 +71,36 @@ describe('Uploader', () => {
       new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
     );
 
-    const byteStream = Buffer.from(
-      'Proximax P2P Uploader with secured message'
+    const byteStream = new Uint8Array(
+      Buffer.from('Proximax P2P Uploader with secured message')
     );
     const metadata = new Map<string, string>();
     metadata.set('author', 'Proximax');
-    const paramData = new UploadParameterData(
+
+    const paramData = Uint8ArrayParameterData.create(
+      byteStream,
       'Test',
       'Test decription',
       'text/plain',
-      metadata,
-      byteStream
+      metadata
     );
 
-    const param = new UploadParameter(
+    const param = UploadParameter.createForUint8ArrayUpload(
       paramData,
-      SenderAccount.privateKey,
-      RecipientAccount.publicKey,
-      RecipientAccount.address,
-      PlainPrivacyStrategy.create(),
-      2,
-      true,
-      true,
-      true,
-      SchemaVersion
-    );
+      SenderAccount.privateKey
+    )
+      .withRecipientPublicKey(RecipientAccount.publicKey)
+      .withRecipientAddress(RecipientAccount.address)
+      .withPlainPrivacy()
+      .withTransactionDeadline(2)
+      .withUseBlockchainSecureMessage(true)
+      .build();
 
     const uploader = new Uploader(connectionConfig);
-    await uploader.upload(param).then(response => {
-      console.log(response);
-      expect(response.transactionHash.length > 0).to.be.true;
-      expect(response.data.dataHash.length > 0).to.be.true;
+    await uploader.upload(param).then(result => {
+      console.log(result);
+      expect(result.transactionHash.length > 0).to.be.true;
+      expect(result.data.dataHash.length > 0).to.be.true;
     });
-  });
+  }).timeout(10000);
 });

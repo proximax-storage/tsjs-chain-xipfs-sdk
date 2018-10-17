@@ -4,7 +4,6 @@ import {
   BlockchainInfo,
   IpfsInfo,
   RecipientAccount,
-  SchemaVersion,
   SenderAccount
 } from '../config/config.spec';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
@@ -12,9 +11,8 @@ import { ConnectionConfig } from '../connection/connection-config';
 import { IpfsConnection } from '../connection/ipfs-connection';
 import { Protocol } from '../connection/protocol';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
-import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
+import { Uint8ArrayParameterData } from '../upload/uint8-array-parameter-data';
 import { UploadParameter } from '../upload/upload-parameter';
-import { UploadParameterData } from '../upload/upload-parameter-data';
 import { CreateProximaxDataService } from './create-proximax-data-service';
 
 describe('CreateProximaxDataService', () => {
@@ -33,28 +31,29 @@ describe('CreateProximaxDataService', () => {
       connectionConfig
     );
 
-    const byteStream = Buffer.from('Proximax P2P CreateProximaxDataService');
+    const byteStream = new Uint8Array(
+      Buffer.from('Proximax P2P CreateProximaxDataService')
+    );
     const metadata = new Map<string, string>();
     metadata.set('author', 'Proximax');
-    const paramData = new UploadParameterData(
+    const paramData = Uint8ArrayParameterData.create(
+      byteStream,
       'Test',
       'Test decription',
       'text/plain',
-      metadata,
-      byteStream
+      metadata
     );
-    const param = new UploadParameter(
+
+    const param = UploadParameter.createForUint8ArrayUpload(
       paramData,
-      SenderAccount.privateKey,
-      RecipientAccount.publicKey,
-      RecipientAccount.address,
-      PlainPrivacyStrategy.create(),
-      1,
-      false,
-      true,
-      true,
-      SchemaVersion
-    );
+      SenderAccount.privateKey
+    )
+      .withRecipientPublicKey(RecipientAccount.publicKey)
+      .withRecipientAddress(RecipientAccount.address)
+      .withPlainPrivacy()
+      .withTransactionDeadline(1)
+      .withUseBlockchainSecureMessage(false)
+      .build();
 
     await createProximaxDataService.createData(param).subscribe(dataModel => {
       // console.log(dataModel);
@@ -78,28 +77,29 @@ describe('CreateProximaxDataService', () => {
       connectionConfig
     );
 
-    const byteStream = Buffer.from('Proximax P2P CreateProximaxDataService');
+    const byteStream = new Uint8Array(
+      Buffer.from('Proximax P2P CreateProximaxDataService')
+    );
     const metadata = new Map<string, string>();
     metadata.set('author', 'Proximax');
-    const paramData = new UploadParameterData(
+    const paramData = Uint8ArrayParameterData.create(
+      byteStream,
       'Test',
       'Test decription',
-      '',
-      metadata,
-      byteStream
+      'text/plain',
+      metadata
     );
-    const param = new UploadParameter(
+
+    const param = UploadParameter.createForUint8ArrayUpload(
       paramData,
-      SenderAccount.privateKey,
-      RecipientAccount.publicKey,
-      RecipientAccount.address,
-      PlainPrivacyStrategy.create(),
-      1,
-      false,
-      true,
-      true,
-      SchemaVersion
-    );
+      SenderAccount.privateKey
+    )
+      .withRecipientPublicKey(RecipientAccount.publicKey)
+      .withRecipientAddress(RecipientAccount.address)
+      .withPlainPrivacy()
+      .withTransactionDeadline(1)
+      .withUseBlockchainSecureMessage(false)
+      .build();
 
     await createProximaxDataService.createData(param).subscribe(dataModel => {
       // console.log(dataModel);
