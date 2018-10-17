@@ -53,7 +53,6 @@ export class Downloader {
           return this.getMessagePayload(
             transferedTransaction,
             param.accountPrivateKey!,
-            param.accountPublicKey!
           );
         }),
         switchMap(messagePayload => {
@@ -141,26 +140,21 @@ export class Downloader {
   public getMessagePayload(
     transferTransaction: TransferTransaction,
     accountPrivateKey: string,
-    accountPublicKey: string
   ): ProximaxMessagePayloadModel {
     let messagePayloadModel: ProximaxMessagePayloadModel;
-    // console.log('accountPrivateKey ' + accountPrivateKey);
-    // console.log('accountPublicKey ' + accountPublicKey);
 
-    const payload = Converter.decodeHex(transferTransaction.message.payload);
-    // console.log('transferTransaction ...');
-    // console.log(transferTransaction);
-    if (transferTransaction.message.type === 2) {
+    if (transferTransaction.message.type === 1) {
+      const payload = Converter.decodeHex(transferTransaction.message.payload);
       const payloadDecoded = SecureMessage.decrypt(
         payload,
-        accountPublicKey,
+        // TODO fetch publickey
+        'D1869362F4FAA5F683AEF78FC0D6E04B976833000F3958862A09CC7B6DF347C2',
         accountPrivateKey
       );
-      // console.log('decrypt message');
-      // console.log(payloadDecoded);
+      console.log(payloadDecoded.payload);
       messagePayloadModel = JSON.parse(payloadDecoded.payload);
     } else {
-      // console.log('plain message ..');
+      const payload = transferTransaction.message.payload;
       messagePayloadModel = JSON.parse(payload);
     }
 
