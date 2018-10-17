@@ -21,7 +21,7 @@ import {
   TransactionHttp
 } from 'proximax-nem2-sdk';
 import { merge, Observable } from 'rxjs';
-import { filter, first, map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { BlockchainNetworkConnection } from '../../connection/blockchain-network-connection';
 
 /**
@@ -112,8 +112,7 @@ export class TransactionClient {
               'Failed to announce transaction with status ' + status
             );
           }
-        }),
-        first()
+        })
       );
     } catch (err) {
       throw new Error('Failed to announce transaction ' + err);

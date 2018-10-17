@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { StringParameterData } from '../upload/string-parameter-data';
 import { UploadParameterData } from '../upload/upload-parameter-data';
 
 export class TestHelper {
@@ -38,7 +39,9 @@ export class TestHelper {
     const contentType = 'text/plain';
     const metadata = new Map<string, string>();
     metadata.set('author', 'Proximax');
-    const uploadParameterData = new UploadParameterData(
+    const uploadParameterData = StringParameterData.create(
+      'test',
+      'utf8',
       name,
       description,
       contentType,

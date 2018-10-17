@@ -94,7 +94,7 @@ export class Uploader {
       param.recipientPublicKey!,
       param.recipientAddress!,
       param.transactionDeadline!,
-      param.useBlockhainSecureMessage!
+      param.useBlockchainSecureMessage!
     );
   }
 
@@ -110,7 +110,7 @@ export class Uploader {
     const messagePayload = new ProximaxMessagePayloadModel(
       param.privacyStrategy.getPrivacyType(),
       data,
-      param.version!
+      param.version
     );
     return of(messagePayload);
   }

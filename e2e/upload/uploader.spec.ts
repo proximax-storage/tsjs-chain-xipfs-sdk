@@ -5,18 +5,18 @@ import {
   IpfsInfo,
   RecipientAccount,
   SenderAccount
-} from '../config/config.spec';
-import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
-import { ConnectionConfig } from '../connection/connection-config';
-import { IpfsConnection } from '../connection/ipfs-connection';
-import { Protocol } from '../connection/protocol';
-import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
-import { Uint8ArrayParameterData } from '../upload/uint8-array-parameter-data';
-import { UploadParameter } from '../upload/upload-parameter';
-import { CreateProximaxDataService } from './create-proximax-data-service';
+} from '../../src/lib/config/config.spec';
+import { BlockchainNetworkConnection } from '../../src/lib/connection/blockchain-network-connection';
+import { ConnectionConfig } from '../../src/lib/connection/connection-config';
+import { IpfsConnection } from '../../src/lib/connection/ipfs-connection';
+import { Protocol } from '../../src/lib/connection/protocol';
+import { BlockchainNetworkType } from '../../src/lib/model/blockchain/blockchain-network-type';
+import { Uint8ArrayParameterData } from '../../src/lib/upload/uint8-array-parameter-data';
+import { UploadParameter } from '../../src/lib/upload/upload-parameter';
+import { Uploader } from '../../src/lib/upload/uploader';
 
-describe('CreateProximaxDataService', () => {
-  it('should add data to ipfs and return ProximaxDataModel', async () => {
+describe('Uploader', () => {
+  it('should return upload result', async () => {
     const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
       new BlockchainNetworkConnection(
         BlockchainNetworkType.MIJIN_TEST,
@@ -27,15 +27,12 @@ describe('CreateProximaxDataService', () => {
       new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
     );
 
-    const createProximaxDataService = new CreateProximaxDataService(
-      connectionConfig
-    );
-
     const byteStream = new Uint8Array(
-      Buffer.from('Proximax P2P CreateProximaxDataService')
+      Buffer.from('Proximax P2P Uploader test')
     );
     const metadata = new Map<string, string>();
     metadata.set('author', 'Proximax');
+
     const paramData = Uint8ArrayParameterData.create(
       byteStream,
       'Test',
@@ -51,18 +48,19 @@ describe('CreateProximaxDataService', () => {
       .withRecipientPublicKey(RecipientAccount.publicKey)
       .withRecipientAddress(RecipientAccount.address)
       .withPlainPrivacy()
-      .withTransactionDeadline(1)
+      .withTransactionDeadline(2)
       .withUseBlockchainSecureMessage(false)
       .build();
 
-    await createProximaxDataService.createData(param).subscribe(dataModel => {
-      // console.log(dataModel);
-      expect(dataModel.dataHash.length > 0).to.be.true;
-      expect(dataModel.digest!.length > 0).to.be.true;
+    const uploader = new Uploader(connectionConfig);
+    await uploader.upload(param).then(result => {
+      console.log(result);
+      expect(result.transactionHash.length > 0).to.be.true;
+      expect(result.data.dataHash.length > 0).to.be.true;
     });
-  });
+  }).timeout(10000);
 
-  it('should add data to ipfs and auto detect content type and return ProximaxDataModel', async () => {
+  it('should return upload result with secured message', async () => {
     const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
       new BlockchainNetworkConnection(
         BlockchainNetworkType.MIJIN_TEST,
@@ -73,15 +71,12 @@ describe('CreateProximaxDataService', () => {
       new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
     );
 
-    const createProximaxDataService = new CreateProximaxDataService(
-      connectionConfig
-    );
-
     const byteStream = new Uint8Array(
-      Buffer.from('Proximax P2P CreateProximaxDataService')
+      Buffer.from('Proximax P2P Uploader with secured message')
     );
     const metadata = new Map<string, string>();
     metadata.set('author', 'Proximax');
+
     const paramData = Uint8ArrayParameterData.create(
       byteStream,
       'Test',
@@ -97,15 +92,15 @@ describe('CreateProximaxDataService', () => {
       .withRecipientPublicKey(RecipientAccount.publicKey)
       .withRecipientAddress(RecipientAccount.address)
       .withPlainPrivacy()
-      .withTransactionDeadline(1)
-      .withUseBlockchainSecureMessage(false)
+      .withTransactionDeadline(2)
+      .withUseBlockchainSecureMessage(true)
       .build();
 
-    await createProximaxDataService.createData(param).subscribe(dataModel => {
-      // console.log(dataModel);
-      expect(dataModel.dataHash.length > 0).to.be.true;
-      expect(dataModel.contentType!).to.be.equal('text/plain');
-      expect(dataModel.digest!.length > 0).to.be.true;
+    const uploader = new Uploader(connectionConfig);
+    await uploader.upload(param).then(result => {
+      console.log(result);
+      expect(result.transactionHash.length > 0).to.be.true;
+      expect(result.data.dataHash.length > 0).to.be.true;
     });
-  });
+  }).timeout(10000);
 });

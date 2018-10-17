@@ -12,7 +12,7 @@ describe('NemPrivacy', () => {
 
     const data = new TextEncoder().encode(plainText);
 
-    const privacy = new NemPrivacyStrategy(
+    const privacy = NemPrivacyStrategy.create(
       SenderAccount.privateKey,
       RecipientAccount.publicKey
     );
@@ -33,14 +33,14 @@ describe('NemPrivacy', () => {
 
     const data = new TextEncoder().encode(plainText);
 
-    const privacy = new NemPrivacyStrategy(
+    const privacy = NemPrivacyStrategy.create(
       SenderAccount.privateKey,
       RecipientAccount.publicKey
     );
 
     const encryptedData: Uint8Array = privacy.encrypt(data);
 
-    const receiverPrivacy = new NemPrivacyStrategy(
+    const receiverPrivacy = NemPrivacyStrategy.create(
       RecipientAccount.privateKey,
       SenderAccount.publicKey
     );

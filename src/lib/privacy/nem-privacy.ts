@@ -3,13 +3,14 @@ import { PrivacyStrategy } from './privacy';
 import { PrivacyType } from './privacy-type';
 
 export class NemPrivacyStrategy implements PrivacyStrategy {
-  private privateKey;
-  private publicKey;
-
-  constructor(privateKey: string, publicKey: string) {
-    this.privateKey = privateKey;
-    this.publicKey = publicKey;
+  public static create(privateKey: string, publicKey: string) {
+    return new NemPrivacyStrategy(privateKey, publicKey);
   }
+
+  protected constructor(
+    public readonly privateKey: string,
+    public readonly publicKey: string
+  ) {}
 
   public getPrivacyType(): number {
     return PrivacyType.NEM_KEYS;
