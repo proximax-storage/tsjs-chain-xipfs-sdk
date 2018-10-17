@@ -15,6 +15,7 @@
  */
 
 import {
+  NemPrivacyStrategy,
   PasswordPrivacyStrategy,
   PlainPrivacyStrategy,
   PrivacyStrategy
@@ -117,6 +118,14 @@ export class UploadParameterBuilder {
 
   public withPasswordPrivacy(password: string): UploadParameterBuilder {
     this.privacyStrategy = PasswordPrivacyStrategy.create(password);
+    return this;
+  }
+
+  public withNemKeysPrivacy(
+    privateKey: string,
+    publicKey: string
+  ): UploadParameterBuilder {
+    this.privacyStrategy = NemPrivacyStrategy.create(privateKey, publicKey);
     return this;
   }
 

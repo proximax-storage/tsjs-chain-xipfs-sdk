@@ -18,12 +18,14 @@ import {
   Account,
   Address,
   Deadline,
+  Mosaic,
+  MosaicId,
   NetworkType,
   PlainMessage,
   SecureMessage,
   TransactionType,
   TransferTransaction,
-  XEM
+  UInt64
 } from 'proximax-nem2-sdk';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -97,7 +99,7 @@ export class BlockchainTransactionService {
     );
 
     // TODO: Refactor when levy implement in blockchain
-    const mosaic = XEM.createRelative(1);
+    const mosaic = new Mosaic(new MosaicId('prx:xpx'), UInt64.fromUint(1));
     console.log('deadline ' + transactionDeadline);
 
     const transferTransaction = TransferTransaction.create(

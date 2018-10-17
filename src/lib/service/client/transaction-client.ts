@@ -21,7 +21,7 @@ import {
   TransactionHttp
 } from 'proximax-nem2-sdk';
 import { merge, Observable } from 'rxjs';
-import { filter, first, map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { BlockchainNetworkConnection } from '../../connection/blockchain-network-connection';
 
 /**

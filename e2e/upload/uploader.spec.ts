@@ -5,15 +5,15 @@ import {
   IpfsInfo,
   RecipientAccount,
   SenderAccount
-} from '../config/config.spec';
-import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
-import { ConnectionConfig } from '../connection/connection-config';
-import { IpfsConnection } from '../connection/ipfs-connection';
-import { Protocol } from '../connection/protocol';
-import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
-import { Uint8ArrayParameterData } from './uint8-array-parameter-data';
-import { UploadParameter } from './upload-parameter';
-import { Uploader } from './uploader';
+} from '../../src/lib/config/config.spec';
+import { BlockchainNetworkConnection } from '../../src/lib/connection/blockchain-network-connection';
+import { ConnectionConfig } from '../../src/lib/connection/connection-config';
+import { IpfsConnection } from '../../src/lib/connection/ipfs-connection';
+import { Protocol } from '../../src/lib/connection/protocol';
+import { BlockchainNetworkType } from '../../src/lib/model/blockchain/blockchain-network-type';
+import { Uint8ArrayParameterData } from '../../src/lib/upload/uint8-array-parameter-data';
+import { UploadParameter } from '../../src/lib/upload/upload-parameter';
+import { Uploader } from '../../src/lib/upload/uploader';
 
 describe('Uploader', () => {
   it('should return upload result', async () => {

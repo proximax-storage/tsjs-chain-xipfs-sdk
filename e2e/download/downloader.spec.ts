@@ -4,15 +4,15 @@ import {
   BlockchainInfo,
   IpfsInfo,
   RecipientAccount
-} from '../config/config.spec';
-import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
-import { ConnectionConfig } from '../connection/connection-config';
-import { IpfsConnection } from '../connection/ipfs-connection';
-import { Protocol } from '../connection/protocol';
-import { Converter } from '../helper/converter';
-import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
-import { DownloadParameter } from './download-parameter';
-import { Downloader } from './downloader';
+} from '../../src/lib/config/config.spec';
+import { BlockchainNetworkConnection } from '../../src/lib/connection/blockchain-network-connection';
+import { ConnectionConfig } from '../../src/lib/connection/connection-config';
+import { IpfsConnection } from '../../src/lib/connection/ipfs-connection';
+import { Protocol } from '../../src/lib/connection/protocol';
+import { DownloadParameter } from '../../src/lib/download/download-parameter';
+import { Downloader } from '../../src/lib/download/downloader';
+import { Converter } from '../../src/lib/helper/converter';
+import { BlockchainNetworkType } from '../../src/lib/model/blockchain/blockchain-network-type';
 
 describe('Downloader', () => {
   /* it('should download content based on transaction hash', async () => {
@@ -46,7 +46,7 @@ describe('Downloader', () => {
       // console.log(actual);
       expect(actual).to.be.equal(expectedText);
     });
-  });*/
+  }).timeout(10000);;*/
 
   it('should download content based on transaction hash with secure message', async () => {
     const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
@@ -79,6 +79,6 @@ describe('Downloader', () => {
       const actual = Converter.ab2str(data);
       // console.log(actual);
       expect(actual).to.be.equal(expectedText);
-    }).timeout(10000);
-  });
+    });
+  }).timeout(10000);
 });

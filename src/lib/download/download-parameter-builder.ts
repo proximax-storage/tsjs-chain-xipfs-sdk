@@ -1,10 +1,11 @@
 import { convert, KeyPair } from 'proximax-nem2-library';
+import { NemPrivacyStrategy } from '../..';
 import { Converter } from '../helper/converter';
+import { PKeyPair } from '../model/blockchain/keypair';
 import { PasswordPrivacyStrategy } from '../privacy/password-privacy';
 import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { DownloadParameter } from './download-parameter';
-import { PKeyPair } from '../model/blockchain/keypair';
 
 export class DownloadParameterBuilder {
   private transactionHash;
@@ -60,6 +61,13 @@ export class DownloadParameterBuilder {
     return this;
   }
 
+  public withNemKeysPrivacy(
+    privateKey: string,
+    publicKey: string
+  ): DownloadParameterBuilder {
+    this.privacyStrategy = NemPrivacyStrategy.create(privateKey, publicKey);
+    return this;
+  }
   public withValidateDigest(validateDigest: boolean): DownloadParameterBuilder {
     this.validateDigest = validateDigest;
     return this;
