@@ -64,6 +64,8 @@ export class IpfsClient implements FileRepository {
       throw new Error('hash is required');
     }
 
-    return from<IpfsContent>(this.connection.getIpfs().files.get(hash));
+    return from<IpfsContent>(this.connection.getIpfs().files.get(hash)).pipe(
+      map(ipfsContentArr => ipfsContentArr[0].content)
+    );
   }
 }
