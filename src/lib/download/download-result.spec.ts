@@ -17,7 +17,7 @@
 import { expect } from 'chai';
 import 'mocha';
 
-import { SchemaVersion } from '../config/config';
+import { SchemaVersion } from '../config/constants';
 import { PrivacyType } from '../privacy/privacy-type';
 import { DownloadResult } from './download-result';
 import { DownloadResultData } from './download-result-data';

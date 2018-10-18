@@ -3,9 +3,8 @@ import {
   BlockchainInfo,
   RecipientAccount,
   SampleTransactionHash,
-  SchemaVersion,
   SenderAccount
-} from '../config/config.spec';
+} from '../config/testconfig';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { ProximaxDataModel } from '../model/proximax/data-model';
@@ -13,6 +12,7 @@ import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-m
 
 import { expect } from 'chai';
 import { TransactionType } from 'proximax-nem2-sdk';
+import { SchemaVersion } from '../config/constants';
 // import { TransactionClient } from './client/transaction-client';
 import { Protocol } from '../connection/protocol';
 import { PrivacyType } from '../privacy/privacy-type';
@@ -43,10 +43,10 @@ describe('BlockchainTransactionService', () => {
     const txnHash = await transactionService.createAndAnnounceTransaction(
       payload,
       SenderAccount.privateKey,
-      RecipientAccount.publicKey,
-      RecipientAccount.address,
       1,
-      false
+      false,
+      RecipientAccount.publicKey,
+      RecipientAccount.address
     );
 
     expect(txnHash).to.be.not.equal(undefined);

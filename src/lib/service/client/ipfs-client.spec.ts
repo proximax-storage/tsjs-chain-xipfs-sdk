@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import 'mocha';
 import { switchMap } from 'rxjs/operators';
-import { IpfsInfo } from '../../config/config.spec';
+import { IpfsInfo } from '../../config/testconfig';
 import { IpfsConnection } from '../../connection/ipfs-connection';
 import { IpfsClient } from './ipfs-client';
 

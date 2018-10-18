@@ -64,7 +64,7 @@ export class Downloader {
             messagePayload
           ).pipe(
             map(contents => {
-              const bytes = contents[0].content;
+              const bytes = contents;
               return this.createCompleteDownloadResult(
                 messagePayload,
                 bytes,

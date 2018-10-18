@@ -90,10 +90,10 @@ export class Uploader {
     return this.blockchainTransactionService.createAndAnnounceTransaction(
       payload,
       param.signerPrivateKey,
-      param.recipientPublicKey!,
-      param.recipientAddress!,
-      param.transactionDeadline!,
-      param.useBlockchainSecureMessage!
+      param.transactionDeadline,
+      param.useBlockchainSecureMessage,
+      param.recipientPublicKey,
+      param.recipientAddress
     );
   }
 

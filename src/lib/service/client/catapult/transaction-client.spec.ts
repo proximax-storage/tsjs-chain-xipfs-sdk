@@ -12,7 +12,7 @@ import {
   // RecipientAccount,
   SampleTransactionHash
   // SenderAccount
-} from '../../../config/config.spec';
+} from '../../../config/testconfig';
 import { BlockchainNetworkConnection } from '../../../connection/blockchain-network-connection';
 import { Protocol } from '../../../connection/protocol';
 // import { Converter } from '../../../helper/converter';

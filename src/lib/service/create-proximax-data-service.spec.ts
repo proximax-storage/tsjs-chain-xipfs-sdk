@@ -5,7 +5,7 @@ import {
   IpfsInfo,
   RecipientAccount,
   SenderAccount
-} from '../config/config.spec';
+} from '../config/testconfig';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { ConnectionConfig } from '../connection/connection-config';
 import { IpfsConnection } from '../connection/ipfs-connection';

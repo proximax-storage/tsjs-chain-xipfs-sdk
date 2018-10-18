@@ -16,7 +16,7 @@
 
 import { expect } from 'chai';
 import 'mocha';
-import { SchemaVersion } from '../config/config.spec';
+import { SchemaVersion } from '../config/constants';
 import { ProximaxDataModel } from '../model/proximax/data-model';
 import { PrivacyType } from '../privacy/privacy-type';
 import { UploadResult } from './upload-result';

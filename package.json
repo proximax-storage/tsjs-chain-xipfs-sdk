@@ -60,6 +60,7 @@
     "get-random-values": "^1.2.0",
     "install": "^0.12.1",
     "ipfs-api": "^24.0.2",
+    "js-joda": "^1.9.2",
     "node-fetch": "^2.2.0",
     "proximax-nem2-library": "^0.9.8",
     "proximax-nem2-sdk": "^0.10.5",

@@ -16,7 +16,7 @@
 
 import { expect } from 'chai';
 import 'mocha';
-import { IpfsInfo } from '../config/config.spec';
+import { IpfsInfo } from '../config/testconfig';
 import { IpfsConnection } from './ipfs-connection';
 
 describe('IpfsConnection', () => {

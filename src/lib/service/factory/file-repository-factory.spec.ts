@@ -1,10 +1,6 @@
 import { expect } from 'chai';
 import 'mocha';
-import {
-  BlockchainInfo,
-  IpfsInfo,
-  StorageInfo
-} from '../../config/config.spec';
+import { BlockchainInfo, IpfsInfo, StorageInfo } from '../../config/testconfig';
 import { BlockchainNetworkConnection } from '../../connection/blockchain-network-connection';
 import { ConnectionConfig } from '../../connection/connection-config';
 import { IpfsConnection } from '../../connection/ipfs-connection';

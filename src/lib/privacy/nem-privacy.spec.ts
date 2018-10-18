@@ -1,5 +1,5 @@
 import 'mocha';
-import { RecipientAccount, SenderAccount } from '../config/config.spec';
+import { RecipientAccount, SenderAccount } from '../config/testconfig';
 import { NemPrivacyStrategy } from './nem-privacy';
 
 import { expect } from 'chai';

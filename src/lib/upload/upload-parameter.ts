@@ -15,7 +15,7 @@
  */
 
 // import {FilesAsZipParameterData} from "./files-as-zip-parameter-data";
-import { SchemaVersion } from '../config/config';
+import { SchemaVersion } from '../config/constants';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { FileParameterData } from './file-parameter-data';
 import { PathParameterData } from './path-parameter-data';
