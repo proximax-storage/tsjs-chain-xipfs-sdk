@@ -32,48 +32,47 @@ import { map } from 'rxjs/operators';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { Converter } from '../helper/converter';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
-import { TransactionClient } from './client/transaction-client';
+import { TransactionClient } from './client/catapult/transaction-client';
 
 /**
- * Class represents the blockchain transaction service
+ * The service class responsible for handling tasks that work with blockchain transactions
  */
 export class BlockchainTransactionService {
-  private connection: BlockchainNetworkConnection;
-  private client: TransactionClient;
-  private networkType: NetworkType;
+  private readonly transactionClient: TransactionClient;
+  private readonly networkType: NetworkType;
 
   /**
-   * Constructor
-   * @param connection the blockchain network connection
-   * @param client the transaction client
+   * Construct service class
+   *
+   * @param connection the config class to connect to blockchain network
    */
-  constructor(connection: BlockchainNetworkConnection) {
-    this.connection = connection;
-    this.client = new TransactionClient(connection);
+  constructor(public readonly connection: BlockchainNetworkConnection) {
+    this.transactionClient = new TransactionClient(connection);
     this.networkType = Converter.getNemNetworkType(this.connection.networkType);
   }
 
   /**
-   * Creates and announces the mesage payload to blockchain
-   * @param payload the payload
-   * @param signerPrivateKey the signer private key
-   * @param recipientPublicKey the recipient public key
-   * @param recipientAddress the recipient address
-   * @param transactionDeadline the transaction deadline
-   * @param useBlockchainSecureMessage determine to use blockchain secure message
+   * Create and announce a blockchain transaction
+   *
+   * @param payload             the message payload
+   * @param signerPrivateKey           the signer's private key for the transaction
+   * @param recipientPublicKey         the recipient's public key for the transaction (if different from signer)
+   * @param recipientAddress           the recipient's address for the transaction (if different from signer)
+   * @param transactionDeadline        the transaction deadline in hours
+   * @param useBlockchainSecureMessage the flag to indicate if secure message will be created
+   * @return the transaction hash
    */
-  public createAndAnnounceTransaction(
+  public async createAndAnnounceTransaction(
     payload: ProximaxMessagePayloadModel,
     signerPrivateKey: string,
     recipientPublicKey: string,
     recipientAddress: string,
     transactionDeadline: number,
     useBlockchainSecureMessage: boolean
-  ): Observable<string> {
+  ): Promise<string> {
     if (!signerPrivateKey) {
       throw new Error('signer private key is required');
     }
-
     if (!payload) {
       throw new Error('payload is required');
     }
@@ -98,7 +97,6 @@ export class BlockchainTransactionService {
       signerPrivateKey
     );
 
-    // TODO: Refactor when levy implement in blockchain
     const mosaic = new Mosaic(new MosaicId('prx:xpx'), UInt64.fromUint(1));
     console.log('deadline ' + transactionDeadline);
 
@@ -114,22 +112,20 @@ export class BlockchainTransactionService {
     console.log(transferTransaction.message);
 
     const signedTransaction = signerAccount.sign(transferTransaction);
-    /*
-    await this.client.waitForAnnouncedTransactionToBeUnconfirmed(
-      recipient,
-      signedTransaction.hash
-    );*/
 
-    return this.client.announce(signedTransaction).pipe(
-      map(transactionHash => {
-        return transactionHash;
-      })
+    await this.transactionClient.announce(
+      signedTransaction,
+      signerAccount.address
     );
+
+    return signedTransaction.hash;
   }
 
   /**
-   * Gets the transferred transaction
-   * @param transactionHash the transaction hash
+   * Retrieves a transfer transaction
+   *
+   * @param transactionHash the transfer transaction hash
+   * @return the transfer transaction
    */
   public getTransferTransaction(
     transactionHash: string
@@ -138,7 +134,7 @@ export class BlockchainTransactionService {
       throw new Error('transaction hash is required');
     }
 
-    return this.client.getTransaction(transactionHash).pipe(
+    return this.transactionClient.getTransaction(transactionHash).pipe(
       map(transaction => {
         if (transaction.type === TransactionType.TRANSFER) {
           return transaction as TransferTransaction;
@@ -146,26 +142,6 @@ export class BlockchainTransactionService {
           throw new Error('Expecting a transfer transaction');
         }
       })
-    );
-  }
-
-  /**
-   * Tests the get recipient method.
-   * DO NOT USE THIS FUNCTION
-   * @internal
-   * @param recipientAddress the recipient address
-   * @param recipientPublicKey The recipient public key
-   * @param signerPrivateKey the signer private key
-   */
-  public testGetRecipient(
-    recipientAddress: string,
-    recipientPublicKey: string,
-    signerPrivateKey: string
-  ): Address {
-    return this.getRecipient(
-      recipientAddress,
-      recipientPublicKey,
-      signerPrivateKey
     );
   }
 

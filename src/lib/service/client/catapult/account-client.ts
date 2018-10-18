@@ -1,12 +1,26 @@
 import { AccountHttp, Address } from 'proximax-nem2-sdk';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { BlockchainNetworkConnection } from '../../../connection/blockchain-network-connection';
 
+/**
+ * The client class that directly interface with the blockchain's transaction APIs
+ */
 export class AccountClient {
-  private accountHttp: AccountHttp;
+  /**
+   * The public key constant when it is not yet used to send transaction on catapult.
+   */
+  public static readonly PUBLIC_KEY_NOT_FOUND =
+    '0000000000000000000000000000000000000000000000000000000000000000';
 
-  constructor(blockchainNetworkConnection: BlockchainNetworkConnection) {
+  private readonly accountHttp: AccountHttp;
+
+  /**
+   * Create instance of AccountClient
+   * @param blockchainNetworkConnection the blockchain connection
+   * @throws MalformedURLException exception when invalid blockchain URl
+   */
+  public constructor(
+    public readonly blockchainNetworkConnection: BlockchainNetworkConnection
+  ) {
     if (blockchainNetworkConnection === null) {
       throw new Error('blockchain network connection is required');
     }
@@ -14,16 +28,18 @@ export class AccountClient {
     this.accountHttp = new AccountHttp(blockchainNetworkConnection.getApiUrl());
   }
 
-  public getPublicKey(address: string): Observable<string> {
+  public async getPublicKey(address: string): Promise<string> {
     if (address === null || address.length <= 0) {
       throw new Error('address is required');
     }
 
-    const bcAddress = Address.createFromRawAddress(address);
-    return this.accountHttp.getAccountInfo(bcAddress).pipe(
-      map(accountInfo => {
-        return accountInfo.publicKey;
-      })
-    );
+    const accountInfo = await this.accountHttp
+      .getAccountInfo(Address.createFromRawAddress(address))
+      .toPromise();
+    if (accountInfo.publicKey === AccountClient.PUBLIC_KEY_NOT_FOUND) {
+      throw new Error(`Address ${address} has no public key yet on blockchain`);
+    }
+
+    return accountInfo.publicKey;
   }
 }
