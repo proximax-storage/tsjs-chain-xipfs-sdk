@@ -25,18 +25,18 @@ export class DownloadResult {
     /**
      * The transaction hash
      */
-    public transactionHash: string,
+    public readonly transactionHash: string,
     /**
      * The privacy type
      */
-    public privacyType: PrivacyType,
+    public readonly privacyType: PrivacyType,
     /**
      * The version
      */
-    public version: string,
+    public readonly version: string,
     /**
      * The download data result
      */
-    public data: DownloadResultData
+    public readonly data: DownloadResultData
   ) {}
 }

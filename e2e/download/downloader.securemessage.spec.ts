@@ -31,12 +31,9 @@ describe('Downloader integration tests for secure message', () => {
 
     const expectedText = 'Proximax P2P Uploader test';
 
+    const param = DownloadParameter.create(transactionHash).build();
+
     const downloader = new Downloader(connectionConfig);
-
-    const paramBuilder = DownloadParameter.create(transactionHash);
-    paramBuilder.withPlainPrivacy();
-    const param = paramBuilder.build();
-
     await downloader.download(param).then(response => {
       // console.log(response);
 
@@ -48,7 +45,6 @@ describe('Downloader integration tests for secure message', () => {
     });
   }).timeout(10000);
 
-  // TODO Fix code
   it('should download content based on transaction hash with secure message', async () => {
     const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
       new BlockchainNetworkConnection(
@@ -61,24 +57,18 @@ describe('Downloader integration tests for secure message', () => {
     );
 
     const transactionHash =
-      '3E27BB74E076E5E3FBF89D204CE738862B7B3100E2B5D979E7210A92846EA572';
+      'E01FFFA27BC1E7655348ABCFF626E8BC053E5F65A67740B0D22CD837740EB9D5';
 
     const expectedText = 'Proximax P2P Uploader with secured message';
 
+    const param = DownloadParameter.create(transactionHash)
+      .withAccountPrivateKey(SenderAccount.privateKey)
+      .build();
     const downloader = new Downloader(connectionConfig);
 
-    const paramBuilder = DownloadParameter.create(transactionHash);
-    paramBuilder.withAccountPrivateKey(SenderAccount.privateKey);
-    paramBuilder.withPlainPrivacy();
-    const param = paramBuilder.build();
-
     await downloader.download(param).then(response => {
-      // console.log(response);
-
       const data = response.data.bytes;
-      // console.log(data);
       const actual = Converter.ab2str(data);
-      // console.log(actual);
       expect(actual).to.be.equal(expectedText);
     });
   }).timeout(10000);

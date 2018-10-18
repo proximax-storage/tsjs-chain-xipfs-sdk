@@ -58,8 +58,8 @@ export class BlockchainMessageService {
       );
       return SecureMessage.create(
         jsonPayload,
-        senderPrivateKey,
-        recipientPublicKey
+        recipientPublicKey,
+        senderPrivateKey
       );
     } else {
       return PlainMessage.create(jsonPayload);
@@ -93,7 +93,7 @@ export class BlockchainMessageService {
         this.networkType
       );
       return SecureMessage.decrypt(
-        transferTransaction.message.payload,
+        Converter.decodeHex(transferTransaction.message.payload),
         await this.getTransactionOtherPartyPublicKey(
           account,
           transferTransaction
@@ -163,10 +163,10 @@ export class BlockchainMessageService {
     const recipientAddress = transferTransaction.recipient;
     const retrieverAddress = retrieveAccount.address;
 
-    if (retrieverAddress === recipientAddress) {
+    if (retrieverAddress.plain() === recipientAddress.plain()) {
       // retriever is the recipient, use sender public key
       return senderAccount.publicKey;
-    } else if (retrieverAddress === senderAccount.address) {
+    } else if (retrieverAddress.plain() === senderAccount.address.plain()) {
       // retriever is the sender, use recipient public key
       return this.accountClient.getPublicKey(recipientAddress.plain());
     } else {

@@ -14,9 +14,11 @@ export class RetrieveProximaxMessagePayloadService {
   /**
    * Construct this class
    *
-   * @param connectionConfig the connection config
+   * @param blockchainNetworkConnection the blockchain connection config
    */
-  constructor(blockchainNetworkConnection: BlockchainNetworkConnection) {
+  constructor(
+    public readonly blockchainNetworkConnection: BlockchainNetworkConnection
+  ) {
     this.blockchainMessageService = new BlockchainMessageService(
       blockchainNetworkConnection
     );
@@ -30,7 +32,7 @@ export class RetrieveProximaxMessagePayloadService {
    */
   public async getMessagePayload(
     transferTransaction: TransferTransaction,
-    accountPrivateKey: string
+    accountPrivateKey?: string
   ): Promise<ProximaxMessagePayloadModel> {
     const payload = await this.blockchainMessageService.getMessagePayload(
       transferTransaction,
