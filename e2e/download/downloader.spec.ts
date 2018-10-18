@@ -1,14 +1,18 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import 'mocha';
-import {BlockchainInfo, IpfsInfo, SenderAccount} from '../../src/lib/config/config.spec';
-import {BlockchainNetworkConnection} from '../../src/lib/connection/blockchain-network-connection';
-import {ConnectionConfig} from '../../src/lib/connection/connection-config';
-import {IpfsConnection} from '../../src/lib/connection/ipfs-connection';
-import {Protocol} from '../../src/lib/connection/protocol';
-import {DownloadParameter} from '../../src/lib/download/download-parameter';
-import {Downloader} from '../../src/lib/download/downloader';
-import {Converter} from '../../src/lib/helper/converter';
-import {BlockchainNetworkType} from '../../src/lib/model/blockchain/blockchain-network-type';
+import {
+  BlockchainInfo,
+  IpfsInfo,
+  SenderAccount
+} from '../../src/lib/config/config.spec';
+import { BlockchainNetworkConnection } from '../../src/lib/connection/blockchain-network-connection';
+import { ConnectionConfig } from '../../src/lib/connection/connection-config';
+import { IpfsConnection } from '../../src/lib/connection/ipfs-connection';
+import { Protocol } from '../../src/lib/connection/protocol';
+import { DownloadParameter } from '../../src/lib/download/download-parameter';
+import { Downloader } from '../../src/lib/download/downloader';
+import { Converter } from '../../src/lib/helper/converter';
+import { BlockchainNetworkType } from '../../src/lib/model/blockchain/blockchain-network-type';
 
 describe('Downloader', () => {
   it('should download content based on transaction hash', async () => {
@@ -42,7 +46,7 @@ describe('Downloader', () => {
       // console.log(actual);
       expect(actual).to.be.equal(expectedText);
     });
-  }).timeout(10000);;
+  }).timeout(10000);
 
   // TODO Fix code
   it('should download content based on transaction hash with secure message', async () => {

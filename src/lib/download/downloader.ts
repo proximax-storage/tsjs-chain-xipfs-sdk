@@ -52,7 +52,7 @@ export class Downloader {
         map(transferedTransaction => {
           return this.getMessagePayload(
             transferedTransaction,
-            param.accountPrivateKey!,
+            param.accountPrivateKey!
           );
         }),
         switchMap(messagePayload => {
@@ -139,7 +139,7 @@ export class Downloader {
    */
   public getMessagePayload(
     transferTransaction: TransferTransaction,
-    accountPrivateKey: string,
+    accountPrivateKey: string
   ): ProximaxMessagePayloadModel {
     let messagePayloadModel: ProximaxMessagePayloadModel;
 
