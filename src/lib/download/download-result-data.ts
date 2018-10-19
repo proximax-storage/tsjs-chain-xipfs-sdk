@@ -22,38 +22,34 @@ export class DownloadResultData {
     /**
      * The data hash
      */
-    public dataHash: string,
+    public readonly dataHash: string,
     /**
      * The timestamp
      */
-    public timestamp: number,
+    public readonly timestamp: number,
     /**
      * The actual data in bytes. This only available for PrivacyType.PLAIN
      */
-    public bytes?: any,
+    public readonly bytes?: any,
     /**
      * The digest
      */
-    public digest?: string,
+    public readonly digest?: string,
     /**
      * The content description
      */
-    public description?: string,
+    public readonly description?: string,
     /**
      * The content type
      */
-    public contentType?: string,
+    public readonly contentType?: string,
     /**
      * The content name or file name
      */
-    public name?: string,
+    public readonly name?: string,
     /**
      * The content metadata
      */
-    public metadata?: Map<string, string>
-  ) {
-    if (this.dataHash === null || this.dataHash.length <= 0) {
-      throw new Error('Datahash is required');
-    }
-  }
+    public readonly metadata?: Map<string, string>
+  ) {}
 }

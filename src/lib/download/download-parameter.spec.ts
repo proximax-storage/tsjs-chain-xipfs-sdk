@@ -41,10 +41,9 @@ describe('DownloadParameter', () => {
   it('should create download parameter', () => {
     const downloadParameter = new DownloadParameter(
       'F6F901704BB271F7CE2E4FD6BC38A9715EC3752000AEDF0AA67CE38BD07EC42E',
-      'F6F901704BB271F7CE2E4FD6BC38A9715EC3752000AEDF0AA67CE38BD07EC42E',
-      '0DC05CB635D5DA08C190C3FB1BA15EC0E27A15CD90A91E97FB7DD2D5E7C30392',
       PlainPrivacyStrategy.create(),
-      false
+      false,
+      '0DC05CB635D5DA08C190C3FB1BA15EC0E27A15CD90A91E97FB7DD2D5E7C30392'
     );
 
     expect(downloadParameter.transactionHash).to.not.be.equal(undefined);

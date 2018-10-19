@@ -1,16 +1,25 @@
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
+import { PathUploadContentType } from '../config/constants';
 import { ConnectionConfig } from '../connection/connection-config';
 import { DigestUtils } from '../helper/digest-util';
-import { IpfsContent } from '../model/ipfs/ipfs-content';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { FileRepositoryFactory } from './factory/file-repository-factory';
 import { FileRepository } from './repository/file-repository';
-export class RetrieveProximaxDataService {
-  private fileRepository: FileRepository;
 
-  constructor(connectionConfig: ConnectionConfig) {
+/**
+ * The service class responsible for retrieving data
+ */
+export class RetrieveProximaxDataService {
+  private readonly fileRepository: FileRepository;
+
+  /**
+   * Construct this class
+   *
+   * @param connectionConfig the connection config
+   */
+  constructor(public readonly connectionConfig: ConnectionConfig) {
     this.fileRepository = FileRepositoryFactory.createFromConnectionConfig(
       connectionConfig
     );
@@ -22,25 +31,27 @@ export class RetrieveProximaxDataService {
     validateDigest: boolean,
     digest: string,
     contentType: string
-  ): Observable<IpfsContent[]> {
+  ): Observable<Uint8Array> {
     if (datahash === null) {
       throw new Error('dataHash is required');
     }
-
     if (privacyStrategy === null) {
       throw new Error('privacy strategy is required');
     }
 
-    console.log(contentType);
-
-    // to be refactor
-    return this.fileRepository.getStream(datahash).pipe(
-      switchMap(stream => {
-        return this.validateDigest(validateDigest, digest, datahash).pipe(
-          map(_ => stream)
-        );
-      })
-    );
+    if (contentType != null && contentType === PathUploadContentType) {
+      // path
+      throw new Error('download of path is not yet supported');
+    } else {
+      // stream
+      return this.fileRepository.getStream(datahash).pipe(
+        switchMap(stream => {
+          return this.validateDigest(validateDigest, digest, datahash).pipe(
+            map(_ => stream)
+          );
+        })
+      );
+    }
   }
 
   private validateDigest(

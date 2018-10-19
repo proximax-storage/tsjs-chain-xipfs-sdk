@@ -1,85 +1,82 @@
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import 'mocha';
-import { BlockchainNetworkConnection } from '../../src/lib/connection/blockchain-network-connection';
+import {
+  BlockchainNetworkConnection,
+  BlockchainNetworkType,
+  IpfsConnection
+} from '../../src';
 import { ConnectionConfig } from '../../src/lib/connection/connection-config';
-import { IpfsConnection } from '../../src/lib/connection/ipfs-connection';
 import { Protocol } from '../../src/lib/connection/protocol';
 import { DownloadParameter } from '../../src/lib/download/download-parameter';
 import { Downloader } from '../../src/lib/download/downloader';
 import { Converter } from '../../src/lib/helper/converter';
-import { BlockchainNetworkType } from '../../src/lib/model/blockchain/blockchain-network-type';
 import {
   BlockchainInfo,
   IpfsInfo,
+  NoFundsAccount,
+  RecipientAccount,
   SenderAccount
 } from '../integrationtestconfig';
 
+chai.use(chaiAsPromised);
+
 describe('Downloader integration tests for secure message', () => {
-  it('should download content based on transaction hash', async () => {
-    const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
-      new BlockchainNetworkConnection(
-        BlockchainNetworkType.MIJIN_TEST,
-        BlockchainInfo.apiHost,
-        BlockchainInfo.apiPort,
-        Protocol.HTTP
-      ),
-      new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
-    );
+  const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
+    new BlockchainNetworkConnection(
+      BlockchainNetworkType.MIJIN_TEST,
+      BlockchainInfo.apiHost,
+      BlockchainInfo.apiPort,
+      Protocol.HTTP
+    ),
+    new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
+  );
+  const downloader = new Downloader(connectionConfig);
 
-    const transactionHash =
-      'BDD4E36A29E2EF588FFEE6F6ABBC9EBC69F4DD3FCB8A8CD23C0A227A59B64D0D';
+  const transactionHashOfSecureMessageUpload =
+    'C6450FAFB9127E3D396DAF2C90A2DBB05AC70AC1575690971C771D16D085042D';
 
-    const expectedText = 'Proximax P2P Uploader test';
-
-    const downloader = new Downloader(connectionConfig);
-
-    const paramBuilder = DownloadParameter.create(transactionHash);
-    paramBuilder.withPlainPrivacy();
-    const param = paramBuilder.build();
-
-    await downloader.download(param).then(response => {
-      // console.log(response);
-
-      const data = response.data.bytes;
-      // console.log(data);
-      const actual = Converter.ab2str(data);
-      // console.log(actual);
-      expect(actual).to.be.equal(expectedText);
-    });
-  }).timeout(10000);
-
-  // TODO Fix code
-  it('should download content based on transaction hash with secure message', async () => {
-    const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
-      new BlockchainNetworkConnection(
-        BlockchainNetworkType.MIJIN_TEST,
-        BlockchainInfo.apiHost,
-        BlockchainInfo.apiPort,
-        Protocol.HTTP
-      ),
-      new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
-    );
-
-    const transactionHash =
-      '3E27BB74E076E5E3FBF89D204CE738862B7B3100E2B5D979E7210A92846EA572';
-
+  it('should download upload with secure message as sender', async () => {
     const expectedText = 'Proximax P2P Uploader with secured message';
 
-    const downloader = new Downloader(connectionConfig);
+    const param = DownloadParameter.create(transactionHashOfSecureMessageUpload)
+      .withAccountPrivateKey(SenderAccount.privateKey)
+      .build();
 
-    const paramBuilder = DownloadParameter.create(transactionHash);
-    paramBuilder.withAccountPrivateKey(SenderAccount.privateKey);
-    paramBuilder.withPlainPrivacy();
-    const param = paramBuilder.build();
+    const result = await downloader.download(param);
+    const data = result.data.bytes;
+    const actual = Converter.ab2str(data);
 
-    await downloader.download(param).then(response => {
-      // console.log(response);
+    expect(actual).to.be.equal(expectedText);
+  }).timeout(10000);
 
-      const data = response.data.bytes;
-      // console.log(data);
-      const actual = Converter.ab2str(data);
-      // console.log(actual);
-      expect(actual).to.be.equal(expectedText);
-    });
+  it('should download upload with secure message as receiver', async () => {
+    const expectedText = 'Proximax P2P Uploader with secured message';
+
+    const param = DownloadParameter.create(transactionHashOfSecureMessageUpload)
+      .withAccountPrivateKey(RecipientAccount.privateKey)
+      .build();
+
+    const result = await downloader.download(param);
+    const data = result.data.bytes;
+    const actual = Converter.ab2str(data);
+
+    expect(actual).to.be.equal(expectedText);
+  }).timeout(10000);
+
+  it('fail to download with wrong private key', async () => {
+    const param = DownloadParameter.create(transactionHashOfSecureMessageUpload)
+      .withAccountPrivateKey(NoFundsAccount.privateKey)
+      .build();
+
+    expect(downloader.download(param)).to.be.rejectedWith(Error);
+  }).timeout(10000);
+
+  it('fail to download with no private key', async () => {
+    const param = DownloadParameter.create(
+      transactionHashOfSecureMessageUpload
+    ).build();
+
+    expect(downloader.download(param)).to.be.rejectedWith(Error);
   }).timeout(10000);
 });

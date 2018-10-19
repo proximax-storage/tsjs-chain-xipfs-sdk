@@ -1,3 +1,4 @@
+import { ReservedContentTypes } from '../config/constants';
 import { UploadParameterData } from './upload-parameter-data';
 
 /**
@@ -11,6 +12,12 @@ export abstract class AbstractByteStreamParameterData extends UploadParameterDat
     public readonly metadata?: Map<string, string>
   ) {
     super(1, name, description, contentType, metadata);
+
+    if (contentType && ReservedContentTypes.indexOf(contentType) >= 0) {
+      throw new Error(
+        `content type ${contentType} cannot be used as it is reserved`
+      );
+    }
   }
 
   /**

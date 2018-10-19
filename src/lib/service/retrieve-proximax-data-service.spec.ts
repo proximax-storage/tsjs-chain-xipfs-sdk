@@ -1,5 +1,5 @@
 import 'mocha';
-import { BlockchainInfo, IpfsInfo } from '../config/config.spec';
+import { BlockchainInfo, IpfsInfo } from '../config/testconfig';
 import { IpfsConnection } from '../connection/ipfs-connection';
 import { Protocol } from '../connection/protocol';
 import { RetrieveProximaxDataService } from './retrieve-proximax-data-service';
@@ -7,7 +7,6 @@ import { RetrieveProximaxDataService } from './retrieve-proximax-data-service';
 import { expect } from 'chai';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { ConnectionConfig } from '../connection/connection-config';
-import { Converter } from '../helper/converter';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
 
@@ -38,8 +37,7 @@ describe('RetrieveProximaxDataService', () => {
         'text/plain'
       )
       .subscribe(response => {
-        // console.log(response[0].content);
-        const content = Converter.ab2str(response[0].content);
+        const content = Buffer.from(response).toString('utf8');
         expect(content).to.be.equal(expectedContent);
       });
   });

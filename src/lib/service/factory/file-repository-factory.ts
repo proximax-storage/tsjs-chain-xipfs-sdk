@@ -19,10 +19,15 @@ import { FileRepository } from '../repository/file-repository';
  * limitations under the License.
  */
 
+/**
+ * The factory class to create the file storage client based on connection config
+ */
 export class FileRepositoryFactory {
   /**
-   * Create the repository from the connection config
+   * Create the file storage client based on connection config
+   *
    * @param connectionConfig the connection config
+   * @return the file storage client created
    */
   public static createFromConnectionConfig(
     connectionConfig: ConnectionConfig
@@ -30,7 +35,6 @@ export class FileRepositoryFactory {
     if (connectionConfig.ifpsConnection !== undefined) {
       return new IpfsClient(connectionConfig.ifpsConnection!);
     } else {
-      // console.log('####');
       return new StorageNodeClient(connectionConfig.storageConnection!);
     }
   }

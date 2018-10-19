@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
+import { ChronoUnit } from 'js-joda';
 import {
   Account,
   Address,
   Deadline,
+  Message,
   Mosaic,
   MosaicId,
   NetworkType,
-  PlainMessage,
-  SecureMessage,
   TransactionType,
   TransferTransaction,
   UInt64
@@ -32,12 +32,14 @@ import { map } from 'rxjs/operators';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { Converter } from '../helper/converter';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
+import { BlockchainMessageService } from './blockchain-message-service';
 import { TransactionClient } from './client/catapult/transaction-client';
 
 /**
  * The service class responsible for handling tasks that work with blockchain transactions
  */
 export class BlockchainTransactionService {
+  private readonly blockchainMessageService: BlockchainMessageService;
   private readonly transactionClient: TransactionClient;
   private readonly networkType: NetworkType;
 
@@ -47,6 +49,7 @@ export class BlockchainTransactionService {
    * @param connection the config class to connect to blockchain network
    */
   constructor(public readonly connection: BlockchainNetworkConnection) {
+    this.blockchainMessageService = new BlockchainMessageService(connection);
     this.transactionClient = new TransactionClient(connection);
     this.networkType = Converter.getNemNetworkType(this.connection.networkType);
   }
@@ -65,10 +68,10 @@ export class BlockchainTransactionService {
   public async createAndAnnounceTransaction(
     payload: ProximaxMessagePayloadModel,
     signerPrivateKey: string,
-    recipientPublicKey: string,
-    recipientAddress: string,
     transactionDeadline: number,
-    useBlockchainSecureMessage: boolean
+    useBlockchainSecureMessage: boolean,
+    recipientPublicKey?: string,
+    recipientAddress?: string
   ): Promise<string> {
     if (!signerPrivateKey) {
       throw new Error('signer private key is required');
@@ -77,40 +80,27 @@ export class BlockchainTransactionService {
       throw new Error('payload is required');
     }
 
-    const jsonPayload = JSON.stringify(payload);
-    console.log(' recipientPublicKey ' + recipientPublicKey);
-    console.log(' signerPrivateKey ' + signerPrivateKey);
-    const message = useBlockchainSecureMessage
-      ? SecureMessage.create(jsonPayload, recipientPublicKey, signerPrivateKey)
-      : PlainMessage.create(jsonPayload);
-    console.log(message);
-    // const networkType = this.getNemNetworkType(this.connection.network);
-
+    const message = await this.blockchainMessageService.createMessage(
+      payload,
+      signerPrivateKey,
+      useBlockchainSecureMessage,
+      recipientPublicKey,
+      recipientAddress
+    );
+    const recipient = this.getRecipient(
+      signerPrivateKey,
+      recipientAddress,
+      recipientPublicKey
+    );
+    const transferTransaction = this.createTransaction(
+      recipient,
+      transactionDeadline,
+      message
+    );
     const signerAccount = Account.createFromPrivateKey(
       signerPrivateKey,
       this.networkType
     );
-
-    const recipient = this.getRecipient(
-      recipientAddress,
-      recipientPublicKey,
-      signerPrivateKey
-    );
-
-    const mosaic = new Mosaic(new MosaicId('prx:xpx'), UInt64.fromUint(1));
-    console.log('deadline ' + transactionDeadline);
-
-    const transferTransaction = TransferTransaction.create(
-      Deadline.create(transactionDeadline),
-      recipient,
-      [mosaic],
-      message,
-      this.networkType
-    );
-
-    console.log('Tranfer transaction ..');
-    console.log(transferTransaction.message);
-
     const signedTransaction = signerAccount.sign(transferTransaction);
 
     await this.transactionClient.announce(
@@ -145,28 +135,32 @@ export class BlockchainTransactionService {
     );
   }
 
-  /**
-   *
-   * @param recipientAddress the recipient address
-   * @param recipientPublicKey The recipient public key
-   * @param signerPrivateKey the signer private key
-   */
   private getRecipient(
-    recipientAddress: string,
-    recipientPublicKey: string,
-    signerPrivateKey: string
+    signerPrivateKey: string,
+    recipientAddress?: string,
+    recipientPublicKey?: string
   ): Address {
-    if (recipientPublicKey && recipientPublicKey.length > 0) {
+    if (recipientPublicKey) {
       return Address.createFromPublicKey(recipientPublicKey, this.networkType);
-    } else if (recipientAddress && recipientAddress.length > 0) {
+    } else if (recipientAddress) {
       return Address.createFromRawAddress(recipientAddress);
-    } else if (signerPrivateKey && signerPrivateKey.length > 0) {
+    } else {
       return Account.createFromPrivateKey(signerPrivateKey, this.networkType)
         .address;
-    } else {
-      throw new Error(
-        'The recipient address, public key or signer private key is required'
-      );
     }
+  }
+
+  private createTransaction(
+    recipientAddress: Address,
+    transactionDeadline: number,
+    message: Message
+  ): TransferTransaction {
+    return TransferTransaction.create(
+      Deadline.create(transactionDeadline, ChronoUnit.HOURS),
+      recipientAddress,
+      [new Mosaic(new MosaicId('prx:xpx'), UInt64.fromUint(1))],
+      message,
+      this.networkType
+    );
   }
 }

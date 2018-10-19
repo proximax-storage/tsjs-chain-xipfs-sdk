@@ -42,7 +42,7 @@ export class IpfsClient implements FileRepository {
    * @param data the data
    * @param options the callback options
    */
-  public addStream(data: any, options?: object): Observable<string> {
+  public addStream(data: any): Observable<string> {
     if (!data) {
       throw new Error('data is required');
     }
@@ -51,7 +51,7 @@ export class IpfsClient implements FileRepository {
     const bufferData = Buffer.from(data); // Buffer.from(data);
 
     return from<IpfsContent[]>(
-      this.connection.getIpfs().files.add(bufferData, options)
+      this.connection.getIpfs().files.add(bufferData)
     ).pipe(map(hashList => hashList[0].hash));
   }
 
@@ -59,15 +59,13 @@ export class IpfsClient implements FileRepository {
    * Gets stream from ipfs storage by datahash
    * @param hash the data hash
    */
-  public getStream(hash: string, options?: object): Observable<any> {
+  public getStream(hash: string): Observable<any> {
     if (!hash) {
       throw new Error('hash is required');
     }
 
-    if (options) {
-      console.log(options);
-    }
-
-    return from<IpfsContent>(this.connection.getIpfs().files.get(hash));
+    return from<IpfsContent>(this.connection.getIpfs().files.get(hash)).pipe(
+      map(ipfsContentArr => ipfsContentArr[0].content)
+    );
   }
 }

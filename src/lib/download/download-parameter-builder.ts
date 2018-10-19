@@ -1,21 +1,16 @@
-import { convert, KeyPair } from 'proximax-nem2-library';
 import { NemPrivacyStrategy } from '../..';
-import { Converter } from '../helper/converter';
-import { PKeyPair } from '../model/blockchain/keypair';
 import { PasswordPrivacyStrategy } from '../privacy/password-privacy';
 import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { DownloadParameter } from './download-parameter';
 
 export class DownloadParameterBuilder {
-  private transactionHash;
-  private accountPrivateKey;
-  private accountPublicKey;
-  private privacyStrategy;
-  private validateDigest;
+  private accountPrivateKey?: string;
+  private privacyStrategy?: PrivacyStrategy;
+  private validateDigest?: boolean;
 
-  constructor(transactionHash: string) {
-    if (transactionHash === null || transactionHash.length <= 0) {
+  constructor(private readonly transactionHash: string) {
+    if (!transactionHash) {
       throw new Error('transactionHash is required');
     }
 
@@ -25,22 +20,7 @@ export class DownloadParameterBuilder {
   public withAccountPrivateKey(
     accountPrivateKey: string
   ): DownloadParameterBuilder {
-    if (
-      accountPrivateKey === null ||
-      accountPrivateKey.length <= 0 ||
-      Converter.isHex(accountPrivateKey)
-    ) {
-      throw new Error('accountPrivateKey should be a valid private key');
-    }
-
     this.accountPrivateKey = accountPrivateKey;
-
-    // create account public key
-    const accountKeyPair: PKeyPair = KeyPair.createKeyPairFromPrivateKeyString(
-      accountPrivateKey
-    );
-    this.accountPublicKey = convert.uint8ToHex(accountKeyPair.publicKey);
-
     return this;
   }
 
@@ -74,20 +54,11 @@ export class DownloadParameterBuilder {
   }
 
   public build(): DownloadParameter {
-    if (this.privacyStrategy === null) {
-      this.privacyStrategy = PlainPrivacyStrategy.create();
-    }
-
-    if (this.validateDigest == null) {
-      this.validateDigest = false;
-    }
-
     return new DownloadParameter(
       this.transactionHash,
-      this.accountPrivateKey,
-      this.accountPublicKey,
-      this.privacyStrategy,
-      this.validateDigest
+      this.privacyStrategy || PlainPrivacyStrategy.create(),
+      this.validateDigest || false,
+      this.accountPrivateKey
     );
   }
 }

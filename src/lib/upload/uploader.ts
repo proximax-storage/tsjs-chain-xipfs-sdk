@@ -13,58 +13,65 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Observable, of } from 'rxjs';
 import { ConnectionConfig } from '../connection/connection-config';
-import { ProximaxDataModel } from '../model/proximax/data-model';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { BlockchainTransactionService } from '../service/blockchain-transaction-service';
 import { CreateProximaxDataService } from '../service/create-proximax-data-service';
+import { CreateProximaxMessagePayloadService } from '../service/create-proximax-message-payload-service';
 import { UploadParameter } from './upload-parameter';
 import { UploadResult } from './upload-result';
 
 /**
- * Class represents upload service
+ * The Uploader class that handles the upload functionality
+ * <br>
+ * <br>
+ * The Uploader creation requires a ConnectionConfig that defines generally where and how the upload will be done.
+ * The instance of the class can be reused to upload multiple times.
+ * <br>
+ * <br>
+ * Each upload requires an UploadParameter that contains what is being uploaded along with additional details.
  */
 export class Uploader {
-  private blockchainTransactionService: BlockchainTransactionService;
-  private createProximaxDataService: CreateProximaxDataService;
+  private readonly blockchainTransactionService: BlockchainTransactionService;
+  private readonly createProximaxDataService: CreateProximaxDataService;
+  private readonly createProximaxMessagePayloadService: CreateProximaxMessagePayloadService;
 
   /**
-   * Constructor
-   * @param blockchainTransactionService the blockchain transaction service
-   * @param proximaxDataService the proximax data service
+   * Construct the class with a ConnectionConfig
+   *
+   * @param connectionConfig the connection config that defines generally where the upload will be sent
    */
-  constructor(connectionConfig: ConnectionConfig) {
+  public constructor(public readonly connectionConfig: ConnectionConfig) {
     this.blockchainTransactionService = new BlockchainTransactionService(
       connectionConfig.blockchainNetworkConnection
     );
     this.createProximaxDataService = new CreateProximaxDataService(
       connectionConfig
     );
+    this.createProximaxMessagePayloadService = new CreateProximaxMessagePayloadService();
   }
 
   /**
-   * Upload data to Proximax platform
-   * @param param the upload parameter
+   * Upload a data and attach it on a blockchain transaction.
+   * This upload returns result once the blockchain transaction is validated and already set with `unconfirmed` status
+   * <br>
+   * The upload throws an UploadFailureException runtime exception if does not succeed.
+   *
+   * @param uploadParam the upload parameter
+   * @return the upload result
    */
   public async upload(param: UploadParameter): Promise<UploadResult> {
     return this.doUpload(param);
   }
 
-  /**
-   * Uploads data to Proximax platform
-   * @param param the upload parameter
-   */
   private async doUpload(param: UploadParameter): Promise<UploadResult> {
-    // console.log(param);
-    // throw new Error('Not yet implement');
     const uploadData = await this.createProximaxDataService
       .createData(param)
       .toPromise();
-    const messagePayload = await this.createMessagePayload(
+    const messagePayload = await this.createProximaxMessagePayloadService.createMessagePayload(
       param,
       uploadData
-    ).toPromise();
+    );
     const transactionHash = await this.createAndAnnounceTransaction(
       param,
       messagePayload
@@ -78,11 +85,6 @@ export class Uploader {
     );
   }
 
-  /**
-   * Creates and announce message payload to blockchain
-   * @param param the upload parameter
-   * @param payload the proximax message payload model
-   */
   private async createAndAnnounceTransaction(
     param: UploadParameter,
     payload: ProximaxMessagePayloadModel
@@ -90,27 +92,10 @@ export class Uploader {
     return this.blockchainTransactionService.createAndAnnounceTransaction(
       payload,
       param.signerPrivateKey,
-      param.recipientPublicKey!,
-      param.recipientAddress!,
-      param.transactionDeadline!,
-      param.useBlockchainSecureMessage!
+      param.transactionDeadline,
+      param.useBlockchainSecureMessage,
+      param.recipientPublicKey,
+      param.recipientAddress
     );
-  }
-
-  /**
-   * Creates the message payload
-   * @param param the upload parameter
-   * @param data the proximax data model
-   */
-  private createMessagePayload(
-    param: UploadParameter,
-    data: ProximaxDataModel
-  ): Observable<ProximaxMessagePayloadModel> {
-    const messagePayload = new ProximaxMessagePayloadModel(
-      param.privacyStrategy.getPrivacyType(),
-      data,
-      param.version
-    );
-    return of(messagePayload);
   }
 }

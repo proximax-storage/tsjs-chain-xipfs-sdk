@@ -1,106 +1,89 @@
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import 'mocha';
 import { BlockchainNetworkConnection } from '../../src/lib/connection/blockchain-network-connection';
 import { ConnectionConfig } from '../../src/lib/connection/connection-config';
 import { IpfsConnection } from '../../src/lib/connection/ipfs-connection';
 import { Protocol } from '../../src/lib/connection/protocol';
 import { BlockchainNetworkType } from '../../src/lib/model/blockchain/blockchain-network-type';
-import { Uint8ArrayParameterData } from '../../src/lib/upload/uint8-array-parameter-data';
 import { UploadParameter } from '../../src/lib/upload/upload-parameter';
 import { Uploader } from '../../src/lib/upload/uploader';
 import {
   BlockchainInfo,
   IpfsInfo,
+  NoFundsAccount,
   RecipientAccount,
   SenderAccount
 } from '../integrationtestconfig';
 
+chai.use(chaiAsPromised);
+
 describe('Uploader integration tests for secure message', () => {
-  it('should return upload result', async () => {
-    const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
-      new BlockchainNetworkConnection(
-        BlockchainNetworkType.MIJIN_TEST,
-        BlockchainInfo.apiHost,
-        BlockchainInfo.apiPort,
-        Protocol.HTTP
-      ),
-      new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
-    );
+  const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
+    new BlockchainNetworkConnection(
+      BlockchainNetworkType.MIJIN_TEST,
+      BlockchainInfo.apiHost,
+      BlockchainInfo.apiPort,
+      Protocol.HTTP
+    ),
+    new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
+  );
 
-    const byteStream = new Uint8Array(
-      Buffer.from('Proximax P2P Uploader test')
-    );
-    const metadata = new Map<string, string>();
-    metadata.set('author', 'Proximax');
+  const uploader = new Uploader(connectionConfig);
 
-    const paramData = Uint8ArrayParameterData.create(
-      byteStream,
-      'Test',
-      'Test decription',
-      'text/plain',
-      metadata
-    );
-
+  it('should upload with secured message', async () => {
     const param = UploadParameter.createForUint8ArrayUpload(
-      paramData,
+      new Uint8Array(Buffer.from('Proximax P2P Uploader with secured message')),
       SenderAccount.privateKey
     )
-      .withRecipientPublicKey(RecipientAccount.publicKey)
-      .withRecipientAddress(RecipientAccount.address)
-      .withPlainPrivacy()
-      .withTransactionDeadline(2)
-      .withUseBlockchainSecureMessage(false)
-      .build();
-
-    const uploader = new Uploader(connectionConfig);
-    await uploader.upload(param).then(result => {
-      console.log(result);
-      expect(result.transactionHash.length > 0).to.be.true;
-      expect(result.data.dataHash.length > 0).to.be.true;
-    });
-  }).timeout(10000);
-
-  it('should return upload result with secured message', async () => {
-    const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
-      new BlockchainNetworkConnection(
-        BlockchainNetworkType.MIJIN_TEST,
-        BlockchainInfo.apiHost,
-        BlockchainInfo.apiPort,
-        Protocol.HTTP
-      ),
-      new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
-    );
-
-    const byteStream = new Uint8Array(
-      Buffer.from('Proximax P2P Uploader with secured message')
-    );
-    const metadata = new Map<string, string>();
-    metadata.set('author', 'Proximax');
-
-    const paramData = Uint8ArrayParameterData.create(
-      byteStream,
-      'Test',
-      'Test decription',
-      'text/plain',
-      metadata
-    );
-
-    const param = UploadParameter.createForUint8ArrayUpload(
-      paramData,
-      SenderAccount.privateKey
-    )
-      .withRecipientPublicKey(RecipientAccount.publicKey)
-      .withRecipientAddress(RecipientAccount.address)
-      .withPlainPrivacy()
-      .withTransactionDeadline(2)
       .withUseBlockchainSecureMessage(true)
       .build();
 
-    const uploader = new Uploader(connectionConfig);
-    await uploader.upload(param).then(result => {
-      console.log(result);
-      expect(result.transactionHash.length > 0).to.be.true;
-      expect(result.data.dataHash.length > 0).to.be.true;
-    });
+    const result = await uploader.upload(param);
+
+    expect(result.transactionHash.length > 0).to.be.true;
+    expect(result.data.dataHash.length > 0).to.be.true;
+  }).timeout(10000);
+
+  it('should upload with secured message and specified recipient public key', async () => {
+    const param = UploadParameter.createForUint8ArrayUpload(
+      new Uint8Array(Buffer.from('Proximax P2P Uploader with secured message')),
+      SenderAccount.privateKey
+    )
+      .withRecipientPublicKey(RecipientAccount.publicKey)
+      .withUseBlockchainSecureMessage(true)
+      .build();
+
+    const result = await uploader.upload(param);
+
+    expect(result.transactionHash.length > 0).to.be.true;
+    expect(result.data.dataHash.length > 0).to.be.true;
+  }).timeout(10000);
+
+  it('should upload with secured message and specified recipient address', async () => {
+    const param = UploadParameter.createForUint8ArrayUpload(
+      new Uint8Array(Buffer.from('Proximax P2P Uploader with secured message')),
+      SenderAccount.privateKey
+    )
+      .withRecipientAddress(RecipientAccount.address)
+      .withUseBlockchainSecureMessage(true)
+      .build();
+
+    const result = await uploader.upload(param);
+
+    expect(result.transactionHash.length > 0).to.be.true;
+    expect(result.data.dataHash.length > 0).to.be.true;
+  }).timeout(10000);
+
+  it('fail to upload with secured message when recipient public key is not yet known on blockchain', async () => {
+    const param = UploadParameter.createForUint8ArrayUpload(
+      new Uint8Array(Buffer.from('Proximax P2P Uploader with secured message')),
+      SenderAccount.privateKey
+    )
+      .withRecipientAddress(NoFundsAccount.address)
+      .withUseBlockchainSecureMessage(true)
+      .build();
+
+    expect(uploader.upload(param)).to.be.rejectedWith(Error);
   }).timeout(10000);
 });
