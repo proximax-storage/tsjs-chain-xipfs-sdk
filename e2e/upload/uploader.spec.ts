@@ -16,17 +16,19 @@ import {
 } from '../integrationtestconfig';
 
 describe('Uploader integration tests', () => {
-  it('should upload successfully', async () => {
-    const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
-      new BlockchainNetworkConnection(
-        BlockchainNetworkType.MIJIN_TEST,
-        BlockchainInfo.apiHost,
-        BlockchainInfo.apiPort,
-        Protocol.HTTP
-      ),
-      new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
-    );
+  const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
+    new BlockchainNetworkConnection(
+      BlockchainNetworkType.MIJIN_TEST,
+      BlockchainInfo.apiHost,
+      BlockchainInfo.apiPort,
+      Protocol.HTTP
+    ),
+    new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
+  );
 
+  const uploader = new Uploader(connectionConfig);
+
+  it('should upload successfully', async () => {
     const byteStream = new Uint8Array(
       Buffer.from('Proximax P2P Uploader test')
     );
@@ -52,11 +54,9 @@ describe('Uploader integration tests', () => {
       .withUseBlockchainSecureMessage(false)
       .build();
 
-    const uploader = new Uploader(connectionConfig);
-    await uploader.upload(param).then(result => {
-      console.log(result);
-      expect(result.transactionHash.length > 0).to.be.true;
-      expect(result.data.dataHash.length > 0).to.be.true;
-    });
+    const result = await uploader.upload(param);
+
+    expect(result.transactionHash.length > 0).to.be.true;
+    expect(result.data.dataHash.length > 0).to.be.true;
   }).timeout(10000);
 });

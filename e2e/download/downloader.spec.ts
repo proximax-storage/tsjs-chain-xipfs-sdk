@@ -30,14 +30,10 @@ describe('Downloader integration tests', () => {
     const param = DownloadParameter.create(transactionHash).build();
 
     const downloader = new Downloader(connectionConfig);
-    await downloader.download(param).then(response => {
-      // console.log(response);
+    const result = await downloader.download(param);
+    const data = result.data.bytes;
+    const actual = Converter.ab2str(data);
 
-      const data = response.data.bytes;
-      // console.log(data);
-      const actual = Converter.ab2str(data);
-      // console.log(actual);
-      expect(actual).to.be.equal(expectedText);
-    });
+    expect(actual).to.be.equal(expectedText);
   }).timeout(10000);
 });

@@ -1,4 +1,5 @@
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import 'mocha';
 import {
   BlockchainNetworkConnection,
@@ -13,9 +14,12 @@ import { Converter } from '../../src/lib/helper/converter';
 import {
   BlockchainInfo,
   IpfsInfo,
+  NoFundsAccount,
   RecipientAccount,
   SenderAccount
 } from '../integrationtestconfig';
+
+chai.use(chaiAsPromised);
 
 describe('Downloader integration tests for secure message', () => {
   const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
@@ -58,5 +62,21 @@ describe('Downloader integration tests for secure message', () => {
     const actual = Converter.ab2str(data);
 
     expect(actual).to.be.equal(expectedText);
+  }).timeout(10000);
+
+  it('fail to download with wrong private key', async () => {
+    const param = DownloadParameter.create(transactionHashOfSecureMessageUpload)
+      .withAccountPrivateKey(NoFundsAccount.privateKey)
+      .build();
+
+    expect(downloader.download(param)).to.be.rejectedWith(Error);
+  }).timeout(10000);
+
+  it('fail to download with no private key', async () => {
+    const param = DownloadParameter.create(
+      transactionHashOfSecureMessageUpload
+    ).build();
+
+    expect(downloader.download(param)).to.be.rejectedWith(Error);
   }).timeout(10000);
 });
