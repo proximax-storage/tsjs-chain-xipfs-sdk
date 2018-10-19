@@ -1,11 +1,5 @@
 import { expect } from 'chai';
 import 'mocha';
-import {
-  BlockchainInfo,
-  IpfsInfo,
-  RecipientAccount,
-  SenderAccount
-} from '../../src/lib/config/config.spec';
 import { BlockchainNetworkConnection } from '../../src/lib/connection/blockchain-network-connection';
 import { ConnectionConfig } from '../../src/lib/connection/connection-config';
 import { IpfsConnection } from '../../src/lib/connection/ipfs-connection';
@@ -14,8 +8,14 @@ import { BlockchainNetworkType } from '../../src/lib/model/blockchain/blockchain
 import { Uint8ArrayParameterData } from '../../src/lib/upload/uint8-array-parameter-data';
 import { UploadParameter } from '../../src/lib/upload/upload-parameter';
 import { Uploader } from '../../src/lib/upload/uploader';
+import {
+  BlockchainInfo,
+  IpfsInfo,
+  RecipientAccount,
+  SenderAccount
+} from '../integrationtestconfig';
 
-describe('Uploader', () => {
+describe('Uploader integration tests for secure message', () => {
   it('should return upload result', async () => {
     const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
       new BlockchainNetworkConnection(

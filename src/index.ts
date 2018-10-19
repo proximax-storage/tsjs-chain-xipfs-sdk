@@ -1,6 +1,6 @@
 export * from './lib/service/blockchain-transaction-service';
 export * from './lib/service/client/ipfs-client';
-export * from './lib/service/client/transaction-client';
+export * from './lib/service/client/catapult/transaction-client';
 export * from './lib/privacy/privacy-type';
 export * from './lib/privacy/privacy';
 export * from './lib/privacy/plain-privacy';

@@ -1,10 +1,5 @@
 import { expect } from 'chai';
 import 'mocha';
-import {
-  BlockchainInfo,
-  IpfsInfo,
-  SenderAccount
-} from '../../src/lib/config/config.spec';
 import { BlockchainNetworkConnection } from '../../src/lib/connection/blockchain-network-connection';
 import { ConnectionConfig } from '../../src/lib/connection/connection-config';
 import { IpfsConnection } from '../../src/lib/connection/ipfs-connection';
@@ -13,8 +8,13 @@ import { DownloadParameter } from '../../src/lib/download/download-parameter';
 import { Downloader } from '../../src/lib/download/downloader';
 import { Converter } from '../../src/lib/helper/converter';
 import { BlockchainNetworkType } from '../../src/lib/model/blockchain/blockchain-network-type';
+import {
+  BlockchainInfo,
+  IpfsInfo,
+  SenderAccount
+} from '../integrationtestconfig';
 
-describe('Downloader', () => {
+describe('Downloader integration tests for secure message', () => {
   it('should download content based on transaction hash', async () => {
     const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
       new BlockchainNetworkConnection(

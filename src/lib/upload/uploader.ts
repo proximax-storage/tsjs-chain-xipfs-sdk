@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
 import { ConnectionConfig } from '../connection/connection-config';
 import { ProximaxDataModel } from '../model/proximax/data-model';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
@@ -48,34 +47,34 @@ export class Uploader {
    * Upload data to Proximax platform
    * @param param the upload parameter
    */
-  public upload(param: UploadParameter): Promise<UploadResult> {
-    return this.doUpload(param).toPromise();
+  public async upload(param: UploadParameter): Promise<UploadResult> {
+    return this.doUpload(param);
   }
 
   /**
    * Uploads data to Proximax platform
    * @param param the upload parameter
    */
-  private doUpload(param: UploadParameter): Observable<UploadResult> {
+  private async doUpload(param: UploadParameter): Promise<UploadResult> {
     // console.log(param);
     // throw new Error('Not yet implement');
-    return this.createProximaxDataService.createData(param).pipe(
-      switchMap(uploadData =>
-        this.createMessagePayload(param, uploadData).pipe(
-          switchMap(messagePayload =>
-            this.createAndAnnounceTransaction(param, messagePayload).pipe(
-              map(transactionHash => {
-                return UploadResult.create(
-                  transactionHash,
-                  messagePayload.privacyType,
-                  messagePayload.version,
-                  messagePayload.data
-                );
-              })
-            )
-          )
-        )
-      )
+    const uploadData = await this.createProximaxDataService
+      .createData(param)
+      .toPromise();
+    const messagePayload = await this.createMessagePayload(
+      param,
+      uploadData
+    ).toPromise();
+    const transactionHash = await this.createAndAnnounceTransaction(
+      param,
+      messagePayload
+    );
+
+    return UploadResult.create(
+      transactionHash,
+      messagePayload.privacyType,
+      messagePayload.version,
+      messagePayload.data
     );
   }
 
@@ -84,10 +83,10 @@ export class Uploader {
    * @param param the upload parameter
    * @param payload the proximax message payload model
    */
-  private createAndAnnounceTransaction(
+  private async createAndAnnounceTransaction(
     param: UploadParameter,
     payload: ProximaxMessagePayloadModel
-  ): Observable<string> {
+  ): Promise<string> {
     return this.blockchainTransactionService.createAndAnnounceTransaction(
       payload,
       param.signerPrivateKey,
