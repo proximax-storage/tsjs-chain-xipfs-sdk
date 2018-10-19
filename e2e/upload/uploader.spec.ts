@@ -15,8 +15,8 @@ import {
   SenderAccount
 } from '../integrationtestconfig';
 
-describe('Uploader integration tests for secure message', () => {
-  it('should return upload result with secured message', async () => {
+describe('Uploader integration tests', () => {
+  it('should upload successfully', async () => {
     const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
       new BlockchainNetworkConnection(
         BlockchainNetworkType.MIJIN_TEST,
@@ -28,7 +28,7 @@ describe('Uploader integration tests for secure message', () => {
     );
 
     const byteStream = new Uint8Array(
-      Buffer.from('Proximax P2P Uploader with secured message')
+      Buffer.from('Proximax P2P Uploader test')
     );
     const metadata = new Map<string, string>();
     metadata.set('author', 'Proximax');
@@ -49,7 +49,7 @@ describe('Uploader integration tests for secure message', () => {
       .withRecipientAddress(RecipientAccount.address)
       .withPlainPrivacy()
       .withTransactionDeadline(2)
-      .withUseBlockchainSecureMessage(true)
+      .withUseBlockchainSecureMessage(false)
       .build();
 
     const uploader = new Uploader(connectionConfig);

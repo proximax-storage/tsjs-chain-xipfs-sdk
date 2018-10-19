@@ -77,7 +77,9 @@ export class BlockchainMessageService {
     accountPrivateKey?: string
   ): Promise<string> {
     if (transferTransaction === null) {
-      throw new Error('transferTransaction is required');
+      throw new Error(
+        'accountPrivateKey is required to download a secure message'
+      );
     }
 
     if (transferTransaction.message instanceof PlainMessage) {
@@ -92,14 +94,16 @@ export class BlockchainMessageService {
         accountPrivateKey,
         this.networkType
       );
-      return SecureMessage.decrypt(
-        Converter.decodeHex(transferTransaction.message.payload),
+
+      const secureMessage = transferTransaction.message as SecureMessage;
+
+      return secureMessage.decrypt(
         await this.getTransactionOtherPartyPublicKey(
           account,
           transferTransaction
         ),
         accountPrivateKey
-      ).payload;
+      );
     } else {
       throw new Error(
         `Download of message type ${
