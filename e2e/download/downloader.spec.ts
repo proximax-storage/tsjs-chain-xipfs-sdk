@@ -30,7 +30,7 @@ describe('Downloader integration tests', () => {
 
     const downloader = new Downloader(connectionConfig);
     const result = await downloader.download(param);
-    const actual = result.data.getContentsAsString();
+    const actual = await result.data.getContentsAsString();
 
     expect(actual).to.be.equal(expectedText);
   }).timeout(10000);
