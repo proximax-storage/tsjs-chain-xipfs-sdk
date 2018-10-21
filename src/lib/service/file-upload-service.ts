@@ -1,10 +1,10 @@
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {ConnectionConfig} from '../connection/connection-config';
-import {FileRepositoryFactory} from './factory/file-repository-factory';
-import {FileUploadResponse} from './file-upload-response';
-import {FileRepository} from './repository/file-repository';
-import {Stream} from "stream";
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Stream } from 'stream';
+import { ConnectionConfig } from '../connection/connection-config';
+import { FileRepositoryFactory } from './factory/file-repository-factory';
+import { FileUploadResponse } from './file-upload-response';
+import { FileRepository } from './repository/file-repository';
 
 /**
  * The service class responsible for uploading data/file

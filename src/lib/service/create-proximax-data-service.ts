@@ -1,12 +1,11 @@
-import {Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {ConnectionConfig} from '../connection/connection-config';
-import {DigestUtils} from '../helper/digest-util';
-import {ProximaxDataModel} from '../model/proximax/data-model';
-import {AbstractByteStreamParameterData} from '../upload/abstract-byte-stream-parameter-data';
-import {UploadParameter} from '../upload/upload-parameter';
-import {FileUploadService} from './file-upload-service';
-import {Stream} from "stream";
+import { map } from 'rxjs/operators';
+import { Stream } from 'stream';
+import { ConnectionConfig } from '../connection/connection-config';
+import { DigestUtils } from '../helper/digest-util';
+import { ProximaxDataModel } from '../model/proximax/data-model';
+import { AbstractByteStreamParameterData } from '../upload/abstract-byte-stream-parameter-data';
+import { UploadParameter } from '../upload/upload-parameter';
+import { FileUploadService } from './file-upload-service';
 
 /**
  * The service class responsible for creating the uploaded data object
@@ -29,7 +28,7 @@ export class CreateProximaxDataService {
    * @param uploadParam the upload parameter
    * @return the uploaded data object
    */
-  public createData(param: UploadParameter): Observable<ProximaxDataModel> {
+  public async createData(param: UploadParameter): Promise<ProximaxDataModel> {
     if (param === null) {
       throw new Error('upload parameter is required');
     }
@@ -39,39 +38,46 @@ export class CreateProximaxDataService {
       return this.uploadByteStream(byteStreamParamData, param);
     } else if (param.data instanceof AbstractByteStreamParameterData) {
       // TODO
-      return of(new ProximaxDataModel('replaceme'));
+      return new ProximaxDataModel('replaceme');
     } else {
       throw new Error(`Uploading of type ${param.data.type} is not supported`);
     }
   }
 
-  private uploadByteStream(
+  private async uploadByteStream(
     byteStreamParamData: AbstractByteStreamParameterData,
     param: UploadParameter
-  ): Observable<ProximaxDataModel> {
+  ): Promise<ProximaxDataModel> {
     const contentType = this.detectContentType(param, byteStreamParamData);
     const encryptedStream = this.encryptedStream(param, byteStreamParamData);
-    const digest = this.computeDigest(param.computeDigest, encryptedStream);
-
-    return this.fileUploadService.uploadStream(encryptedStream).pipe(
-      map(fur => {
-        return new ProximaxDataModel(
-          fur.hash,
-          digest,
-          param.data.description,
-          contentType,
-          param.data.metadata,
-          param.data.name,
-          fur.timestamp
-        );
-      })
+    const digest = await this.computeDigest(
+      param.computeDigest,
+      encryptedStream
     );
+
+    return this.fileUploadService
+      .uploadStream(encryptedStream)
+      .pipe(
+        map(fur => {
+          return new ProximaxDataModel(
+            fur.hash,
+            digest,
+            param.data.description,
+            contentType,
+            param.data.metadata,
+            param.data.name,
+            fur.timestamp
+          );
+        })
+      )
+      .toPromise();
   }
 
-  private encryptedStream(param: UploadParameter, byteStreamParamData: AbstractByteStreamParameterData) {
-    return param.privacyStrategy.encrypt(
-      byteStreamParamData.getByteStream()
-    );
+  private encryptedStream(
+    param: UploadParameter,
+    byteStreamParamData: AbstractByteStreamParameterData
+  ) {
+    return param.privacyStrategy.encrypt(byteStreamParamData.getByteStream());
   }
 
   private detectContentType(
@@ -79,9 +85,8 @@ export class CreateProximaxDataService {
     paramData: AbstractByteStreamParameterData
   ): string {
     return (
-      paramData.contentType &&
-      param.detectContentType &&
-      this.detectFileType(paramData)
+      paramData.contentType ||
+      (param.detectContentType && this.detectFileType(paramData))
     );
   }
 
@@ -91,10 +96,10 @@ export class CreateProximaxDataService {
     return mimeType && mimeType.mime;
   }
 
-  private computeDigest(
+  private async computeDigest(
     computeDigest: boolean,
     encryptedData: Stream
-  ): string | undefined {
+  ): Promise<string | undefined> {
     return computeDigest ? DigestUtils.computeDigest(encryptedData) : undefined;
   }
 }

@@ -6,7 +6,6 @@ import { IpfsConnection } from '../../src/lib/connection/ipfs-connection';
 import { Protocol } from '../../src/lib/connection/protocol';
 import { DownloadParameter } from '../../src/lib/download/download-parameter';
 import { Downloader } from '../../src/lib/download/downloader';
-import { Converter } from '../../src/lib/helper/converter';
 import { BlockchainNetworkType } from '../../src/lib/model/blockchain/blockchain-network-type';
 import { BlockchainInfo, IpfsInfo } from '../integrationtestconfig';
 
@@ -31,8 +30,7 @@ describe('Downloader integration tests', () => {
 
     const downloader = new Downloader(connectionConfig);
     const result = await downloader.download(param);
-    const data = result.data.bytes;
-    const actual = Converter.ab2str(data);
+    const actual = result.data.getContentsAsString();
 
     expect(actual).to.be.equal(expectedText);
   }).timeout(10000);

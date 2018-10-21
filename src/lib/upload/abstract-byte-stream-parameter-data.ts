@@ -1,6 +1,6 @@
+import { Stream } from 'stream';
 import { ReservedContentTypes } from '../config/constants';
 import { UploadParameterData } from './upload-parameter-data';
-import {Stream} from "stream";
 
 /**
  * This model class is one type of the upload parameter data that defines a byte stream upload

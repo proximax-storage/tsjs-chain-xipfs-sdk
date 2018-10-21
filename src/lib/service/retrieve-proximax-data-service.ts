@@ -1,13 +1,10 @@
-import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-
+import { Stream } from 'stream';
 import { PathUploadContentType } from '../config/constants';
 import { ConnectionConfig } from '../connection/connection-config';
 import { DigestUtils } from '../helper/digest-util';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { FileRepositoryFactory } from './factory/file-repository-factory';
 import { FileRepository } from './repository/file-repository';
-import {Stream} from "stream";
 
 /**
  * The service class responsible for retrieving data
@@ -26,13 +23,13 @@ export class RetrieveProximaxDataService {
     );
   }
 
-  public getStream(
+  public async getStream(
     datahash: string,
     privacyStrategy: PrivacyStrategy,
     validateDigest: boolean,
     digest: string,
     contentType: string
-  ): Observable<Stream> {
+  ): Promise<Stream> {
     if (datahash === null) {
       throw new Error('dataHash is required');
     }
@@ -45,25 +42,21 @@ export class RetrieveProximaxDataService {
       throw new Error('download of path is not yet supported');
     } else {
       // stream
-      return this.fileRepository.getStream(datahash).pipe(
-        switchMap(stream => {
-          return this.validateDigest(validateDigest, digest, datahash).pipe(
-            map(_ => stream)
-          );
-        })
-      );
+      await this.validateDigest(validateDigest, digest, datahash);
+      return this.fileRepository.getStream(datahash).toPromise();
     }
   }
 
-  private validateDigest(
+  private async validateDigest(
     validateDigest: boolean,
     digest: string,
     datahash: string
-  ): Observable<boolean> {
-    return validateDigest
-      ? this.fileRepository
-          .getStream(datahash)
-          .pipe(switchMap(stream => DigestUtils.validateDigest(stream, digest)))
-      : of(true);
+  ): Promise<boolean> {
+    if (validateDigest && digest) {
+      const stream = await this.fileRepository.getStream(datahash).toPromise();
+      return DigestUtils.validateDigest(stream, digest);
+    } else {
+      return false;
+    }
   }
 }

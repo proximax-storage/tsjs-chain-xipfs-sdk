@@ -1,6 +1,6 @@
-import {AbstractByteStreamParameterData} from './abstract-byte-stream-parameter-data';
-import {Stream} from "stream";
-import * as fs from "fs";
+import * as fs from 'fs';
+import { Stream } from 'stream';
+import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
 
 /**
  * This model class is one type of the upload parameter data that defines a URL resource upload

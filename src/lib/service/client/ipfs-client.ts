@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import {from, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {IpfsConnection} from '../../connection/ipfs-connection';
-import {IpfsContent} from '../../model/ipfs/ipfs-content';
-import {FileRepository} from '../repository/file-repository';
-import {Stream} from "stream";
+import { from, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Stream } from 'stream';
+import { IpfsConnection } from '../../connection/ipfs-connection';
+import { IpfsContent } from '../../model/ipfs/ipfs-content';
+import { FileRepository } from '../repository/file-repository';
 
 /**
  * The client class that directly interface with IPFS using their SDK
@@ -32,14 +32,12 @@ import {Stream} from "stream";
  * </ul>
  */
 export class IpfsClient implements FileRepository {
-
   /**
    * Construct the class with IPFSConnection
    *
    * @param ipfsConnection the Ipfs connection
    */
-  constructor(private readonly ipfsConnection: IpfsConnection) {
-  }
+  constructor(private readonly ipfsConnection: IpfsConnection) {}
 
   /**
    * Add/Upload a file (represented as byte stream) to IPFS
@@ -73,8 +71,6 @@ export class IpfsClient implements FileRepository {
       throw new Error('dataHash is required');
     }
 
-    return from<IpfsContent>(this.ipfsConnection.getIpfs().files.catReadableStream(dataHash)).pipe(
-      map(ipfsContentArr => ipfsContentArr[0].content)
-    );
+    return of(this.ipfsConnection.getIpfs().files.catReadableStream(dataHash));
   }
 }

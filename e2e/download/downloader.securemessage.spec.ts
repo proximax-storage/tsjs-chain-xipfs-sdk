@@ -10,7 +10,6 @@ import { ConnectionConfig } from '../../src/lib/connection/connection-config';
 import { Protocol } from '../../src/lib/connection/protocol';
 import { DownloadParameter } from '../../src/lib/download/download-parameter';
 import { Downloader } from '../../src/lib/download/downloader';
-import { Converter } from '../../src/lib/helper/converter';
 import {
   BlockchainInfo,
   IpfsInfo,
@@ -44,8 +43,7 @@ describe('Downloader integration tests for secure message', () => {
       .build();
 
     const result = await downloader.download(param);
-    const data = result.data.bytes;
-    const actual = Converter.ab2str(data);
+    const actual = result.data.getContentsAsString();
 
     expect(actual).to.be.equal(expectedText);
   }).timeout(10000);
@@ -58,8 +56,7 @@ describe('Downloader integration tests for secure message', () => {
       .build();
 
     const result = await downloader.download(param);
-    const data = result.data.bytes;
-    const actual = Converter.ab2str(data);
+    const actual = result.data.getContentsAsString();
 
     expect(actual).to.be.equal(expectedText);
   }).timeout(10000);

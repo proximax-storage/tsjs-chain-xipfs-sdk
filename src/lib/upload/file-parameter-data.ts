@@ -1,6 +1,6 @@
 import * as fs from 'fs';
+import { Stream } from 'stream';
 import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
-import {Stream} from "stream";
 
 /**
  * This model class is one type of the upload parameter data that defines a file upload

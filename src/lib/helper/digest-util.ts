@@ -1,36 +1,32 @@
-import {Observable, of} from 'rxjs';
-import {Stream} from "stream";
+import crypto from 'crypto';
+import { Stream } from 'stream';
 
 export class DigestUtils {
-  public static validateDigest(
-    data: any,
+  public static async validateDigest(
+    stream: Stream,
     expectedDigest: string
-  ): Observable<boolean> {
-    if (data === null || data === undefined) {
-      throw new Error('Data is required');
+  ): Promise<boolean> {
+    if (!stream) {
+      throw new Error('stream is required');
     }
 
-    if (expectedDigest === null || expectedDigest.length <= 0) {
-      return of(true);
+    if (!expectedDigest) {
+      return true;
     }
 
-    const computeDigest = DigestUtils.computeDigest(data);
-    // console.log('c ' + computeDigest);
-    // console.log('e ' + expectedDigest);
+    const computeDigest = await DigestUtils.computeDigest(stream);
     if (computeDigest === expectedDigest) {
-      return of(true);
+      return true;
     } else {
-      throw new Error('Data digest did not match');
+      throw new Error('data digests does not match');
     }
-
-    // return of(true);
   }
 
-  public static computeDigest(byteStream: Stream): string {
-    const CryptoJS = require('crypto-js');
-    const wordArray = CryptoJS.lib.WordArray.create(byteStream);
-    const hashDigest = CryptoJS.SHA256(wordArray);
-
-    return hashDigest.toString(CryptoJS.enc.Hex);
+  public static async computeDigest(stream: Stream): Promise<string> {
+    const hash = crypto.createHash('sha256');
+    return new Promise<string>(resolve => {
+      stream.on('data', chunk => hash.update(chunk));
+      stream.on('end', () => resolve(hash.digest('hex')));
+    });
   }
 }

@@ -1,14 +1,13 @@
-import {ConnectionConfig} from '../connection/connection-config';
-import {ProximaxMessagePayloadModel} from '../model/proximax/message-payload-model';
-import {PrivacyStrategy} from '../privacy/privacy';
-import {BlockchainTransactionService} from '../service/blockchain-transaction-service';
-import {RetrieveProximaxDataService} from '../service/retrieve-proximax-data-service';
-import {RetrieveProximaxMessagePayloadService} from '../service/retrieve-proximax-message-payload-service';
-import {DownloadParameter} from './download-parameter';
-import {DownloadResult} from './download-result';
-import {DownloadResultData} from './download-result-data';
-import {Stream} from "stream";
-import {Observable} from "rxjs";
+import { Stream } from 'stream';
+import { ConnectionConfig } from '../connection/connection-config';
+import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
+import { PrivacyStrategy } from '../privacy/privacy';
+import { BlockchainTransactionService } from '../service/blockchain-transaction-service';
+import { RetrieveProximaxDataService } from '../service/retrieve-proximax-data-service';
+import { RetrieveProximaxMessagePayloadService } from '../service/retrieve-proximax-message-payload-service';
+import { DownloadParameter } from './download-parameter';
+import { DownloadResult } from './download-result';
+import { DownloadResultData } from './download-result-data';
 
 /**
  * The Downloader class that handles the download functionality
@@ -59,13 +58,14 @@ export class Downloader {
       transferTransaction,
       param.accountPrivateKey
     );
-    const getStreamFunction = () => this.getStream(
-      messagePayload.data.dataHash,
-      param.privacyStrategy!,
-      param.validateDigest!,
-      messagePayload.data.digest!,
-      messagePayload
-    ).toPromise();
+    const getStreamFunction = () =>
+      this.getStream(
+        messagePayload.data.dataHash,
+        param.privacyStrategy!,
+        param.validateDigest!,
+        messagePayload.data.digest!,
+        messagePayload
+      );
 
     return this.createCompleteDownloadResult(
       messagePayload,
@@ -104,7 +104,7 @@ export class Downloader {
     validateDigest: boolean,
     digest: string,
     messagePayload?: ProximaxMessagePayloadModel
-  ): Observable<Stream> {
+  ): Promise<Stream> {
     let resolvedDataHash = dataHash;
     let resolvedDigest = digest;
     let resolvedContentType;

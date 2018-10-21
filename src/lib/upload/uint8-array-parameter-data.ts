@@ -1,5 +1,5 @@
-import {AbstractByteStreamParameterData} from './abstract-byte-stream-parameter-data';
-import {PassThrough, Stream} from "stream";
+import { PassThrough, Stream } from 'stream';
+import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
 
 /**
  * This model class is one type of the upload parameter data that defines a Uint8Array upload

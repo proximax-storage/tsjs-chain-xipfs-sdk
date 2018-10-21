@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { PassThrough, Stream } from 'stream';
 import { StringParameterData } from '../upload/string-parameter-data';
 import { UploadParameterData } from '../upload/upload-parameter-data';
 
@@ -49,5 +50,12 @@ export class TestHelper {
     );
 
     return uploadParameterData;
+  }
+
+  public static stringToStream(text: string, encoding?: string): Stream {
+    const stream = new PassThrough();
+    stream.write(Buffer.from(text, encoding && 'utf8'));
+    stream.end();
+    return stream;
   }
 }

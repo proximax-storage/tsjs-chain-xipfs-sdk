@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-
-import {Stream} from "stream";
+import fs from 'fs';
+import { Stream } from 'stream';
+import { StreamHelper } from '../helper/stream-helper';
 
 /**
  * Class represents download result data
@@ -33,7 +34,7 @@ export class DownloadResultData {
     /**
      * The actual data in bytes. This only available for PrivacyType.PLAIN
      */
-    public readonly getStreamFunction: () => Promise<Stream>,
+    public readonly streamFunction: () => Promise<Stream>,
     /**
      * The digest
      */
@@ -57,11 +58,15 @@ export class DownloadResultData {
   ) {}
 
   public async getContentsAsString(encoding?: string): Promise<string> {
-    const stream = await this.getStreamFunction();
-    stream.setEncoding('utf8');
-    stream.on('data', function(chunk) {
-      assert.equal(typeof chunk, 'string');
-      console.log('got %d characters of string data', chunk.length);
-    })
+    const stream = await this.streamFunction();
+    return StreamHelper.stream2String(stream, encoding);
+  }
+
+  public async saveToFile(file: string): Promise<boolean> {
+    const stream = await this.streamFunction();
+    stream.pipe(fs.createWriteStream(file));
+    return new Promise<boolean>(resolve => {
+      stream.on('end', () => resolve(true));
+    });
   }
 }
