@@ -1,4 +1,5 @@
-import { Observable, of } from 'rxjs';
+import {Observable, of} from 'rxjs';
+import {Stream} from "stream";
 
 export class DigestUtils {
   public static validateDigest(
@@ -25,9 +26,9 @@ export class DigestUtils {
     // return of(true);
   }
 
-  public static computeDigest(data: any): string {
+  public static computeDigest(byteStream: Stream): string {
     const CryptoJS = require('crypto-js');
-    const wordArray = CryptoJS.lib.WordArray.create(data);
+    const wordArray = CryptoJS.lib.WordArray.create(byteStream);
     const hashDigest = CryptoJS.SHA256(wordArray);
 
     return hashDigest.toString(CryptoJS.enc.Hex);

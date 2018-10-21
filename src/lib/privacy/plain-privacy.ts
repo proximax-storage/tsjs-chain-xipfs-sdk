@@ -1,5 +1,6 @@
-import { PrivacyStrategy } from './privacy';
-import { PrivacyType } from './privacy-type';
+import {PrivacyStrategy} from './privacy';
+import {PrivacyType} from './privacy-type';
+import {Stream} from "stream";
 
 export class PlainPrivacyStrategy implements PrivacyStrategy {
   public static create(): any {
@@ -12,11 +13,11 @@ export class PlainPrivacyStrategy implements PrivacyStrategy {
     return PrivacyType.PLAIN;
   }
 
-  public encrypt(data: any): any {
-    return data;
+  public encrypt(stream: Stream): Stream {
+    return stream;
   }
 
-  public decrypt(data: any): any {
-    return data;
+  public decrypt(encryptedStream: Stream): Stream {
+    return encryptedStream;
   }
 }

@@ -1,6 +1,8 @@
-import { crypto } from 'proximax-nem2-library';
-import { PrivacyStrategy } from './privacy';
-import { PrivacyType } from './privacy-type';
+import {PrivacyStrategy} from './privacy';
+import {PrivacyType} from './privacy-type';
+import {Stream} from "stream";
+import {NemKeysCipherStream} from "../cipher/nem-keys-cipher-stream";
+import {NemKeysDecipherStream} from "../cipher/nem-keys-decipher-stream";
 
 export class NemPrivacyStrategy implements PrivacyStrategy {
   public static create(privateKey: string, publicKey: string) {
@@ -10,25 +12,35 @@ export class NemPrivacyStrategy implements PrivacyStrategy {
   protected constructor(
     public readonly privateKey: string,
     public readonly publicKey: string
-  ) {}
+  ) {
+    if (!privateKey) {
+      throw new Error('privateKey is required');
+    }
+    if (!publicKey) {
+      throw new Error('publicKey is required');
+    }
+
+  }
 
   public getPrivacyType(): number {
     return PrivacyType.NEM_KEYS;
   }
 
   /**
-   * Encrypts data
-   * @param data the data in
+   * Encrypts raw stream
+   * @param encryptedStream the raw stream
+   * @returns encrypted stream with nem keys
    */
-  public encrypt(data: Uint8Array): Uint8Array {
-    return crypto.nemencrypt(this.privateKey, this.publicKey, data);
+  public encrypt(stream: Stream): Stream {
+    return stream.pipe(new NemKeysCipherStream({privateKey: this.privateKey, publicKey: this.publicKey}));
   }
 
   /**
-   * Decrypts data
-   * @param data the encrypted data
+   * Decrypts the encrypted data
+   * @param stream the encrypted stream
+   * @returns decrypted with ney keys stream
    */
-  public decrypt(data: Uint8Array): Uint8Array {
-    return crypto.nemdecrypt(this.privateKey, this.publicKey, data);
+  public decrypt(encryptedStream: Stream): Stream {
+    return encryptedStream.pipe(new NemKeysDecipherStream({privateKey: this.privateKey, publicKey: this.publicKey}));
   }
 }

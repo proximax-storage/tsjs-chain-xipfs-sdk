@@ -1,4 +1,5 @@
 import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
+import {Stream} from "stream";
 
 /**
  * This model class is one type of the upload parameter data that defines a zip upload
@@ -58,7 +59,7 @@ export class FilesAsZipParameterData extends AbstractByteStreamParameterData {
    * Get the byte stream
    * @return the byte stream
    */
-  public getByteStream(): Uint8Array {
+  public getByteStream(): Stream {
     // TODO
     throw new Error('Not yet implemented');
   }

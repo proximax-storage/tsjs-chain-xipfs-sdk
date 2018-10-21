@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+
+import {Stream} from "stream";
+
 /**
  * Class represents download result data
  */
@@ -30,7 +33,7 @@ export class DownloadResultData {
     /**
      * The actual data in bytes. This only available for PrivacyType.PLAIN
      */
-    public readonly bytes?: any,
+    public readonly getStreamFunction: () => Promise<Stream>,
     /**
      * The digest
      */
@@ -52,4 +55,13 @@ export class DownloadResultData {
      */
     public readonly metadata?: Map<string, string>
   ) {}
+
+  public async getContentsAsString(encoding?: string): Promise<string> {
+    const stream = await this.getStreamFunction();
+    stream.setEncoding('utf8');
+    stream.on('data', function(chunk) {
+      assert.equal(typeof chunk, 'string');
+      console.log('got %d characters of string data', chunk.length);
+    })
+  }
 }

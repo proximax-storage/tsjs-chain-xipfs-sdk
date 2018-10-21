@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
+import {Stream} from "stream";
 
 /**
  * This model class is one type of the upload parameter data that defines a file upload
@@ -59,7 +60,7 @@ export class FileParameterData extends AbstractByteStreamParameterData {
    * Get the byte stream
    * @return the byte stream
    */
-  public getByteStream(): Uint8Array {
-    return new Uint8Array(fs.readFileSync(this.file));
+  public getByteStream(): Stream {
+    return fs.createReadStream(this.file);
   }
 }

@@ -1,4 +1,5 @@
-import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
+import {AbstractByteStreamParameterData} from './abstract-byte-stream-parameter-data';
+import {PassThrough, Stream} from "stream";
 
 /**
  * This model class is one type of the upload parameter data that defines a Uint8Array upload
@@ -58,7 +59,10 @@ export class Uint8ArrayParameterData extends AbstractByteStreamParameterData {
    * Get the byte stream
    * @return the byte stream
    */
-  public getByteStream(): Uint8Array {
-    return this.data;
+  public getByteStream(): Stream {
+    const stream = new PassThrough();
+    stream.write(Buffer.from(this.data));
+    stream.end();
+    return stream;
   }
 }

@@ -1,11 +1,12 @@
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ConnectionConfig } from '../connection/connection-config';
-import { DigestUtils } from '../helper/digest-util';
-import { ProximaxDataModel } from '../model/proximax/data-model';
-import { AbstractByteStreamParameterData } from '../upload/abstract-byte-stream-parameter-data';
-import { UploadParameter } from '../upload/upload-parameter';
-import { FileUploadService } from './file-upload-service';
+import {Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {ConnectionConfig} from '../connection/connection-config';
+import {DigestUtils} from '../helper/digest-util';
+import {ProximaxDataModel} from '../model/proximax/data-model';
+import {AbstractByteStreamParameterData} from '../upload/abstract-byte-stream-parameter-data';
+import {UploadParameter} from '../upload/upload-parameter';
+import {FileUploadService} from './file-upload-service';
+import {Stream} from "stream";
 
 /**
  * The service class responsible for creating the uploaded data object
@@ -49,12 +50,10 @@ export class CreateProximaxDataService {
     param: UploadParameter
   ): Observable<ProximaxDataModel> {
     const contentType = this.detectContentType(param, byteStreamParamData);
-    const encryptedData = param.privacyStrategy.encrypt(
-      byteStreamParamData.getByteStream()
-    );
-    const digest = this.computeDigest(param.computeDigest, encryptedData);
+    const encryptedStream = this.encryptedStream(param, byteStreamParamData);
+    const digest = this.computeDigest(param.computeDigest, encryptedStream);
 
-    return this.fileUploadService.uploadStream(encryptedData).pipe(
+    return this.fileUploadService.uploadStream(encryptedStream).pipe(
       map(fur => {
         return new ProximaxDataModel(
           fur.hash,
@@ -66,6 +65,12 @@ export class CreateProximaxDataService {
           fur.timestamp
         );
       })
+    );
+  }
+
+  private encryptedStream(param: UploadParameter, byteStreamParamData: AbstractByteStreamParameterData) {
+    return param.privacyStrategy.encrypt(
+      byteStreamParamData.getByteStream()
     );
   }
 
@@ -88,7 +93,7 @@ export class CreateProximaxDataService {
 
   private computeDigest(
     computeDigest: boolean,
-    encryptedData: Uint8Array
+    encryptedData: Stream
   ): string | undefined {
     return computeDigest ? DigestUtils.computeDigest(encryptedData) : undefined;
   }

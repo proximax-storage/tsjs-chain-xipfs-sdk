@@ -14,57 +14,66 @@
  * limitations under the License.
  */
 
-import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { IpfsConnection } from '../../connection/ipfs-connection';
-import { IpfsContent } from '../../model/ipfs/ipfs-content';
-import { FileRepository } from '../repository/file-repository';
-// tslint:disable-next-line:no-var-requires
-const Buffer = require('buffer').Buffer;
+import {from, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {IpfsConnection} from '../../connection/ipfs-connection';
+import {IpfsContent} from '../../model/ipfs/ipfs-content';
+import {FileRepository} from '../repository/file-repository';
+import {Stream} from "stream";
+
 /**
- * Class represents Ipfs client
+ * The client class that directly interface with IPFS using their SDK
+ * <br>
+ * <br>
+ * This class delegates to IPFS the following:
+ * <ul>
+ * <li>adding of file(represented as byte arrays) and returning the hash for it</li>
+ * <li>retrieving of file given a hash</li>
+ * </ul>
  */
 export class IpfsClient implements FileRepository {
-  private connection: IpfsConnection;
-  // private Buffer: any;
 
   /**
-   * Constructor
-   * @param connection The ipfs connection
+   * Construct the class with IPFSConnection
+   *
+   * @param ipfsConnection the Ipfs connection
    */
-  constructor(connection: IpfsConnection) {
-    this.connection = connection;
-    // this.Buffer = require('buffer').Buffer;
+  constructor(private readonly ipfsConnection: IpfsConnection) {
   }
 
   /**
-   * Add stream to ipfs storage
-   * @param data the data
-   * @param options the callback options
+   * Add/Upload a file (represented as byte stream) to IPFS
+   * <br>
+   * <br>
+   * This method is equivalent to `ipfs add` CLI command
+   *
+   * @return the hash (base58) for the data uploaded
    */
-  public addStream(data: any): Observable<string> {
-    if (!data) {
-      throw new Error('data is required');
+  public addStream(stream: Stream): Observable<string> {
+    if (!stream) {
+      throw new Error('stream is required');
     }
 
-    // convert to buffer
-    const bufferData = Buffer.from(data); // Buffer.from(data);
-
     return from<IpfsContent[]>(
-      this.connection.getIpfs().files.add(bufferData)
+      this.ipfsConnection.getIpfs().files.add(stream)
     ).pipe(map(hashList => hashList[0].hash));
   }
 
   /**
-   * Gets stream from ipfs storage by datahash
-   * @param hash the data hash
+   * Retrieves the file stream from IPFS given a hash
+   * <br>
+   * <br>
+   * This method is equivalent to `ipfs cat` CLI command
+   *
+   * @param dataHash the hash (base58) of an IPFS file
+   * @return the file (represented as byte stream)
    */
-  public getStream(hash: string): Observable<any> {
-    if (!hash) {
-      throw new Error('hash is required');
+  public getStream(dataHash: string): Observable<Stream> {
+    if (!dataHash) {
+      throw new Error('dataHash is required');
     }
 
-    return from<IpfsContent>(this.connection.getIpfs().files.get(hash)).pipe(
+    return from<IpfsContent>(this.ipfsConnection.getIpfs().files.catReadableStream(dataHash)).pipe(
       map(ipfsContentArr => ipfsContentArr[0].content)
     );
   }

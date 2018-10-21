@@ -7,6 +7,7 @@ import { DigestUtils } from '../helper/digest-util';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { FileRepositoryFactory } from './factory/file-repository-factory';
 import { FileRepository } from './repository/file-repository';
+import {Stream} from "stream";
 
 /**
  * The service class responsible for retrieving data
@@ -31,7 +32,7 @@ export class RetrieveProximaxDataService {
     validateDigest: boolean,
     digest: string,
     contentType: string
-  ): Observable<Uint8Array> {
+  ): Observable<Stream> {
     if (datahash === null) {
       throw new Error('dataHash is required');
     }

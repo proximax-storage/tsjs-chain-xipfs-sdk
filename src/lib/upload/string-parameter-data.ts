@@ -1,4 +1,5 @@
-import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
+import {AbstractByteStreamParameterData} from './abstract-byte-stream-parameter-data';
+import {PassThrough, Stream} from "stream";
 
 /**
  * This model class is one type of the upload parameter data that defines a string upload
@@ -65,7 +66,10 @@ export class StringParameterData extends AbstractByteStreamParameterData {
    * Get the byte stream
    * @return the byte stream
    */
-  public getByteStream(): Uint8Array {
-    return new Uint8Array(Buffer.from(this.text, this.encoding && 'utf8'));
+  public getByteStream(): Stream {
+    const stream = new PassThrough();
+    stream.write(Buffer.from(this.text, this.encoding && 'utf8'));
+    stream.end();
+    return stream;
   }
 }

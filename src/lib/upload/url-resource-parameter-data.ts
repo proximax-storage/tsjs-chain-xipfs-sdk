@@ -1,4 +1,6 @@
-import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
+import {AbstractByteStreamParameterData} from './abstract-byte-stream-parameter-data';
+import {Stream} from "stream";
+import * as fs from "fs";
 
 /**
  * This model class is one type of the upload parameter data that defines a URL resource upload
@@ -58,8 +60,7 @@ export class UrlResourceParameterData extends AbstractByteStreamParameterData {
    * Get the byte stream
    * @return the byte stream
    */
-  public getByteStream(): Uint8Array {
-    // TODO
-    throw new Error('Not yet implemented');
+  public getByteStream(): Stream {
+    return fs.createReadStream(this.url);
   }
 }

@@ -1,5 +1,7 @@
+import {Stream} from "stream";
+
 export abstract class PrivacyStrategy {
   public abstract getPrivacyType(): number;
-  public abstract encrypt(data: any): any;
-  public abstract decrypt(data: any): any;
+  public abstract encrypt(stream: Stream): Stream;
+  public abstract decrypt(encryptedStream: Stream): Stream;
 }

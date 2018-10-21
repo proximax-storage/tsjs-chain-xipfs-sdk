@@ -1,6 +1,7 @@
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
+import {Stream} from "stream";
 
 export interface FileRepository {
-  addStream(data: any): Observable<string>;
-  getStream(dataHash: string, option?: object): Observable<any>;
+  addStream(stream: Stream): Observable<string>;
+  getStream(dataHash: string): Observable<Stream>;
 }

@@ -1,5 +1,6 @@
 import { ReservedContentTypes } from '../config/constants';
 import { UploadParameterData } from './upload-parameter-data';
+import {Stream} from "stream";
 
 /**
  * This model class is one type of the upload parameter data that defines a byte stream upload
@@ -24,5 +25,5 @@ export abstract class AbstractByteStreamParameterData extends UploadParameterDat
    * Get the byte stream
    * @return the byte stream
    */
-  public abstract getByteStream(): Uint8Array;
+  public abstract getByteStream(): Stream;
 }
