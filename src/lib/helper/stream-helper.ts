@@ -12,9 +12,10 @@ export class StreamHelper {
     stream: Stream,
     encoding?: string
   ): Promise<string> {
-    return new Promise<string>(resolve => {
+    return new Promise<string>((resolve, reject) => {
       const chunks: Buffer[] = [];
       stream.on('data', chunk => chunks.push(chunk));
+      stream.on('error', err => reject(err));
       stream.on('end', () =>
         resolve(Buffer.concat(chunks).toString(encoding || 'utf8'))
       );
@@ -29,9 +30,10 @@ export class StreamHelper {
   }
 
   public static async stream2Buffer(stream: Stream): Promise<Buffer> {
-    return new Promise<Buffer>(resolve => {
+    return new Promise<Buffer>((resolve, reject) => {
       const chunks: Buffer[] = [];
       stream.on('data', chunk => chunks.push(chunk));
+      stream.on('error', err => reject(err));
       stream.on('end', () => resolve(Buffer.concat(chunks)));
     });
   }

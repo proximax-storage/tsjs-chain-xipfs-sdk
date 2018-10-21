@@ -4,6 +4,7 @@ import { ConnectionConfig } from '../connection/connection-config';
 import { DigestUtils } from '../helper/digest-util';
 import { ProximaxDataModel } from '../model/proximax/data-model';
 import { AbstractByteStreamParameterData } from '../upload/abstract-byte-stream-parameter-data';
+import { PathParameterData } from '../upload/path-parameter-data';
 import { UploadParameter } from '../upload/upload-parameter';
 import { FileUploadService } from './file-upload-service';
 
@@ -36,8 +37,8 @@ export class CreateProximaxDataService {
     if (param.data instanceof AbstractByteStreamParameterData) {
       const byteStreamParamData = param.data as AbstractByteStreamParameterData;
       return this.uploadByteStream(byteStreamParamData, param);
-    } else if (param.data instanceof AbstractByteStreamParameterData) {
-      // TODO
+    } else if (param.data instanceof PathParameterData) {
+      // TODO handle path upload
       return new ProximaxDataModel('replaceme');
     } else {
       throw new Error(`Uploading of type ${param.data.type} is not supported`);

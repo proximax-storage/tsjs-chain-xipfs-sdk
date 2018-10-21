@@ -65,7 +65,8 @@ export class DownloadResultData {
   public async saveToFile(file: string): Promise<boolean> {
     const stream = await this.streamFunction();
     stream.pipe(fs.createWriteStream(file));
-    return new Promise<boolean>(resolve => {
+    return new Promise<boolean>((resolve, reject) => {
+      stream.on('error', err => reject(err));
       stream.on('end', () => resolve(true));
     });
   }

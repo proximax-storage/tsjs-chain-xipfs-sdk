@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { Transform, TransformCallback } from 'stream';
 import { PbeCipherStreamOptions } from './pbe-cipher-stream-options';
 
-export class PBEDecipherStream extends Transform {
+export class PbeDecipherStream extends Transform {
   private static readonly SaltLength = 32;
   private static readonly IvLength = 16;
 
@@ -20,17 +20,17 @@ export class PBEDecipherStream extends Transform {
     this.password = options.password;
     this.saltBytesRead = 0;
     this.ivBytesRead = 0;
-    this.salt = new Buffer(PBEDecipherStream.SaltLength);
-    this.iv = new Buffer(PBEDecipherStream.IvLength);
+    this.salt = new Buffer(PbeDecipherStream.SaltLength);
+    this.iv = new Buffer(PbeDecipherStream.IvLength);
   }
 
   public _transform(chunk: any, _: string, callback: TransformCallback): void {
     let chunkLength = chunk.length;
     let chunkOffset = 0;
 
-    if (this.saltBytesRead < PBEDecipherStream.SaltLength) {
+    if (this.saltBytesRead < PbeDecipherStream.SaltLength) {
       const remainingSaltBytes =
-        PBEDecipherStream.SaltLength - this.saltBytesRead;
+        PbeDecipherStream.SaltLength - this.saltBytesRead;
       chunkOffset =
         chunkLength <= remainingSaltBytes ? chunkLength : remainingSaltBytes;
       chunk.copy(this.salt, this.saltBytesRead, 0, chunkOffset);
@@ -39,8 +39,8 @@ export class PBEDecipherStream extends Transform {
       this.saltBytesRead += chunkOffset;
     }
 
-    if (this.ivBytesRead < PBEDecipherStream.IvLength) {
-      const remainingIvBytes = PBEDecipherStream.IvLength - this.ivBytesRead;
+    if (this.ivBytesRead < PbeDecipherStream.IvLength) {
+      const remainingIvBytes = PbeDecipherStream.IvLength - this.ivBytesRead;
       chunkOffset =
         chunkLength <= remainingIvBytes ? chunkLength : remainingIvBytes;
       chunk.copy(this.iv, this.ivBytesRead, 0, chunkOffset);
@@ -50,8 +50,8 @@ export class PBEDecipherStream extends Transform {
     }
 
     if (
-      this.saltBytesRead === PBEDecipherStream.SaltLength &&
-      this.ivBytesRead === PBEDecipherStream.IvLength
+      this.saltBytesRead === PbeDecipherStream.SaltLength &&
+      this.ivBytesRead === PbeDecipherStream.IvLength
     ) {
       const key = crypto.pbkdf2Sync(
         this.password,

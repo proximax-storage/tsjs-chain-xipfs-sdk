@@ -18,6 +18,4 @@ export * from './lib/model/proximax/message-payload-model';
 export * from './lib/upload/upload-parameter';
 export * from './lib/upload/upload-parameter-data';
 export * from './lib/upload/upload-result';
-export * from './lib/helper/data-streamer';
-export * from './lib/helper/crypto-helper';
 export * from './lib/helper/converter';

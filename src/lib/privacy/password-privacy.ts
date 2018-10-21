@@ -1,6 +1,6 @@
 import { Stream } from 'stream';
 import { PbeCipherStream } from '../cipher/pbe-cipher-stream';
-import { PBEDecipherStream } from '../cipher/pbe-decipher-stream';
+import { PbeDecipherStream } from '../cipher/pbe-decipher-stream';
 import { PrivacyStrategy } from './privacy';
 import { PrivacyType } from './privacy-type';
 
@@ -58,7 +58,7 @@ export class PasswordPrivacyStrategy implements PrivacyStrategy {
    */
   public decrypt(encryptedStream: Stream): Stream {
     return encryptedStream.pipe(
-      new PBEDecipherStream({ password: this.password })
+      new PbeDecipherStream({ password: this.password })
     );
   }
 }

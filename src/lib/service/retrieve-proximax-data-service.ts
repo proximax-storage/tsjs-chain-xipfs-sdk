@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { Stream } from 'stream';
 import { PathUploadContentType } from '../config/constants';
 import { ConnectionConfig } from '../connection/connection-config';
@@ -30,20 +31,23 @@ export class RetrieveProximaxDataService {
     digest: string,
     contentType: string
   ): Promise<Stream> {
-    if (datahash === null) {
+    if (!datahash) {
       throw new Error('dataHash is required');
     }
-    if (privacyStrategy === null) {
+    if (!privacyStrategy) {
       throw new Error('privacy strategy is required');
     }
 
-    if (contentType != null && contentType === PathUploadContentType) {
+    if (!contentType && contentType === PathUploadContentType) {
       // path
       throw new Error('download of path is not yet supported');
     } else {
       // stream
       await this.validateDigest(validateDigest, digest, datahash);
-      return this.fileRepository.getStream(datahash).toPromise();
+      return this.fileRepository
+        .getStream(datahash)
+        .pipe(map(encryptedStream => privacyStrategy.decrypt(encryptedStream)))
+        .toPromise();
     }
   }
 
