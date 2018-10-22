@@ -5,10 +5,19 @@
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "repository": "https://github.com/proximax-storage/xpx2-ts-js-sdk",
   "license": "Apache License 2.0",
   "keywords": [],
   "browser": {},
+  "bugs": {
+    "url": "https://github.com/proximax-storage//xpx2-ts-js-sdk/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/proximax-storage/xpx2-ts-js-sdk.git"
+  },
+  "publishConfig": {
+    "registry": "https://nexus.internal.proximax.io/repository/npm-private/"
+  },
   "scripts": {
     "info": "npm-scripts-info",
     "build": "run-s clean && run-p build:*",
