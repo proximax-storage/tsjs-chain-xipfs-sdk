@@ -1,4 +1,4 @@
-import { PassThrough, Stream } from 'stream';
+import { PassThrough, Readable } from 'stream';
 import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
 
 /**
@@ -59,7 +59,7 @@ export class Uint8ArrayParameterData extends AbstractByteStreamParameterData {
    * Get the byte stream
    * @return the byte stream
    */
-  public async getByteStream(): Promise<Stream> {
+  public async getByteStream(): Promise<Readable> {
     const stream = new PassThrough();
     stream.write(Buffer.from(this.data));
     stream.end();

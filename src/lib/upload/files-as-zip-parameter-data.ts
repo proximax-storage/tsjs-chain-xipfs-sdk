@@ -1,4 +1,4 @@
-import { Stream } from 'stream';
+import { Readable } from 'stream';
 import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
 
 /**
@@ -59,7 +59,7 @@ export class FilesAsZipParameterData extends AbstractByteStreamParameterData {
    * Get the byte stream
    * @return the byte stream
    */
-  public async getByteStream(): Promise<Stream> {
+  public async getByteStream(): Promise<Readable> {
     // TODO
     throw new Error('Not yet implemented');
   }

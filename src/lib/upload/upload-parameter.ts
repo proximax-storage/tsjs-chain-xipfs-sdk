@@ -15,10 +15,12 @@
  */
 
 // import {FilesAsZipParameterData} from "./files-as-zip-parameter-data";
+import { Readable } from 'stream';
 import { SchemaVersion } from '../config/constants';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { FileParameterData } from './file-parameter-data';
 import { PathParameterData } from './path-parameter-data';
+import { ReadableStreamParameterData } from './readable-stream-parameter-data';
 import { StringParameterData } from './string-parameter-data';
 import { Uint8ArrayParameterData } from './uint8-array-parameter-data';
 import { UploadParameterBuilder } from './upload-parameter-builder';
@@ -73,6 +75,22 @@ export class UploadParameter {
       typeof url === 'string'
         ? UrlResourceParameterData.create(url as string)
         : (url as UrlResourceParameterData),
+      signerPrivateKey
+    );
+  }
+
+  public static createForReadableStreamUpload(
+    readableStreamFunction:
+      | (() => Promise<Readable>)
+      | ReadableStreamParameterData,
+    signerPrivateKey: string
+  ): UploadParameterBuilder {
+    return new UploadParameterBuilder(
+      readableStreamFunction instanceof ReadableStreamParameterData
+        ? (readableStreamFunction as ReadableStreamParameterData)
+        : ReadableStreamParameterData.create(
+            readableStreamFunction as () => Promise<Readable>
+          ),
       signerPrivateKey
     );
   }

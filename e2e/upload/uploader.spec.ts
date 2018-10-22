@@ -4,8 +4,10 @@ import { BlockchainNetworkConnection } from '../../src/lib/connection/blockchain
 import { ConnectionConfig } from '../../src/lib/connection/connection-config';
 import { IpfsConnection } from '../../src/lib/connection/ipfs-connection';
 import { Protocol } from '../../src/lib/connection/protocol';
+import { StreamHelper } from '../../src/lib/helper/stream-helper';
 import { BlockchainNetworkType } from '../../src/lib/model/blockchain/blockchain-network-type';
 import { FileParameterData } from '../../src/lib/upload/file-parameter-data';
+import { ReadableStreamParameterData } from '../../src/lib/upload/readable-stream-parameter-data';
 import { StringParameterData } from '../../src/lib/upload/string-parameter-data';
 import { Uint8ArrayParameterData } from '../../src/lib/upload/uint8-array-parameter-data';
 import { UploadParameter } from '../../src/lib/upload/upload-parameter';
@@ -217,6 +219,55 @@ describe('Uploader integration tests', () => {
     );
 
     const param = UploadParameter.createForStringUpload(
+      paramData,
+      SenderAccount.privateKey
+    ).build();
+
+    const result = await uploader.upload(param);
+
+    expect(result.transactionHash.length > 0).to.be.true;
+    expect(result.data.dataHash.length > 0).to.be.true;
+    expect(result.data.contentType).to.be.equal('text/plain');
+    expect(result.data.metadata).to.be.equal(metadata);
+    expect(result.data.description).to.be.equal('test description');
+    expect(result.data.name).to.be.equal('test name');
+
+    console.log(`Transaction Hash: ${result.transactionHash}`);
+    console.log(`Data Hash: ${result.data.dataHash}`);
+  }).timeout(10000);
+
+  it('should upload readable stream', async () => {
+    const param = UploadParameter.createForReadableStreamUpload(
+      async () => StreamHelper.string2Stream('readable stream is awesome'),
+      SenderAccount.privateKey
+    ).build();
+
+    const result = await uploader.upload(param);
+
+    expect(result.transactionHash.length > 0).to.be.true;
+    expect(result.data.dataHash.length > 0).to.be.true;
+    expect(result.data.contentType).to.be.undefined;
+    expect(result.data.metadata).to.be.undefined;
+    expect(result.data.description).to.be.undefined;
+    expect(result.data.name).to.be.undefined;
+
+    console.log(`Transaction Hash: ${result.transactionHash}`);
+    console.log(`Data Hash: ${result.data.dataHash}`);
+  }).timeout(10000);
+
+  it('should upload readable stream with complete details', async () => {
+    const metadata = new Map<string, string>();
+    metadata.set('author', 'Proximax');
+
+    const paramData = ReadableStreamParameterData.create(
+      async () => StreamHelper.string2Stream('readable stream is awesome'),
+      'test name',
+      'test description',
+      'text/plain',
+      metadata
+    );
+
+    const param = UploadParameter.createForReadableStreamUpload(
       paramData,
       SenderAccount.privateKey
     ).build();

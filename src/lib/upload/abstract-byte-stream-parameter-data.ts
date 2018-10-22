@@ -1,4 +1,4 @@
-import { Stream } from 'stream';
+import { Readable } from 'stream';
 import { ReservedContentTypes } from '../config/constants';
 import { UploadParameterData } from './upload-parameter-data';
 
@@ -25,5 +25,5 @@ export abstract class AbstractByteStreamParameterData extends UploadParameterDat
    * Get the byte stream
    * @return the byte stream
    */
-  public abstract async getByteStream(): Promise<Stream>;
+  public abstract async getByteStream(): Promise<Readable>;
 }

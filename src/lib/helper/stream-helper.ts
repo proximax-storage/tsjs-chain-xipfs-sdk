@@ -1,9 +1,9 @@
 import http from 'http';
 import https from 'https';
-import { PassThrough, Stream } from 'stream';
+import { PassThrough, Readable, Stream } from 'stream';
 
 export class StreamHelper {
-  public static string2Stream(text: string, encoding?: string): Stream {
+  public static string2Stream(text: string, encoding?: string): PassThrough {
     const stream = new PassThrough();
     stream.write(Buffer.from(text, encoding || 'utf8'));
     stream.end();
@@ -24,7 +24,7 @@ export class StreamHelper {
     });
   }
 
-  public static buffer2Stream(buffer: Buffer): Stream {
+  public static buffer2Stream(buffer: Buffer): PassThrough {
     const stream = new PassThrough();
     stream.write(buffer);
     stream.end();
@@ -40,8 +40,8 @@ export class StreamHelper {
     });
   }
 
-  public static async urlReadableStream(url: string): Promise<Stream> {
-    return new Promise<Stream>((resolve, reject) => {
+  public static async urlReadableStream(url: string): Promise<Readable> {
+    return new Promise<Readable>((resolve, reject) => {
       if (url.startsWith('http://')) {
         http.get(url, stream => resolve(stream));
       } else if (url.startsWith('https://')) {

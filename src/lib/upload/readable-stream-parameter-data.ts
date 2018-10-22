@@ -1,14 +1,13 @@
 import { Readable } from 'stream';
-import { StreamHelper } from '../helper/stream-helper';
 import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
 
 /**
- * This model class is one type of the upload parameter data that defines a URL resource upload
+ * This model class is one type of the upload parameter data that defines a stream upload
  */
-export class UrlResourceParameterData extends AbstractByteStreamParameterData {
+export class ReadableStreamParameterData extends AbstractByteStreamParameterData {
   /**
    * Create instance
-   * @param url the url resource to upload
+   * @param file the file to upload
    * @param description a searchable description attach on the upload
    * @param name a searchable name attach on the upload
    * @param contentType the content type attach on the upload
@@ -17,9 +16,9 @@ export class UrlResourceParameterData extends AbstractByteStreamParameterData {
    */
   public static create(
     /**
-     * The url resource
+     * The function that initiates stream to upload
      */
-    url: string,
+    readableStreamFunction: () => Promise<Readable>,
     /**
      * The content name
      */
@@ -36,9 +35,9 @@ export class UrlResourceParameterData extends AbstractByteStreamParameterData {
      * The content metadata
      */
     metadata?: Map<string, string>
-  ): UrlResourceParameterData {
-    return new UrlResourceParameterData(
-      url,
+  ): ReadableStreamParameterData {
+    return new ReadableStreamParameterData(
+      readableStreamFunction,
       name,
       description,
       contentType,
@@ -47,11 +46,11 @@ export class UrlResourceParameterData extends AbstractByteStreamParameterData {
   }
 
   private constructor(
-    public url: string,
-    public name?: string,
-    public description?: string,
-    public contentType?: string,
-    public metadata?: Map<string, string>
+    public readonly readableStreamFunction: () => Promise<Readable>,
+    public readonly name?: string,
+    public readonly description?: string,
+    public readonly contentType?: string,
+    public readonly metadata?: Map<string, string>
   ) {
     super(name, description, contentType, metadata);
   }
@@ -61,6 +60,6 @@ export class UrlResourceParameterData extends AbstractByteStreamParameterData {
    * @return the byte stream
    */
   public async getByteStream(): Promise<Readable> {
-    return StreamHelper.urlReadableStream(this.url);
+    return this.readableStreamFunction();
   }
 }

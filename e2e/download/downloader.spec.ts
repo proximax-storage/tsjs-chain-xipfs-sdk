@@ -227,4 +227,42 @@ describe('Downloader integration tests', () => {
     expect(result.data.description).to.be.equal('test description');
     expect(result.data.name).to.be.equal('test name');
   }).timeout(10000);
+
+  it('should download readable stream upload', async () => {
+    const transactionHash =
+      'E712BD47D33C3A0A13357E93DC86024E50520B7BBC74EA86FDE947788C5D83B9';
+
+    const expectedText = 'readable stream is awesome';
+
+    const param = DownloadParameter.create(transactionHash).build();
+
+    const result = await downloader.download(param);
+    const actual = await result.data.getContentsAsString();
+
+    expect(actual).to.be.equal(expectedText);
+    expect(result.data.contentType).to.be.undefined;
+    expect(result.data.metadata).to.be.undefined;
+    expect(result.data.description).to.be.undefined;
+    expect(result.data.name).to.be.undefined;
+  }).timeout(10000);
+
+  it('should download readable stream upload with complete details', async () => {
+    const transactionHash =
+      '3E6D9B5BD63F41D3D1CA69750F8A9EE500CE9C11ECF05FE64108108A42BF5BE8';
+
+    const expectedText = 'readable stream is awesome';
+    const expectedMetadata = new Map<string, string>();
+    expectedMetadata.set('author', 'Proximax');
+
+    const param = DownloadParameter.create(transactionHash).build();
+
+    const result = await downloader.download(param);
+    const actual = await result.data.getContentsAsString();
+
+    expect(actual).to.be.equal(expectedText);
+    expect(result.data.contentType).to.be.equal('text/plain');
+    expect(result.data.metadata).to.be.eql(expectedMetadata);
+    expect(result.data.description).to.be.equal('test description');
+    expect(result.data.name).to.be.equal('test name');
+  }).timeout(10000);
 });
