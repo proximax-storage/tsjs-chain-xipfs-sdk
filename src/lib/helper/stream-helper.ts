@@ -1,3 +1,5 @@
+import http from 'http';
+import https from 'https';
 import { PassThrough, Stream } from 'stream';
 
 export class StreamHelper {
@@ -35,6 +37,18 @@ export class StreamHelper {
       stream.on('data', chunk => chunks.push(chunk));
       stream.on('error', err => reject(err));
       stream.on('end', () => resolve(Buffer.concat(chunks)));
+    });
+  }
+
+  public static async urlReadableStream(url: string): Promise<Stream> {
+    return new Promise<Stream>((resolve, reject) => {
+      if (url.startsWith('http://')) {
+        http.get(url, stream => resolve(stream));
+      } else if (url.startsWith('https://')) {
+        https.get(url, stream => resolve(stream));
+      } else {
+        reject(`url ${url} is not valid`);
+      }
     });
   }
 }

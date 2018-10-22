@@ -25,5 +25,5 @@ export abstract class AbstractByteStreamParameterData extends UploadParameterDat
    * Get the byte stream
    * @return the byte stream
    */
-  public abstract getByteStream(): Stream;
+  public abstract async getByteStream(): Promise<Stream>;
 }

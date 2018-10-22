@@ -62,6 +62,11 @@ export class DownloadResultData {
     return StreamHelper.stream2String(stream, encoding);
   }
 
+  public async getContentAsBuffer(): Promise<Buffer> {
+    const stream = await this.streamFunction();
+    return StreamHelper.stream2Buffer(stream);
+  }
+
   public async saveToFile(file: string): Promise<boolean> {
     const stream = await this.streamFunction();
     stream.pipe(fs.createWriteStream(file));

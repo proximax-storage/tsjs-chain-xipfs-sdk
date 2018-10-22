@@ -60,8 +60,8 @@ export class Uploader {
    * @param uploadParam the upload parameter
    * @return the upload result
    */
-  public async upload(param: UploadParameter): Promise<UploadResult> {
-    return this.doUpload(param);
+  public async upload(uploadParam: UploadParameter): Promise<UploadResult> {
+    return this.doUpload(uploadParam);
   }
 
   private async doUpload(param: UploadParameter): Promise<UploadResult> {

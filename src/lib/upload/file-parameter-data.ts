@@ -60,7 +60,7 @@ export class FileParameterData extends AbstractByteStreamParameterData {
    * Get the byte stream
    * @return the byte stream
    */
-  public getByteStream(): Stream {
+  public async getByteStream(): Promise<Stream> {
     return fs.createReadStream(this.file);
   }
 }

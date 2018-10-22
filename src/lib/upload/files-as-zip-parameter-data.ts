@@ -59,7 +59,7 @@ export class FilesAsZipParameterData extends AbstractByteStreamParameterData {
    * Get the byte stream
    * @return the byte stream
    */
-  public getByteStream(): Stream {
+  public async getByteStream(): Promise<Stream> {
     // TODO
     throw new Error('Not yet implemented');
   }

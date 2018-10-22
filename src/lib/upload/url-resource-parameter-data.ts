@@ -1,5 +1,5 @@
-import * as fs from 'fs';
 import { Stream } from 'stream';
+import { StreamHelper } from '../helper/stream-helper';
 import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
 
 /**
@@ -60,7 +60,7 @@ export class UrlResourceParameterData extends AbstractByteStreamParameterData {
    * Get the byte stream
    * @return the byte stream
    */
-  public getByteStream(): Stream {
-    return fs.createReadStream(this.url);
+  public async getByteStream(): Promise<Stream> {
+    return StreamHelper.urlReadableStream(this.url);
   }
 }

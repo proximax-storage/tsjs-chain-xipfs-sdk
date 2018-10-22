@@ -38,6 +38,17 @@ export class RetrieveProximaxMessagePayloadService {
       transferTransaction,
       accountPrivateKey
     );
-    return JSON.parse(payload);
+    return JSON.parse(
+      payload,
+      (key, value) => (key === 'metadata' ? this.toMap(value) : value)
+    );
+  }
+
+  private toMap(obj: object): Map<string, string> {
+    const map = new Map<string, string>();
+    if (obj) {
+      Object.keys(obj).forEach(key => map.set(key, obj[key]));
+    }
+    return map;
   }
 }

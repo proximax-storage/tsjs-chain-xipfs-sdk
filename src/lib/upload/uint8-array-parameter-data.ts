@@ -59,7 +59,7 @@ export class Uint8ArrayParameterData extends AbstractByteStreamParameterData {
    * Get the byte stream
    * @return the byte stream
    */
-  public getByteStream(): Stream {
+  public async getByteStream(): Promise<Stream> {
     const stream = new PassThrough();
     stream.write(Buffer.from(this.data));
     stream.end();
