@@ -1,7 +1,6 @@
 import chai, { expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import 'mocha';
-import { PrivacyType } from '../../src';
 import { BlockchainNetworkConnection } from '../../src/lib/connection/blockchain-network-connection';
 import { ConnectionConfig } from '../../src/lib/connection/connection-config';
 import { IpfsConnection } from '../../src/lib/connection/ipfs-connection';
@@ -12,14 +11,12 @@ import { Uploader } from '../../src/lib/upload/uploader';
 import {
   BlockchainInfo,
   IpfsInfo,
-  RecipientAccount,
-  SamplePassword,
   SenderAccount
 } from '../integrationtestconfig';
 
 chai.use(chaiAsPromised);
 
-describe('Uploader integration tests for privacy strategies', () => {
+describe('Uploader integration tests for compute digest', () => {
   const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
     new BlockchainNetworkConnection(
       BlockchainNetworkType.MIJIN_TEST,
@@ -32,55 +29,39 @@ describe('Uploader integration tests for privacy strategies', () => {
 
   const uploader = new Uploader(connectionConfig);
 
-  it('should upload with plain privacy', async () => {
+  it('should upload with enabled compute digest', async () => {
     const param = UploadParameter.createForStringUpload(
-      'Proximax P2P Uploader with plain privacy',
+      'Proximax P2P Uploader for string test',
       SenderAccount.privateKey
     )
-      .withPlainPrivacy()
+      .withComputeDigest(true)
       .build();
 
     const result = await uploader.upload(param);
 
     expect(result.transactionHash.length > 0).to.be.true;
     expect(result.data.dataHash.length > 0).to.be.true;
-    expect(result.privacyType).to.be.equal(PrivacyType.PLAIN);
+    expect(result.data.digest && result.data.digest.length > 0).to.be.true;
 
     console.log(`Transaction Hash: ${result.transactionHash}`);
     console.log(`Data Hash: ${result.data.dataHash}`);
+    console.log(`Data Digest: ${result.data.digest}`);
   }).timeout(10000);
 
-  it('should upload secured with nem keys privacy', async () => {
+  it('should upload with disabled compute digest', async () => {
     const param = UploadParameter.createForStringUpload(
       'Proximax P2P Uploader with nem keys privacy',
       SenderAccount.privateKey
     )
-      .withNemKeysPrivacy(SenderAccount.privateKey, RecipientAccount.publicKey)
+      .withComputeDigest(false)
       .build();
 
     const result = await uploader.upload(param);
 
     expect(result.transactionHash.length > 0).to.be.true;
     expect(result.data.dataHash.length > 0).to.be.true;
-    expect(result.privacyType).to.be.equal(PrivacyType.NEM_KEYS);
-
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
-  }).timeout(10000);
-
-  it('should upload secured with password privacy', async () => {
-    const param = UploadParameter.createForStringUpload(
-      'Proximax P2P Uploader with password privacy',
-      SenderAccount.privateKey
-    )
-      .withPasswordPrivacy(SamplePassword)
-      .build();
-
-    const result = await uploader.upload(param);
-
-    expect(result.transactionHash.length > 0).to.be.true;
-    expect(result.data.dataHash.length > 0).to.be.true;
-    expect(result.privacyType).to.be.equal(PrivacyType.PASSWORD);
+    expect(result.data.digest !== undefined && result.data.digest.length > 0).to
+      .be.false;
 
     console.log(`Transaction Hash: ${result.transactionHash}`);
     console.log(`Data Hash: ${result.data.dataHash}`);

@@ -1,5 +1,4 @@
 import { map } from 'rxjs/operators';
-import { Stream } from 'stream';
 import { ConnectionConfig } from '../connection/connection-config';
 import { DigestUtils } from '../helper/digest-util';
 import { ProximaxDataModel } from '../model/proximax/data-model';
@@ -51,10 +50,7 @@ export class CreateProximaxDataService {
   ): Promise<ProximaxDataModel> {
     const contentType = this.detectContentType(param, byteStreamParamData);
     const encryptedStream = this.encryptedStream(param, byteStreamParamData);
-    const digest = await this.computeDigest(
-      param.computeDigest,
-      encryptedStream
-    );
+    const digest = await this.computeDigest(param, byteStreamParamData);
 
     return this.fileUploadService
       .uploadStream(encryptedStream)
@@ -98,9 +94,13 @@ export class CreateProximaxDataService {
   }
 
   private async computeDigest(
-    computeDigest: boolean,
-    encryptedData: Stream
+    param: UploadParameter,
+    byteStreamParamData: AbstractByteStreamParameterData
   ): Promise<string | undefined> {
-    return computeDigest ? DigestUtils.computeDigest(encryptedData) : undefined;
+    return param.computeDigest
+      ? DigestUtils.computeDigest(
+          this.encryptedStream(param, byteStreamParamData)
+        )
+      : undefined;
   }
 }

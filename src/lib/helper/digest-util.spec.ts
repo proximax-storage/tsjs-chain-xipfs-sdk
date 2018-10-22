@@ -10,7 +10,7 @@ describe('DigestUtil', () => {
   it('should compute digest for the given data', async () => {
     const expectedDigest =
       '18f6a4874fd46762b7fb75bf9097b29db236546232894dc1442a6ff83ac48447';
-    // console.log(expectedDigest);
+
     const stream = TestHelper.stringToStream('Proximax P2P test digest');
 
     const computedDigest = await DigestUtils.computeDigest(stream);

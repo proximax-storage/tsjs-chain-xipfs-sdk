@@ -21,7 +21,7 @@ import {
 
 chai.use(chaiAsPromised);
 
-describe('Downloader integration tests for secure message', () => {
+describe('Downloader integration tests for privacy strategies', () => {
   const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
     new BlockchainNetworkConnection(
       BlockchainNetworkType.MIJIN_TEST,

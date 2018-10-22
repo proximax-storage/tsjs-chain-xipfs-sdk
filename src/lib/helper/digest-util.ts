@@ -24,8 +24,9 @@ export class DigestUtils {
 
   public static async computeDigest(stream: Stream): Promise<string> {
     const hash = crypto.createHash('sha256');
-    return new Promise<string>(resolve => {
+    return new Promise<string>((resolve, reject) => {
       stream.on('data', chunk => hash.update(chunk));
+      stream.on('error', err => reject(err));
       stream.on('end', () => resolve(hash.digest('hex')));
     });
   }
