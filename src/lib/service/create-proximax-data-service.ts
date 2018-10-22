@@ -80,17 +80,19 @@ export class CreateProximaxDataService {
   private detectContentType(
     param: UploadParameter,
     paramData: AbstractByteStreamParameterData
-  ): string {
-    return (
-      paramData.contentType ||
-      (param.detectContentType && this.detectFileType(paramData))
-    );
+  ): string | undefined {
+    return !paramData.contentType && param.detectContentType
+      ? this.detectFileType()
+      : paramData.contentType;
   }
 
-  private detectFileType(paramData: AbstractByteStreamParameterData) {
-    const fileType = require('file-type');
-    const mimeType = fileType(paramData.getByteStream());
-    return mimeType && mimeType.mime;
+  private detectFileType(): string | undefined {
+    // TODO implement content type detection
+    // file type does not accept stream
+    // const fileType = require('file-type');
+    // const mimeType = fileType(paramData.getByteStream());
+    // return mimeType && mimeType.mime;
+    return undefined;
   }
 
   private async computeDigest(

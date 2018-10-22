@@ -54,29 +54,18 @@
     "node": ">=8.9"
   },
   "dependencies": {
-    "buffer": "^5.2.1",
-    "crypto-js": "^3.1.9-1",
-    "file-type": "^9.0.0",
-    "get-random-values": "^1.2.0",
-    "install": "^0.12.1",
     "ipfs-api": "^24.0.2",
     "js-joda": "^1.9.2",
     "node-fetch": "^2.2.0",
     "proximax-nem2-library": "^0.9.8",
     "proximax-nem2-sdk": "^0.10.6",
-    "pull-stream": "^3.6.9",
     "rxjs": "^6.3.3",
-    "text-encoding-utf-8": "^1.0.2",
-    "typescript-base64-arraybuffer": "^0.1.0",
-    "uribuilder": "^1.0.5",
-    "utf8": "^3.0.0"
+    "uribuilder": "^1.0.5"
   },
   "devDependencies": {
     "@types/chai": "^4.1.6",
     "@types/chai-as-promised": "^7.1.0",
-    "@types/crypto-js": "^3.1.43",
     "@types/mocha": "^5.2.5",
-    "@types/text-encoding-utf-8": "^1.0.1",
     "@types/utf8": "^2.1.6",
     "ava": "1.0.0-beta.7",
     "chai": "^4.2.0",

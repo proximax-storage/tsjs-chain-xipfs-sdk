@@ -1,13 +1,19 @@
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import 'mocha';
-import { BlockchainNetworkConnection } from '../../src/lib/connection/blockchain-network-connection';
+import {
+  BlockchainNetworkConnection,
+  BlockchainNetworkType,
+  IpfsConnection
+} from '../../src';
+import { SchemaVersion } from '../../src/lib/config/constants';
 import { ConnectionConfig } from '../../src/lib/connection/connection-config';
-import { IpfsConnection } from '../../src/lib/connection/ipfs-connection';
 import { Protocol } from '../../src/lib/connection/protocol';
 import { DownloadParameter } from '../../src/lib/download/download-parameter';
 import { Downloader } from '../../src/lib/download/downloader';
-import { BlockchainNetworkType } from '../../src/lib/model/blockchain/blockchain-network-type';
 import { BlockchainInfo, IpfsInfo } from '../integrationtestconfig';
+
+chai.use(chaiAsPromised);
 
 describe('Downloader integration tests', () => {
   const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
@@ -19,6 +25,21 @@ describe('Downloader integration tests', () => {
     ),
     new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
   );
+  const downloader = new Downloader(connectionConfig);
+
+  it('should download with version', async () => {
+    const transactionHash =
+      '74B5B26AD0CA967F136B808CF41FEDA6D196E52810144AFBE08921A96B52489E';
+    const expectedText = 'Proximax P2P Uploader for string test';
+
+    const param = DownloadParameter.create(transactionHash).build();
+
+    const result = await downloader.download(param);
+    const actual = await result.data.getContentsAsString();
+
+    expect(actual).to.be.equal(expectedText);
+    expect(result.version).to.be.equal(SchemaVersion);
+  }).timeout(10000);
 
   it('should download content based on transaction hash', async () => {
     const transactionHash =
@@ -28,7 +49,6 @@ describe('Downloader integration tests', () => {
 
     const param = DownloadParameter.create(transactionHash).build();
 
-    const downloader = new Downloader(connectionConfig);
     const result = await downloader.download(param);
     const actual = await result.data.getContentsAsString();
 
