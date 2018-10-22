@@ -9,6 +9,7 @@ export class PromiseHelper {
         clearTimeout(wait);
         reject(new Error(`timeout reach waiting for ${action}`));
       }, timeoutDuration);
+      promise.then(() => clearTimeout(wait));
     });
 
     return Promise.race([promise, timeoutPromise]);

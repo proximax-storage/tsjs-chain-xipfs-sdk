@@ -29,8 +29,7 @@ import { PromiseHelper } from '../../../helper/promise-helper';
  * Class represents the blockchain transaction client
  */
 export class TransactionClient {
-  public static readonly STATUS_FOR_SUCCESSFUL_UNCONFIRMED_TRANSACTION =
-    'SUCCESS';
+  public static readonly StatusForSuccessfulUnconfirmedTransaction = 'SUCCESS';
 
   private readonly transactionHttp: TransactionHttp;
   private readonly blockchainNetworkRestApiUrl: string;
@@ -69,6 +68,41 @@ export class TransactionClient {
       throw new Error('address is required');
     }
 
+    const txnStatus = await this.announceAndWaitForStatus(
+      signedTransaction,
+      address
+    );
+
+    if (
+      txnStatus !== TransactionClient.StatusForSuccessfulUnconfirmedTransaction
+    ) {
+      throw new Error('Failed to announce transaction with status ' + status);
+    }
+
+    return txnStatus;
+  }
+
+  /**
+   * Retrieves a transaction from blockchain
+   * <br>
+   * <br>
+   * This method is equivalent to calling `GET /transaction/{transactionHash}`
+   *
+   * @param transactionHash the signed transaction
+   * @return the transaction announce response
+   */
+  public getTransaction(transactionHash: string): Observable<Transaction> {
+    if (!transactionHash) {
+      throw new Error('transaction hash is required');
+    }
+
+    return this.transactionHttp.getTransaction(transactionHash);
+  }
+
+  private async announceAndWaitForStatus(
+    signedTransaction: SignedTransaction,
+    address: Address
+  ): Promise<string> {
     const listener = this.getListener();
 
     try {
@@ -89,49 +123,23 @@ export class TransactionClient {
         failedTransactionStatus$,
         unconfirmedTransactionStatus$
       )
-        .pipe(
-          map(status => {
-            if (status === 'SUCCESS') {
-              return status;
-            } else {
-              throw new Error(
-                'Failed to announce transaction with status ' + status
-              );
-            }
-          }),
-          take(1)
-        )
+        .pipe(take(1))
         .toPromise();
 
       this.transactionHttp.announce(signedTransaction);
 
-      return await PromiseHelper.timeout(
+      const txnStatus = await PromiseHelper.timeout(
         txnStatusPromise,
         'announce transaction',
         60000
       );
+
+      return txnStatus;
     } catch (err) {
       throw new Error('Failed to announce transaction ' + err);
     } finally {
       await this.closeListener(listener);
     }
-  }
-
-  /**
-   * Retrieves a transaction from blockchain
-   * <br>
-   * <br>
-   * This method is equivalent to calling `GET /transaction/{transactionHash}`
-   *
-   * @param transactionHash the signed transaction
-   * @return the transaction announce response
-   */
-  public getTransaction(transactionHash: string): Observable<Transaction> {
-    if (!transactionHash) {
-      throw new Error('transaction hash is required');
-    }
-
-    return this.transactionHttp.getTransaction(transactionHash);
   }
 
   private getAddedFailedTransactionStatus(
@@ -155,7 +163,7 @@ export class TransactionClient {
         unconfirmedTrx =>
           unconfirmedTrx.transactionInfo!.hash === transactionHash
       ),
-      map(_ => TransactionClient.STATUS_FOR_SUCCESSFUL_UNCONFIRMED_TRANSACTION)
+      map(_ => TransactionClient.StatusForSuccessfulUnconfirmedTransaction)
     );
   }
 
