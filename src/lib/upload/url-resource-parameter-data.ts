@@ -1,3 +1,5 @@
+import { Readable } from 'stream';
+import { StreamHelper } from '../helper/stream-helper';
 import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
 
 /**
@@ -58,8 +60,7 @@ export class UrlResourceParameterData extends AbstractByteStreamParameterData {
    * Get the byte stream
    * @return the byte stream
    */
-  public getByteStream(): Uint8Array {
-    // TODO
-    throw new Error('Not yet implemented');
+  public async getByteStream(): Promise<Readable> {
+    return StreamHelper.urlReadableStream(this.url);
   }
 }

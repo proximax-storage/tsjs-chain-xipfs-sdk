@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { Readable } from 'stream';
 import { AbstractByteStreamParameterData } from './abstract-byte-stream-parameter-data';
 
 /**
@@ -59,7 +60,7 @@ export class FileParameterData extends AbstractByteStreamParameterData {
    * Get the byte stream
    * @return the byte stream
    */
-  public getByteStream(): Uint8Array {
-    return new Uint8Array(fs.readFileSync(this.file));
+  public async getByteStream(): Promise<Readable> {
+    return fs.createReadStream(this.file);
   }
 }

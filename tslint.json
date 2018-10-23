@@ -14,6 +14,7 @@
       "trace"
     ],
     "no-submodule-imports": [true, "rxjs", "ipfs"],
-    "no-unused-expression": [false, "allow-fast-null-checks"]
+    "no-unused-expression": [false, "allow-fast-null-checks"],
+    "no-bitwise": false
   }
 }

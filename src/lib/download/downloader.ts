@@ -1,3 +1,4 @@
+import { Stream } from 'stream';
 import { ConnectionConfig } from '../connection/connection-config';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { PrivacyStrategy } from '../privacy/privacy';
@@ -57,24 +58,25 @@ export class Downloader {
       transferTransaction,
       param.accountPrivateKey
     );
-    const contents = await this.getStream(
-      messagePayload.data.dataHash,
-      param.privacyStrategy!,
-      param.validateDigest!,
-      messagePayload.data.digest!,
-      messagePayload
-    ).toPromise();
+    const getStreamFunction = () =>
+      this.getStream(
+        messagePayload.data.dataHash,
+        param.privacyStrategy!,
+        param.validateDigest!,
+        messagePayload.data.digest!,
+        messagePayload
+      );
 
     return this.createCompleteDownloadResult(
       messagePayload,
-      contents,
+      getStreamFunction,
       param.transactionHash
     );
   }
 
   private createCompleteDownloadResult(
     messagePayloadModel: ProximaxMessagePayloadModel,
-    stream: any,
+    getStreamFunction: () => Promise<Stream>,
     transactionhash: string
   ): DownloadResult {
     const data = messagePayloadModel.data;
@@ -86,7 +88,7 @@ export class Downloader {
       new DownloadResultData(
         data.dataHash,
         data.timestamp!,
-        stream,
+        getStreamFunction,
         data.digest,
         data.description,
         data.contentType,
@@ -102,7 +104,7 @@ export class Downloader {
     validateDigest: boolean,
     digest: string,
     messagePayload?: ProximaxMessagePayloadModel
-  ) {
+  ): Promise<Stream> {
     let resolvedDataHash = dataHash;
     let resolvedDigest = digest;
     let resolvedContentType;

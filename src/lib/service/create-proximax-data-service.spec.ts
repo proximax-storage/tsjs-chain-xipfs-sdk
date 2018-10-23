@@ -47,19 +47,12 @@ describe('CreateProximaxDataService', () => {
     const param = UploadParameter.createForUint8ArrayUpload(
       paramData,
       SenderAccount.privateKey
-    )
-      .withRecipientPublicKey(RecipientAccount.publicKey)
-      .withRecipientAddress(RecipientAccount.address)
-      .withPlainPrivacy()
-      .withTransactionDeadline(1)
-      .withUseBlockchainSecureMessage(false)
-      .build();
+    ).build();
 
-    await createProximaxDataService.createData(param).subscribe(dataModel => {
-      // console.log(dataModel);
-      expect(dataModel.dataHash.length > 0).to.be.true;
-      expect(dataModel.digest!.length > 0).to.be.true;
-    });
+    const dataModel = await createProximaxDataService.createData(param);
+
+    expect(!!dataModel.dataHash).to.be.true;
+    expect(!!dataModel.digest).to.be.false;
   });
 
   it('should add data to ipfs and auto detect content type and return ProximaxDataModel', async () => {
@@ -101,11 +94,10 @@ describe('CreateProximaxDataService', () => {
       .withUseBlockchainSecureMessage(false)
       .build();
 
-    await createProximaxDataService.createData(param).subscribe(dataModel => {
-      // console.log(dataModel);
-      expect(dataModel.dataHash.length > 0).to.be.true;
-      expect(dataModel.contentType!).to.be.equal('text/plain');
-      expect(dataModel.digest!.length > 0).to.be.true;
-    });
+    const dataModel = await createProximaxDataService.createData(param);
+
+    expect(!!dataModel.dataHash).to.be.true;
+    expect(!!dataModel.digest).to.be.false;
+    expect(dataModel.contentType).to.be.equal('text/plain');
   });
 });

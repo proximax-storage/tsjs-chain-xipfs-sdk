@@ -44,3 +44,4 @@ export const NoFundsAccount = {
 export const SchemaVersion = '1.0';
 export const SampleTransactionHash =
   'BDD4E36A29E2EF588FFEE6F6ABBC9EBC69F4DD3FCB8A8CD23C0A227A59B64D0D';
+export const SamplePassword = 'ProximaXIsLit';

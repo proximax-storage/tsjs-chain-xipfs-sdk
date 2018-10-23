@@ -19,5 +19,5 @@ export enum PrivacyType {
   'NEM_KEYS' = 1002,
   'SHAMIR' = 1003,
   'PASSWORD' = 1004,
-  'CUSTOM' = 1005
+  'CUSTOM' = 2001
 }

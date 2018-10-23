@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { Stream } from 'stream';
 import { StorageConnection } from '../../connection/storage-connection';
 import { FileRepository } from '../repository/file-repository';
 
@@ -9,7 +10,7 @@ export class StorageNodeClient implements FileRepository {
     throw new Error('Method not implemented.');
   }
 
-  public getStream(): Observable<any> {
+  public getStream(): Observable<Stream> {
     throw new Error('Method not implemented.');
   }
 }

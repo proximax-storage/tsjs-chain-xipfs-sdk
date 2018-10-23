@@ -52,4 +52,22 @@ export class ProximaxDataModel {
       throw new Error('Data hash is required');
     }
   }
+
+  public toJSON(): object {
+    let metadataJson;
+    if (this.metadata) {
+      metadataJson = {};
+      this.metadata.forEach((value, key) => (metadataJson![key] = value));
+    }
+
+    return {
+      contentType: this.contentType,
+      dataHash: this.dataHash,
+      description: this.description,
+      digest: this.digest,
+      metadata: metadataJson,
+      name: this.name,
+      timestamp: this.timestamp
+    };
+  }
 }

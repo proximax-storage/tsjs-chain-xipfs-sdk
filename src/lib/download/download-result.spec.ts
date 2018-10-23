@@ -17,6 +17,7 @@
 import { expect } from 'chai';
 import 'mocha';
 
+import { PassThrough } from 'stream';
 import { SchemaVersion } from '../config/constants';
 import { PrivacyType } from '../privacy/privacy-type';
 import { DownloadResult } from './download-result';
@@ -30,7 +31,8 @@ describe('DownloadResult', () => {
       SchemaVersion,
       new DownloadResultData(
         'QmUD7uG5prAMHbcCfp4x1G1mMSpywcSMHTGpq62sbpDAg6',
-        12131231
+        12131231,
+        async () => new PassThrough()
       )
     );
     expect(downloadResult.transactionHash).to.be.not.equal(undefined);

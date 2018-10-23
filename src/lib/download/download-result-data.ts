@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+import fs from 'fs';
+import { Stream } from 'stream';
+import { StreamHelper } from '../helper/stream-helper';
+
 /**
  * Class represents download result data
  */
@@ -30,7 +34,7 @@ export class DownloadResultData {
     /**
      * The actual data in bytes. This only available for PrivacyType.PLAIN
      */
-    public readonly bytes?: any,
+    public readonly streamFunction: () => Promise<Stream>,
     /**
      * The digest
      */
@@ -52,4 +56,23 @@ export class DownloadResultData {
      */
     public readonly metadata?: Map<string, string>
   ) {}
+
+  public async getContentsAsString(encoding?: string): Promise<string> {
+    const stream = await this.streamFunction();
+    return StreamHelper.stream2String(stream, encoding);
+  }
+
+  public async getContentAsBuffer(): Promise<Buffer> {
+    const stream = await this.streamFunction();
+    return StreamHelper.stream2Buffer(stream);
+  }
+
+  public async saveToFile(file: string): Promise<boolean> {
+    const stream = await this.streamFunction();
+    stream.pipe(fs.createWriteStream(file));
+    return new Promise<boolean>((resolve, reject) => {
+      stream.on('error', err => reject(err));
+      stream.on('end', () => resolve(true));
+    });
+  }
 }

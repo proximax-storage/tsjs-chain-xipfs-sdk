@@ -15,10 +15,12 @@
  */
 
 // import {FilesAsZipParameterData} from "./files-as-zip-parameter-data";
+import { Readable } from 'stream';
 import { SchemaVersion } from '../config/constants';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { FileParameterData } from './file-parameter-data';
 import { PathParameterData } from './path-parameter-data';
+import { ReadableStreamParameterData } from './readable-stream-parameter-data';
 import { StringParameterData } from './string-parameter-data';
 import { Uint8ArrayParameterData } from './uint8-array-parameter-data';
 import { UploadParameterBuilder } from './upload-parameter-builder';
@@ -26,7 +28,7 @@ import { UploadParameterData } from './upload-parameter-data';
 import { UrlResourceParameterData } from './url-resource-parameter-data';
 
 /**
- * Class represetns the upload parameter
+ * This model class is the input parameter of upload.
  */
 export class UploadParameter {
   public static createForFileUpload(
@@ -34,7 +36,7 @@ export class UploadParameter {
     signerPrivateKey: string
   ): UploadParameterBuilder {
     return new UploadParameterBuilder(
-      file instanceof String
+      typeof file === 'string'
         ? FileParameterData.create(file as string)
         : (file as FileParameterData),
       signerPrivateKey
@@ -58,7 +60,7 @@ export class UploadParameter {
     signerPrivateKey: string
   ): UploadParameterBuilder {
     return new UploadParameterBuilder(
-      text instanceof String
+      typeof text === 'string'
         ? StringParameterData.create(text as string)
         : (text as StringParameterData),
       signerPrivateKey
@@ -70,9 +72,25 @@ export class UploadParameter {
     signerPrivateKey: string
   ): UploadParameterBuilder {
     return new UploadParameterBuilder(
-      url instanceof String
+      typeof url === 'string'
         ? UrlResourceParameterData.create(url as string)
         : (url as UrlResourceParameterData),
+      signerPrivateKey
+    );
+  }
+
+  public static createForReadableStreamUpload(
+    readableStreamFunction:
+      | (() => Promise<Readable>)
+      | ReadableStreamParameterData,
+    signerPrivateKey: string
+  ): UploadParameterBuilder {
+    return new UploadParameterBuilder(
+      readableStreamFunction instanceof ReadableStreamParameterData
+        ? (readableStreamFunction as ReadableStreamParameterData)
+        : ReadableStreamParameterData.create(
+            readableStreamFunction as () => Promise<Readable>
+          ),
       signerPrivateKey
     );
   }
