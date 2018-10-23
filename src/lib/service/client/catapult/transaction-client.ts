@@ -171,7 +171,7 @@ export class TransactionClient {
     try {
       return new Listener(
         this.blockchainNetworkRestApiUrl,
-        typeof window !== 'undefined' && (window as any).Websocket
+        typeof window !== 'undefined' && (window as any).WebSocket
       );
     } catch (err) {
       throw new Error('Unable to construct listener ' + err);
