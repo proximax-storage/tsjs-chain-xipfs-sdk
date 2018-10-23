@@ -26,7 +26,7 @@ describe('ProximaxMessagePayloadModel', () => {
     expect(() => {
       new ProximaxMessagePayloadModel(
         12,
-        new ProximaxDataModel(''),
+        new ProximaxDataModel('', 1),
         SchemaVersion
       );
     }).to.throw();
@@ -34,14 +34,15 @@ describe('ProximaxMessagePayloadModel', () => {
 
   it('should throw error if the proximax message payload model did not have valid proximax data model', () => {
     expect(() => {
-      const data = new ProximaxDataModel('');
+      const data = new ProximaxDataModel('', 1);
       new ProximaxMessagePayloadModel(PrivacyType.PLAIN, data, SchemaVersion);
     }).to.throw();
   });
 
   it('should create proximax message payload model with data hash', () => {
     const dataModel = new ProximaxDataModel(
-      'QmWDQegEhLdCUWF6aQZcLM6ELPTuWHfvjLYBeG6Kxy8hjs'
+      'QmWDQegEhLdCUWF6aQZcLM6ELPTuWHfvjLYBeG6Kxy8hjs',
+      1
     );
 
     const messagePayloadModel = new ProximaxMessagePayloadModel(

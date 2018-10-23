@@ -28,8 +28,8 @@ export class RetrieveProximaxDataService {
     datahash: string,
     privacyStrategy: PrivacyStrategy,
     validateDigest: boolean,
-    digest: string,
-    contentType: string
+    digest?: string,
+    contentType?: string
   ): Promise<Stream> {
     if (!datahash) {
       throw new Error('dataHash is required');
@@ -43,7 +43,7 @@ export class RetrieveProximaxDataService {
       throw new Error('download of path is not yet supported');
     } else {
       // stream
-      await this.validateDigest(validateDigest, digest, datahash);
+      await this.validateDigest(validateDigest, datahash, digest);
       return this.fileRepository
         .getStream(datahash)
         .pipe(map(encryptedStream => privacyStrategy.decrypt(encryptedStream)))
@@ -53,8 +53,8 @@ export class RetrieveProximaxDataService {
 
   private async validateDigest(
     validateDigest: boolean,
-    digest: string,
-    datahash: string
+    datahash: string,
+    digest?: string
   ): Promise<boolean> {
     if (validateDigest && digest) {
       const stream = await this.fileRepository.getStream(datahash).toPromise();

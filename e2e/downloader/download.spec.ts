@@ -17,7 +17,7 @@ import { BlockchainInfo, IpfsInfo } from '../integrationtestconfig';
 
 chai.use(chaiAsPromised);
 
-describe('Downloader integration tests', () => {
+describe('Downloader integration tests for download', () => {
   const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
     new BlockchainNetworkConnection(
       BlockchainNetworkType.MIJIN_TEST,

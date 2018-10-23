@@ -31,7 +31,8 @@ describe('BlockchainTransactionService', () => {
 
   it('should create and announce transaction to blockchain', async () => {
     const model = new ProximaxDataModel(
-      'Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS'
+      'Qmbd5jx8YF1QLhvwfLbCTWXGyZLyEJHrPbtbpRESvYs4FS',
+      1
     );
 
     const payload = new ProximaxMessagePayloadModel(

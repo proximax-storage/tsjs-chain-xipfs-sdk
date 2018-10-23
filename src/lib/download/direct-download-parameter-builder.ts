@@ -2,39 +2,48 @@ import { NemPrivacyStrategy } from '../..';
 import { PasswordPrivacyStrategy } from '../privacy/password-privacy';
 import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
 import { PrivacyStrategy } from '../privacy/privacy';
-import { DownloadParameter } from './download-parameter';
+import { DirectDownloadParameter } from './direct-download-parameter';
 
-/**
- * This builder class creates the DownloadParameter
- */
-export class DownloadParameterBuilder {
-  private accountPrivateKey?: string;
-  private privacyStrategy?: PrivacyStrategy;
-  private validateDigest?: boolean;
-
-  /**
-   * Construct the builder class with transaction hash
-   * @param transactionHash the blockchain transaction hash to download
-   */
-  constructor(private readonly transactionHash: string) {
+export class DirectDownloadParameterBuilder {
+  public static createFromTransactionHash(
+    transactionHash: string,
+    accountPrivateKey?: string,
+    validateDigest?: boolean
+  ): DirectDownloadParameterBuilder {
     if (!transactionHash) {
       throw new Error('transactionHash is required');
     }
 
-    this.transactionHash = transactionHash;
+    const builder = new DirectDownloadParameterBuilder();
+    builder.transactionHash = transactionHash;
+    builder.accountPrivateKey = accountPrivateKey;
+    builder.validateDigest = validateDigest || false;
+    return builder;
   }
 
-  /**
-   * Set the account private key of either sender or recipient of the transaction (required for secure messages)
-   * @param accountPrivateKey the account private key
-   * @return the same instance of this builder
-   */
-  public withAccountPrivateKey(
-    accountPrivateKey: string
-  ): DownloadParameterBuilder {
-    this.accountPrivateKey = accountPrivateKey;
-    return this;
+  public static createFromDataHash(
+    dataHash: string,
+    digest?: string
+  ): DirectDownloadParameterBuilder {
+    if (!dataHash) {
+      throw new Error('dataHash is required');
+    }
+
+    const builder = new DirectDownloadParameterBuilder();
+    builder.dataHash = dataHash;
+    builder.digest = digest;
+    builder.validateDigest = true;
+    return builder;
   }
+
+  private validateDigest: boolean;
+  private transactionHash?: string;
+  private accountPrivateKey?: string;
+  private dataHash?: string;
+  private privacyStrategy?: PrivacyStrategy;
+  private digest?: string;
+
+  private constructor() {}
 
   /**
    * Set the privacy strategy to decrypt the data
@@ -46,7 +55,7 @@ export class DownloadParameterBuilder {
    */
   public withPrivacyStrategy(
     privacyStrategy: PrivacyStrategy
-  ): DownloadParameterBuilder {
+  ): DirectDownloadParameterBuilder {
     this.privacyStrategy = privacyStrategy;
     return this;
   }
@@ -58,7 +67,7 @@ export class DownloadParameterBuilder {
    * Privacy strategy defines how the data will be decrypted
    * @return the same instance of this builder
    */
-  public withPlainPrivacy(): DownloadParameterBuilder {
+  public withPlainPrivacy(): DirectDownloadParameterBuilder {
     this.privacyStrategy = PlainPrivacyStrategy.create();
     return this;
   }
@@ -71,7 +80,7 @@ export class DownloadParameterBuilder {
    * @param password a 50-character minimum password
    * @return the same instance of this builder
    */
-  public withPasswordPrivacy(password: string): DownloadParameterBuilder {
+  public withPasswordPrivacy(password: string): DirectDownloadParameterBuilder {
     this.privacyStrategy = PasswordPrivacyStrategy.create(password);
     return this;
   }
@@ -88,27 +97,19 @@ export class DownloadParameterBuilder {
   public withNemKeysPrivacy(
     privateKey: string,
     publicKey: string
-  ): DownloadParameterBuilder {
+  ): DirectDownloadParameterBuilder {
     this.privacyStrategy = NemPrivacyStrategy.create(privateKey, publicKey);
     return this;
   }
 
-  /**
-   * Set the flag that indicates if need to verify digest
-   * @param validateDigest the validate digest flag
-   * @return the validate digest flag
-   */
-  public withValidateDigest(validateDigest: boolean): DownloadParameterBuilder {
-    this.validateDigest = validateDigest;
-    return this;
-  }
-
-  public build(): DownloadParameter {
-    return new DownloadParameter(
-      this.transactionHash,
+  public build(): DirectDownloadParameter {
+    return new DirectDownloadParameter(
       this.privacyStrategy || PlainPrivacyStrategy.create(),
-      this.validateDigest || false,
-      this.accountPrivateKey
+      this.validateDigest,
+      this.transactionHash,
+      this.accountPrivateKey,
+      this.dataHash,
+      this.digest
     );
   }
 }
