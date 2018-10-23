@@ -39,7 +39,7 @@ export class CreateProximaxDataService {
       return this.uploadByteStream(byteStreamParamData, param);
     } else if (param.data instanceof PathParameterData) {
       // TODO handle path upload
-      return new ProximaxDataModel('replaceme');
+      return new ProximaxDataModel('replaceme', 1);
     } else {
       throw new Error(`Uploading of type ${param.data.type} is not supported`);
     }
@@ -62,12 +62,12 @@ export class CreateProximaxDataService {
         map(fur => {
           return new ProximaxDataModel(
             fur.hash,
+            fur.timestamp,
             digest,
             param.data.description,
             contentType,
             param.data.metadata,
-            param.data.name,
-            fur.timestamp
+            param.data.name
           );
         })
       )

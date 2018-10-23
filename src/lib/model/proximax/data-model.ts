@@ -24,6 +24,10 @@ export class ProximaxDataModel {
      */
     public readonly dataHash: string,
     /**
+     * The timestamp
+     */
+    public readonly timestamp: number,
+    /**
      * The data digest
      */
     public readonly digest?: string,
@@ -42,11 +46,7 @@ export class ProximaxDataModel {
     /**
      * The content name
      */
-    public readonly name?: string,
-    /**
-     * The timestamp
-     */
-    public readonly timestamp?: number
+    public readonly name?: string
   ) {
     if (!this.dataHash || this.dataHash.length <= 0) {
       throw new Error('Data hash is required');

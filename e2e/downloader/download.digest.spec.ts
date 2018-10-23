@@ -14,7 +14,7 @@ import { BlockchainInfo, IpfsInfo } from '../integrationtestconfig';
 
 chai.use(chaiAsPromised);
 
-describe('Downloader integration tests for digest validation', () => {
+describe('Downloader integration tests for download with digest validation', () => {
   const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
     new BlockchainNetworkConnection(
       BlockchainNetworkType.MIJIN_TEST,
@@ -26,7 +26,7 @@ describe('Downloader integration tests for digest validation', () => {
   );
   const downloader = new Downloader(connectionConfig);
 
-  it('should download and enabled validate digest', async () => {
+  it('should download with enabled validate digest', async () => {
     const transactionHash =
       '74B5B26AD0CA967F136B808CF41FEDA6D196E52810144AFBE08921A96B52489E';
     const expectedText = 'Proximax P2P Uploader for string test';
@@ -41,7 +41,7 @@ describe('Downloader integration tests for digest validation', () => {
     expect(actual).to.be.equal(expectedText);
   }).timeout(10000);
 
-  it('should download and disabled validate digest', async () => {
+  it('should download with disabled validate digest', async () => {
     const transactionHash =
       '74B5B26AD0CA967F136B808CF41FEDA6D196E52810144AFBE08921A96B52489E';
     const expectedText = 'Proximax P2P Uploader for string test';

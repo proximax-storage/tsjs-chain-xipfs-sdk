@@ -20,7 +20,7 @@ import {
 
 chai.use(chaiAsPromised);
 
-describe('Downloader integration tests for secure message', () => {
+describe('Downloader integration tests for download with secure message', () => {
   const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
     new BlockchainNetworkConnection(
       BlockchainNetworkType.MIJIN_TEST,

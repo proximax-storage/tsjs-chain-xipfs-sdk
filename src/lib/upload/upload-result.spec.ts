@@ -27,7 +27,7 @@ describe('UploadResult', () => {
       'test',
       PrivacyType.PLAIN,
       SchemaVersion,
-      new ProximaxDataModel('qmsc')
+      new ProximaxDataModel('qmsc', 1)
     );
     expect(uploadResult).to.be.a.instanceof(UploadResult);
   });
