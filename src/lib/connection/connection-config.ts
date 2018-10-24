@@ -1,4 +1,5 @@
 import { BlockchainNetworkConnection } from './blockchain-network-connection';
+import { FileStorageConnection } from './file-storage-connection';
 import { IpfsConnection } from './ipfs-connection';
 import { StorageConnection } from './storage-connection';
 
@@ -23,27 +24,18 @@ export class ConnectionConfig {
     blockchainNetworkConnection: BlockchainNetworkConnection,
     ifpsConnection: IpfsConnection
   ): ConnectionConfig {
-    return new ConnectionConfig(
-      blockchainNetworkConnection,
-      ifpsConnection,
-      undefined
-    );
+    return new ConnectionConfig(blockchainNetworkConnection, ifpsConnection);
   }
 
   public static createWithStorageConnection(
     blockchainNetworkConnection: BlockchainNetworkConnection,
     storageConnection: StorageConnection
   ): ConnectionConfig {
-    return new ConnectionConfig(
-      blockchainNetworkConnection,
-      undefined,
-      storageConnection
-    );
+    return new ConnectionConfig(blockchainNetworkConnection, storageConnection);
   }
 
   constructor(
-    public blockchainNetworkConnection: BlockchainNetworkConnection,
-    public ifpsConnection?: IpfsConnection,
-    public storageConnection?: StorageConnection
+    public readonly blockchainNetworkConnection: BlockchainNetworkConnection,
+    public fileStorageConnection: FileStorageConnection
   ) {}
 }

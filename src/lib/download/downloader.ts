@@ -32,7 +32,7 @@ export class Downloader {
       connectionConfig.blockchainNetworkConnection
     );
     this.retrieveProximaxDataService = new RetrieveProximaxDataService(
-      connectionConfig
+      connectionConfig.fileStorageConnection
     );
     this.retrieveProximaxMessagePayloadService = new RetrieveProximaxMessagePayloadService(
       connectionConfig.blockchainNetworkConnection

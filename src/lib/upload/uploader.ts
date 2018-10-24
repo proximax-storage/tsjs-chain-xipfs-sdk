@@ -46,7 +46,7 @@ export class Uploader {
       connectionConfig.blockchainNetworkConnection
     );
     this.createProximaxDataService = new CreateProximaxDataService(
-      connectionConfig
+      connectionConfig.fileStorageConnection
     );
     this.createProximaxMessagePayloadService = new CreateProximaxMessagePayloadService();
   }
