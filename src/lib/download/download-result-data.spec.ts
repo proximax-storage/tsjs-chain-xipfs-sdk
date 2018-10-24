@@ -17,14 +17,17 @@
 import { expect } from 'chai';
 import 'mocha';
 
+import { PassThrough } from 'stream';
 import { DownloadResultData } from './download-result-data';
 
 describe('DownloadResultData', () => {
   it('should create the download result data', () => {
     const downloadResultData = new DownloadResultData(
       'QmUD7uG5prAMHbcCfp4x1G1mMSpywcSMHTGpq62sbpDAg6',
-      123231432
+      123231432,
+      async () => new PassThrough()
     );
+
     expect(downloadResultData.dataHash).to.be.not.equal(undefined);
     expect(downloadResultData.timestamp).to.be.not.equal(undefined);
   });

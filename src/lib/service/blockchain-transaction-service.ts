@@ -14,113 +14,108 @@
  * limitations under the License.
  */
 
+import { ChronoUnit } from 'js-joda';
 import {
   Account,
   Address,
   Deadline,
+  Message,
+  Mosaic,
+  MosaicId,
   NetworkType,
-  PlainMessage,
   TransactionType,
   TransferTransaction,
-  XEM
-} from 'nem2-sdk';
+  UInt64
+} from 'proximax-nem2-sdk';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { Converter } from '../helper/converter';
-import { SecureMessage } from '../model/blockchain/secure-message';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
-import { TransactionClient } from './client/transaction-client';
+import { BlockchainMessageService } from './blockchain-message-service';
+import { TransactionClient } from './client/catapult/transaction-client';
 
 /**
- * Class represents the blockchain transaction service
+ * The service class responsible for handling tasks that work with blockchain transactions
  */
 export class BlockchainTransactionService {
-  private connection: BlockchainNetworkConnection;
-  private client: TransactionClient;
-  private networkType: NetworkType;
+  private readonly blockchainMessageService: BlockchainMessageService;
+  private readonly transactionClient: TransactionClient;
+  private readonly networkType: NetworkType;
 
   /**
-   * Constructor
-   * @param connection the blockchain network connection
-   * @param client the transaction client
+   * Construct service class
+   *
+   * @param connection the config class to connect to blockchain network
    */
-  constructor(connection: BlockchainNetworkConnection) {
-    this.connection = connection;
-    this.client = new TransactionClient(connection);
-    this.networkType = Converter.getNemNetworkType(this.connection.network);
+  constructor(public readonly connection: BlockchainNetworkConnection) {
+    this.blockchainMessageService = new BlockchainMessageService(connection);
+    this.transactionClient = new TransactionClient(connection);
+    this.networkType = Converter.getNemNetworkType(this.connection.networkType);
   }
 
   /**
-   * Creates and announces the mesage payload to blockchain
-   * @param payload the payload
-   * @param signerPrivateKey the signer private key
-   * @param recipientPublicKey the recipient public key
-   * @param recipientAddress the recipient address
-   * @param transactionDeadline the transaction deadline
-   * @param useBlockchainSecureMessage determine to use blockchain secure message
+   * Create and announce a blockchain transaction
+   *
+   * @param payload             the message payload
+   * @param signerPrivateKey           the signer's private key for the transaction
+   * @param recipientPublicKey         the recipient's public key for the transaction (if different from signer)
+   * @param recipientAddress           the recipient's address for the transaction (if different from signer)
+   * @param transactionDeadline        the transaction deadline in hours
+   * @param useBlockchainSecureMessage the flag to indicate if secure message will be created
+   * @return the transaction hash
    */
-  public createAndAnnounceTransaction(
+  public async createAndAnnounceTransaction(
     payload: ProximaxMessagePayloadModel,
     signerPrivateKey: string,
-    recipientPublicKey: string,
-    recipientAddress: string,
     transactionDeadline: number,
-    useBlockchainSecureMessage: boolean
-  ): Observable<string> {
+    useBlockchainSecureMessage: boolean,
+    recipientPublicKey?: string,
+    recipientAddress?: string
+  ): Promise<string> {
     if (!signerPrivateKey) {
       throw new Error('signer private key is required');
     }
-
     if (!payload) {
       throw new Error('payload is required');
     }
 
-    const jsonPayload = JSON.stringify(payload);
-    const message = useBlockchainSecureMessage
-      ? SecureMessage.encrypt(jsonPayload, signerPrivateKey, recipientPublicKey)
-      : PlainMessage.create(jsonPayload);
-    // const networkType = this.getNemNetworkType(this.connection.network);
-
+    const message = await this.blockchainMessageService.createMessage(
+      payload,
+      signerPrivateKey,
+      useBlockchainSecureMessage,
+      recipientPublicKey,
+      recipientAddress
+    );
+    const recipient = this.getRecipient(
+      signerPrivateKey,
+      recipientAddress,
+      recipientPublicKey
+    );
+    const transferTransaction = this.createTransaction(
+      recipient,
+      transactionDeadline,
+      message
+    );
     const signerAccount = Account.createFromPrivateKey(
       signerPrivateKey,
       this.networkType
     );
-
-    const recipient = this.getRecipient(
-      recipientAddress,
-      recipientPublicKey,
-      signerPrivateKey
-    );
-
-    // TODO: Refactor when levy implement in blockchain
-    const mosaic = XEM.createRelative(1);
-
-    const transferTransaction = TransferTransaction.create(
-      Deadline.create(transactionDeadline),
-      recipient,
-      [mosaic],
-      message,
-      this.networkType
-    );
-
     const signedTransaction = signerAccount.sign(transferTransaction);
-    /*
-    await this.client.waitForAnnouncedTransactionToBeUnconfirmed(
-      recipient,
-      signedTransaction.hash
-    );*/
 
-    return this.client.announce(signedTransaction).pipe(
-      map(transactionHash => {
-        return transactionHash;
-      })
+    await this.transactionClient.announce(
+      signedTransaction,
+      signerAccount.address
     );
+
+    return signedTransaction.hash;
   }
 
   /**
-   * Gets the transferred transaction
-   * @param transactionHash the transaction hash
+   * Retrieves a transfer transaction
+   *
+   * @param transactionHash the transfer transaction hash
+   * @return the transfer transaction
    */
   public getTransferTransaction(
     transactionHash: string
@@ -129,7 +124,7 @@ export class BlockchainTransactionService {
       throw new Error('transaction hash is required');
     }
 
-    return this.client.getTransaction(transactionHash).pipe(
+    return this.transactionClient.getTransaction(transactionHash).pipe(
       map(transaction => {
         if (transaction.type === TransactionType.TRANSFER) {
           return transaction as TransferTransaction;
@@ -140,48 +135,32 @@ export class BlockchainTransactionService {
     );
   }
 
-  /**
-   * Tests the get recipient method.
-   * DO NOT USE THIS FUNCTION
-   * @internal
-   * @param recipientAddress the recipient address
-   * @param recipientPublicKey The recipient public key
-   * @param signerPrivateKey the signer private key
-   */
-  public testGetRecipient(
-    recipientAddress: string,
-    recipientPublicKey: string,
-    signerPrivateKey: string
-  ): Address {
-    return this.getRecipient(
-      recipientAddress,
-      recipientPublicKey,
-      signerPrivateKey
-    );
-  }
-
-  /**
-   *
-   * @param recipientAddress the recipient address
-   * @param recipientPublicKey The recipient public key
-   * @param signerPrivateKey the signer private key
-   */
   private getRecipient(
-    recipientAddress: string,
-    recipientPublicKey: string,
-    signerPrivateKey: string
+    signerPrivateKey: string,
+    recipientAddress?: string,
+    recipientPublicKey?: string
   ): Address {
-    if (recipientPublicKey && recipientPublicKey.length > 0) {
+    if (recipientPublicKey) {
       return Address.createFromPublicKey(recipientPublicKey, this.networkType);
-    } else if (recipientAddress && recipientAddress.length > 0) {
+    } else if (recipientAddress) {
       return Address.createFromRawAddress(recipientAddress);
-    } else if (signerPrivateKey && signerPrivateKey.length > 0) {
+    } else {
       return Account.createFromPrivateKey(signerPrivateKey, this.networkType)
         .address;
-    } else {
-      throw new Error(
-        'The recipient address, public key or signer private key is required'
-      );
     }
+  }
+
+  private createTransaction(
+    recipientAddress: Address,
+    transactionDeadline: number,
+    message: Message
+  ): TransferTransaction {
+    return TransferTransaction.create(
+      Deadline.create(transactionDeadline, ChronoUnit.HOURS),
+      recipientAddress,
+      [new Mosaic(new MosaicId('prx:xpx'), UInt64.fromUint(1))],
+      message,
+      this.networkType
+    );
   }
 }

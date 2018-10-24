@@ -21,13 +21,14 @@ import { ProximaxDataModel } from './data-model';
 describe('ProximaxDataModel', () => {
   it('should throw error if the proximax data model did not have valid data hash', () => {
     expect(() => {
-      new ProximaxDataModel('');
+      new ProximaxDataModel('', 1);
     }).to.throw();
   });
 
   it('should create proximax data model with data hash', () => {
     const dataModel = new ProximaxDataModel(
-      'QmWDQegEhLdCUWF6aQZcLM6ELPTuWHfvjLYBeG6Kxy8hjs'
+      'QmWDQegEhLdCUWF6aQZcLM6ELPTuWHfvjLYBeG6Kxy8hjs',
+      1
     );
 
     expect(dataModel.dataHash).to.be.not.equal(undefined);

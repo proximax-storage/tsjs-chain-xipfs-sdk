@@ -24,6 +24,10 @@ export class ProximaxDataModel {
      */
     public readonly dataHash: string,
     /**
+     * The timestamp
+     */
+    public readonly timestamp: number,
+    /**
      * The data digest
      */
     public readonly digest?: string,
@@ -42,14 +46,28 @@ export class ProximaxDataModel {
     /**
      * The content name
      */
-    public readonly name?: string,
-    /**
-     * The timestamp
-     */
-    public readonly timestamp?: number
+    public readonly name?: string
   ) {
     if (!this.dataHash || this.dataHash.length <= 0) {
       throw new Error('Data hash is required');
     }
+  }
+
+  public toJSON(): object {
+    let metadataJson;
+    if (this.metadata) {
+      metadataJson = {};
+      this.metadata.forEach((value, key) => (metadataJson![key] = value));
+    }
+
+    return {
+      contentType: this.contentType,
+      dataHash: this.dataHash,
+      description: this.description,
+      digest: this.digest,
+      metadata: metadataJson,
+      name: this.name,
+      timestamp: this.timestamp
+    };
   }
 }

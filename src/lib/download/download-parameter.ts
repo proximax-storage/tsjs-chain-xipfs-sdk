@@ -29,18 +29,18 @@ export class DownloadParameter {
     /**
      * The transaction has
      */
-    public transactionHash: string,
-    /**
-     * The sender or recipient account private key
-     */
-    public accountPrivateKey?: string,
+    public readonly transactionHash: string,
     /**
      * The privacy strategy
      */
-    public privacyStrategy?: PrivacyStrategy,
+    public readonly privacyStrategy: PrivacyStrategy,
     /**
      * Determines to validate digest
      */
-    public validateDigest?: boolean
+    public readonly validateDigest: boolean,
+    /**
+     * The sender or recipient account private key
+     */
+    public readonly accountPrivateKey?: string
   ) {}
 }

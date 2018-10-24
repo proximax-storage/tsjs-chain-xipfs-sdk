@@ -28,7 +28,7 @@ export class BlockchainNetworkConnection {
     /**
      * The blockchain network type
      */
-    public network: BlockchainNetworkType,
+    public networkType: BlockchainNetworkType,
     /**
      * The host url
      */
@@ -43,7 +43,10 @@ export class BlockchainNetworkConnection {
      */
     public apiProtocol: Protocol
   ) {
-    if (this.network === null || !(this.network in BlockchainNetworkType)) {
+    if (
+      this.networkType === null ||
+      !(this.networkType in BlockchainNetworkType)
+    ) {
       throw new Error('The blockchain network type is required');
     }
 

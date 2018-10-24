@@ -16,7 +16,7 @@
 
 import { expect } from 'chai';
 import 'mocha';
-import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
+import { StringParameterData } from './string-parameter-data';
 import { UploadParameter } from './upload-parameter';
 import { UploadParameterData } from './upload-parameter-data';
 
@@ -27,7 +27,9 @@ describe('UploadParameter', () => {
     const contentType = 'text/plain';
     const metadata = new Map<string, string>();
     metadata.set('Author', 'Proximax');
-    const uploadParameterData = new UploadParameterData(
+    const uploadParameterData = StringParameterData.create(
+      'Test string',
+      'utf8',
       name,
       description,
       contentType,
@@ -35,17 +37,18 @@ describe('UploadParameter', () => {
     );
     expect(uploadParameterData).to.be.a.instanceof(UploadParameterData);
 
-    const uploadParameter = new UploadParameter(
+    const uploadParameter = UploadParameter.createForStringUpload(
       uploadParameterData,
-      'test',
-      'test',
-      'test',
-      PlainPrivacyStrategy.create(),
-      1,
-      false,
-      false,
-      true
-    );
+      'test'
+    )
+      .withRecipientPublicKey('test')
+      .withRecipientAddress('test')
+      .withPlainPrivacy()
+      .withTransactionDeadline(1)
+      .withUseBlockchainSecureMessage(false)
+      .withDetectContentType(false)
+      .build();
+
     expect(uploadParameter).to.be.a.instanceof(UploadParameter);
   });
 });

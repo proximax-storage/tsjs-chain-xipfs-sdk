@@ -35,17 +35,4 @@ export class ProximaxMessagePayloadModel {
      */
     public readonly version: string
   ) {}
-
-  /**
-   * Validates the proximax message payload model
-   */
-  public validate(): void {
-    if (!this.privacyType || !(this.privacyType in PrivacyType)) {
-      throw new Error('Privacy type is required');
-    }
-
-    if (!this.data) {
-      throw new Error('Proximax data model is required');
-    }
-  }
 }

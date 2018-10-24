@@ -4,17 +4,15 @@ import {
   BlockchainInfo,
   IpfsInfo,
   RecipientAccount,
-  SchemaVersion,
   SenderAccount
-} from '../config/config.spec';
+} from '../config/testconfig';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { ConnectionConfig } from '../connection/connection-config';
 import { IpfsConnection } from '../connection/ipfs-connection';
 import { Protocol } from '../connection/protocol';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
-import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
+import { Uint8ArrayParameterData } from '../upload/uint8-array-parameter-data';
 import { UploadParameter } from '../upload/upload-parameter';
-import { UploadParameterData } from '../upload/upload-parameter-data';
 import { CreateProximaxDataService } from './create-proximax-data-service';
 
 describe('CreateProximaxDataService', () => {
@@ -33,34 +31,28 @@ describe('CreateProximaxDataService', () => {
       connectionConfig
     );
 
-    const byteStream = Buffer.from('Proximax P2P CreateProximaxDataService');
+    const byteStream = new Uint8Array(
+      Buffer.from('Proximax P2P CreateProximaxDataService')
+    );
     const metadata = new Map<string, string>();
     metadata.set('author', 'Proximax');
-    const paramData = new UploadParameterData(
+    const paramData = Uint8ArrayParameterData.create(
+      byteStream,
       'Test',
       'Test decription',
       'text/plain',
-      metadata,
-      byteStream
-    );
-    const param = new UploadParameter(
-      paramData,
-      SenderAccount.privateKey,
-      RecipientAccount.publicKey,
-      RecipientAccount.address,
-      PlainPrivacyStrategy.create(),
-      1,
-      false,
-      true,
-      true,
-      SchemaVersion
+      metadata
     );
 
-    await createProximaxDataService.createData(param).subscribe(dataModel => {
-      // console.log(dataModel);
-      expect(dataModel.dataHash.length > 0).to.be.true;
-      expect(dataModel.digest!.length > 0).to.be.true;
-    });
+    const param = UploadParameter.createForUint8ArrayUpload(
+      paramData,
+      SenderAccount.privateKey
+    ).build();
+
+    const dataModel = await createProximaxDataService.createData(param);
+
+    expect(!!dataModel.dataHash).to.be.true;
+    expect(!!dataModel.digest).to.be.false;
   });
 
   it('should add data to ipfs and auto detect content type and return ProximaxDataModel', async () => {
@@ -78,34 +70,34 @@ describe('CreateProximaxDataService', () => {
       connectionConfig
     );
 
-    const byteStream = Buffer.from('Proximax P2P CreateProximaxDataService');
+    const byteStream = new Uint8Array(
+      Buffer.from('Proximax P2P CreateProximaxDataService')
+    );
     const metadata = new Map<string, string>();
     metadata.set('author', 'Proximax');
-    const paramData = new UploadParameterData(
+    const paramData = Uint8ArrayParameterData.create(
+      byteStream,
       'Test',
       'Test decription',
-      '',
-      metadata,
-      byteStream
-    );
-    const param = new UploadParameter(
-      paramData,
-      SenderAccount.privateKey,
-      RecipientAccount.publicKey,
-      RecipientAccount.address,
-      PlainPrivacyStrategy.create(),
-      1,
-      false,
-      true,
-      true,
-      SchemaVersion
+      'text/plain',
+      metadata
     );
 
-    await createProximaxDataService.createData(param).subscribe(dataModel => {
-      // console.log(dataModel);
-      expect(dataModel.dataHash.length > 0).to.be.true;
-      expect(dataModel.contentType!).to.be.equal('text/plain');
-      expect(dataModel.digest!.length > 0).to.be.true;
-    });
+    const param = UploadParameter.createForUint8ArrayUpload(
+      paramData,
+      SenderAccount.privateKey
+    )
+      .withRecipientPublicKey(RecipientAccount.publicKey)
+      .withRecipientAddress(RecipientAccount.address)
+      .withPlainPrivacy()
+      .withTransactionDeadline(1)
+      .withUseBlockchainSecureMessage(false)
+      .build();
+
+    const dataModel = await createProximaxDataService.createData(param);
+
+    expect(!!dataModel.dataHash).to.be.true;
+    expect(!!dataModel.digest).to.be.false;
+    expect(dataModel.contentType).to.be.equal('text/plain');
   });
 });

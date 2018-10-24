@@ -1,84 +1,128 @@
-import { TransferTransaction } from 'nem2-sdk';
-import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Stream } from 'stream';
 import { ConnectionConfig } from '../connection/connection-config';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { BlockchainTransactionService } from '../service/blockchain-transaction-service';
 import { RetrieveProximaxDataService } from '../service/retrieve-proximax-data-service';
+import { RetrieveProximaxMessagePayloadService } from '../service/retrieve-proximax-message-payload-service';
+import { DirectDownloadParameter } from './direct-download-parameter';
 import { DownloadParameter } from './download-parameter';
 import { DownloadResult } from './download-result';
 import { DownloadResultData } from './download-result-data';
 
-/*
- * Copyright 2018 ProximaX Limited
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/**
+ * The Downloader class that handles the download functionality
+ * <br>
+ * <br>
+ * The Downloader creation requires a ConnectionConfig that defines generally where the download will be done.
+ * The instance of the class can be reused to download multiple times.
+ * <br>
+ * <br>
+ * Downloads can be done by providing the blockchain transaction hash or the data hash.
+ * A complete download can be done to get the data and its accompanying details,
+ * and a direct download can be done to retrieve the data only.
  */
-
 export class Downloader {
   private blockchainTransactionService: BlockchainTransactionService;
+  private retrieveProximaxMessagePayloadService: RetrieveProximaxMessagePayloadService;
   private retrieveProximaxDataService: RetrieveProximaxDataService;
 
-  constructor(connectionConfig: ConnectionConfig) {
+  constructor(public readonly connectionConfig: ConnectionConfig) {
     this.blockchainTransactionService = new BlockchainTransactionService(
       connectionConfig.blockchainNetworkConnection
     );
     this.retrieveProximaxDataService = new RetrieveProximaxDataService(
       connectionConfig
     );
+    this.retrieveProximaxMessagePayloadService = new RetrieveProximaxMessagePayloadService(
+      connectionConfig.blockchainNetworkConnection
+    );
   }
 
-  public download(param: DownloadParameter): Promise<DownloadResult> {
-    return this.doDownload(param).toPromise();
+  /**
+   * Retrieve the data and its accompanying details.
+   * This would use the blockchain transaction hash to retrieve the data's byte stream and its details.
+   * <br>
+   *
+   * @param param the download parameter
+   * @return the download result
+   */
+  public async download(param: DownloadParameter): Promise<DownloadResult> {
+    if (!param) {
+      throw new Error('param is required');
+    }
+    return this.doDownload(param);
   }
 
-  public doDownload(param: DownloadParameter): Observable<DownloadResult> {
-    const downloadResult$ = this.blockchainTransactionService
-      .getTransferTransaction(param.transactionHash)
-      .pipe(
-        map(transferedTransaction => {
-          return this.getMessagePayload(
-            transferedTransaction,
-            param.accountPrivateKey!
-          );
-        }),
-        switchMap(messagePayload => {
-          return this.getStream(
-            messagePayload.data.dataHash,
-            param.privacyStrategy!,
-            param.validateDigest!,
-            messagePayload.data.digest!,
-            messagePayload
-          ).pipe(
-            map(contents => {
-              const bytes = contents[0].content;
-              return this.createCompleteDownloadResult(
-                messagePayload,
-                bytes,
-                param.transactionHash
-              );
-            })
-          );
-        })
+  /**
+   * Retrieve the data
+   *
+   * @param param the direct download data parameter
+   * @return the data
+   */
+  public async directDownload(param: DirectDownloadParameter): Promise<Stream> {
+    if (!param) {
+      throw new Error('param is required');
+    }
+    return this.doDirectDownload(param);
+  }
+
+  private async doDownload(param: DownloadParameter): Promise<DownloadResult> {
+    const messagePayload = await this.getMessagePayload(
+      param.transactionHash,
+      param.accountPrivateKey
+    );
+    const getStreamFunction = () =>
+      this.getStream(
+        param.privacyStrategy,
+        param.validateDigest,
+        messagePayload.data.dataHash,
+        messagePayload.data.digest,
+        messagePayload
       );
 
-    return downloadResult$;
+    return this.createCompleteDownloadResult(
+      messagePayload,
+      getStreamFunction,
+      param.transactionHash
+    );
   }
 
-  public createCompleteDownloadResult(
+  private async doDirectDownload(
+    param: DirectDownloadParameter
+  ): Promise<Stream> {
+    const messagePayload = param.transactionHash
+      ? await this.getMessagePayload(
+          param.transactionHash,
+          param.accountPrivateKey
+        )
+      : undefined;
+    return this.getStream(
+      param.privacyStrategy,
+      param.validateDigest,
+      param.dataHash,
+      param.digest,
+      messagePayload
+    );
+  }
+
+  private async getMessagePayload(
+    transactionHash: string,
+    accountPrivateKey?: string
+  ): Promise<ProximaxMessagePayloadModel> {
+    const transferTransaction = await this.blockchainTransactionService
+      .getTransferTransaction(transactionHash)
+      .toPromise();
+    const messagePayload = await this.retrieveProximaxMessagePayloadService.getMessagePayload(
+      transferTransaction,
+      accountPrivateKey
+    );
+    return messagePayload;
+  }
+
+  private createCompleteDownloadResult(
     messagePayloadModel: ProximaxMessagePayloadModel,
-    stream: any,
+    getStreamFunction: () => Promise<Stream>,
     transactionhash: string
   ): DownloadResult {
     const data = messagePayloadModel.data;
@@ -89,8 +133,8 @@ export class Downloader {
       messagePayloadModel.version,
       new DownloadResultData(
         data.dataHash,
-        data.timestamp!,
-        stream,
+        data.timestamp,
+        getStreamFunction,
         data.digest,
         data.description,
         data.contentType,
@@ -100,74 +144,22 @@ export class Downloader {
     );
   }
 
-  /*
-    public download(param: DownloadParameter): Observable<DownloadResult> {
-        return this.blockchainTransactionService
-            .getTransferTransaction(param.transactionHash)
-            .pipe(
-                map(transferedTransaction =>
-                    this.getMessagePayload(
-                        transferedTransaction,
-                        param.accountPrivateKey!
-                    )
-                ),
-                switchMap(messagePayloadModel => {
-                    // console.log(messagePayloadModel);
-                    return this.retrieveProximaxDataService
-                        .getStream(messagePayloadModel.data!)
-                        .pipe(
-                            map(data => {
-                                // console.log(data);
-                                return new DownloadResult(
-                                    param.transactionHash,
-                                    messagePayloadModel.privacyType,
-                                    messagePayloadModel.version!,
-                                    data
-                                );
-                            })
-                        );
-                })
-            );
-    }*/
-
-  /**
-   * Gets the proximax message payload
-   * @param transferTransaction the transfer transaction
-   * @param accountPrivateKey the account private key
-   */
-  private getMessagePayload(
-    transferTransaction: TransferTransaction,
-    accountPrivateKey: string
-  ): ProximaxMessagePayloadModel {
-    // TODO: handle secure message
-    console.log(accountPrivateKey);
-    const payload = transferTransaction.message.payload;
-    const messagePayloadModel: ProximaxMessagePayloadModel = JSON.parse(
-      payload
-    );
-
-    return messagePayloadModel;
-  }
-
   private getStream(
-    dataHash: string,
     privacyStrategy: PrivacyStrategy,
     validateDigest: boolean,
-    digest: string,
+    dataHash?: string,
+    digest?: string,
     messagePayload?: ProximaxMessagePayloadModel
-  ) {
-    let resolvedDataHash = dataHash;
-    let resolvedDigest = digest;
-    let resolvedContentType;
-
-    if (messagePayload) {
-      resolvedDataHash = messagePayload.data.dataHash;
-      resolvedDigest = messagePayload.data.digest!;
-      resolvedContentType = messagePayload.data.contentType;
-    }
+  ): Promise<Stream> {
+    const resolvedDataHash = messagePayload
+      ? messagePayload.data.dataHash
+      : dataHash;
+    const resolvedDigest = messagePayload ? messagePayload.data.digest : digest;
+    const resolvedContentType =
+      messagePayload && messagePayload.data.contentType;
 
     return this.retrieveProximaxDataService.getStream(
-      resolvedDataHash,
+      resolvedDataHash!,
       privacyStrategy,
       validateDigest,
       resolvedDigest,

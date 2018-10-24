@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+import fs from 'fs';
+import { Stream } from 'stream';
+import { StreamHelper } from '../helper/stream-helper';
+
 /**
  * Class represents download result data
  */
@@ -22,38 +26,53 @@ export class DownloadResultData {
     /**
      * The data hash
      */
-    public dataHash: string,
+    public readonly dataHash: string,
     /**
      * The timestamp
      */
-    public timestamp: number,
+    public readonly timestamp: number,
     /**
      * The actual data in bytes. This only available for PrivacyType.PLAIN
      */
-    public bytes?: any,
+    public readonly streamFunction: () => Promise<Stream>,
     /**
      * The digest
      */
-    public digest?: string,
+    public readonly digest?: string,
     /**
      * The content description
      */
-    public description?: string,
+    public readonly description?: string,
     /**
      * The content type
      */
-    public contentType?: string,
+    public readonly contentType?: string,
     /**
      * The content name or file name
      */
-    public name?: string,
+    public readonly name?: string,
     /**
      * The content metadata
      */
-    public metadata?: Map<string, string>
-  ) {
-    if (this.dataHash === null || this.dataHash.length <= 0) {
-      throw new Error('Datahash is required');
-    }
+    public readonly metadata?: Map<string, string>
+  ) {}
+
+  public async getContentsAsString(encoding?: string): Promise<string> {
+    const stream = await this.streamFunction();
+    return StreamHelper.stream2String(stream, encoding);
+  }
+
+  public async getContentAsBuffer(): Promise<Buffer> {
+    const stream = await this.streamFunction();
+    return StreamHelper.stream2Buffer(stream);
+  }
+
+  public async saveToFile(file: string): Promise<boolean> {
+    const stream = await this.streamFunction();
+    stream.pipe(fs.createWriteStream(file));
+    return new Promise<boolean>((resolve, reject) => {
+      stream.on('error', err => reject(err));
+      stream.on('end', () => resolve(true));
+    });
   }
 }

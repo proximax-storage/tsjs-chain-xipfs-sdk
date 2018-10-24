@@ -1,57 +1,66 @@
-import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-
+import { map } from 'rxjs/operators';
+import { Stream } from 'stream';
+import { PathUploadContentType } from '../config/constants';
 import { ConnectionConfig } from '../connection/connection-config';
 import { DigestUtils } from '../helper/digest-util';
-import { IpfsContent } from '../model/ipfs/ipfs-content';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { FileRepositoryFactory } from './factory/file-repository-factory';
 import { FileRepository } from './repository/file-repository';
-export class RetrieveProximaxDataService {
-  private fileRepository: FileRepository;
 
-  constructor(connectionConfig: ConnectionConfig) {
+/**
+ * The service class responsible for retrieving data
+ */
+export class RetrieveProximaxDataService {
+  private readonly fileRepository: FileRepository;
+
+  /**
+   * Construct this class
+   *
+   * @param connectionConfig the connection config
+   */
+  constructor(public readonly connectionConfig: ConnectionConfig) {
     this.fileRepository = FileRepositoryFactory.createFromConnectionConfig(
       connectionConfig
     );
   }
 
-  public getStream(
+  public async getStream(
     datahash: string,
     privacyStrategy: PrivacyStrategy,
     validateDigest: boolean,
-    digest: string,
-    contentType: string
-  ): Observable<IpfsContent[]> {
-    if (datahash === null) {
+    digest?: string,
+    contentType?: string
+  ): Promise<Stream> {
+    if (!datahash) {
       throw new Error('dataHash is required');
     }
-
-    if (privacyStrategy === null) {
+    if (!privacyStrategy) {
       throw new Error('privacy strategy is required');
     }
 
-    console.log(contentType);
-
-    // to be refactor
-    return this.fileRepository.getStream(datahash).pipe(
-      switchMap(stream => {
-        return this.validateDigest(validateDigest, digest, datahash).pipe(
-          map(_ => stream)
-        );
-      })
-    );
+    if (!contentType && contentType === PathUploadContentType) {
+      // path
+      throw new Error('download of path is not yet supported');
+    } else {
+      // stream
+      await this.validateDigest(validateDigest, datahash, digest);
+      return this.fileRepository
+        .getStream(datahash)
+        .pipe(map(encryptedStream => privacyStrategy.decrypt(encryptedStream)))
+        .toPromise();
+    }
   }
 
-  private validateDigest(
+  private async validateDigest(
     validateDigest: boolean,
-    digest: string,
-    datahash: string
-  ): Observable<boolean> {
-    return validateDigest
-      ? this.fileRepository
-          .getStream(datahash)
-          .pipe(switchMap(stream => DigestUtils.validateDigest(stream, digest)))
-      : of(true);
+    datahash: string,
+    digest?: string
+  ): Promise<boolean> {
+    if (validateDigest && digest) {
+      const stream = await this.fileRepository.getStream(datahash).toPromise();
+      return DigestUtils.validateDigest(stream, digest);
+    } else {
+      return false;
+    }
   }
 }

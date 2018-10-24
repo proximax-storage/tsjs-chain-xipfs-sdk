@@ -1,85 +1,114 @@
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Stream } from 'stream';
 import { ConnectionConfig } from '../connection/connection-config';
 import { DigestUtils } from '../helper/digest-util';
 import { ProximaxDataModel } from '../model/proximax/data-model';
+import { AbstractByteStreamParameterData } from '../upload/abstract-byte-stream-parameter-data';
+import { PathParameterData } from '../upload/path-parameter-data';
 import { UploadParameter } from '../upload/upload-parameter';
 import { FileUploadService } from './file-upload-service';
 
-/*
- * Copyright 2018 ProximaX Limited
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/**
+ * The service class responsible for creating the uploaded data object
  */
-
 export class CreateProximaxDataService {
-  private fileUploadService: FileUploadService;
+  private readonly fileUploadService: FileUploadService;
 
-  constructor(connectionConfig: ConnectionConfig) {
+  /**
+   * Construct this class
+   *
+   * @param connectionConfig the connection config
+   */
+  constructor(public readonly connectionConfig: ConnectionConfig) {
     this.fileUploadService = new FileUploadService(connectionConfig);
-    // console.log(this.ipfsClient);
   }
 
-  public createData(param: UploadParameter): Observable<ProximaxDataModel> {
+  /**
+   * Creates the uploaded data object
+   *
+   * @param uploadParam the upload parameter
+   * @return the uploaded data object
+   */
+  public async createData(param: UploadParameter): Promise<ProximaxDataModel> {
     if (param === null) {
       throw new Error('upload parameter is required');
     }
 
-    // auto detect content type
-    let contentType = param.data.contentType;
-    if (
-      (contentType === undefined ||
-        contentType === null ||
-        contentType.length <= 0) &&
-      param.detectContentType
-    ) {
-      const fileType = require('file-type');
-
-      const mimeType = fileType(param.data.byteStreams);
-
-      contentType =
-        mimeType === null || mimeType === undefined
-          ? 'text/plain'
-          : mimeType.mime;
-
-      console.log(contentType);
+    if (param.data instanceof AbstractByteStreamParameterData) {
+      const byteStreamParamData = param.data as AbstractByteStreamParameterData;
+      return this.uploadByteStream(byteStreamParamData, param);
+    } else if (param.data instanceof PathParameterData) {
+      // TODO handle path upload
+      return new ProximaxDataModel('replaceme', 1);
+    } else {
+      throw new Error(`Uploading of type ${param.data.type} is not supported`);
     }
+  }
 
-    // encrypt data
-    const encryptedData = param.privacyStrategy.encrypt(param.data.byteStreams);
-
-    // calculate digest
-    let digestHash = '';
-    if (param.computeDigest) {
-      digestHash = DigestUtils.computeDigest(encryptedData);
-    }
+  private async uploadByteStream(
+    byteStreamParamData: AbstractByteStreamParameterData,
+    param: UploadParameter
+  ): Promise<ProximaxDataModel> {
+    const contentType = this.detectContentType(param, byteStreamParamData);
+    const encryptedStream = await this.encryptedStream(
+      param,
+      byteStreamParamData
+    );
+    const digest = await this.computeDigest(param, byteStreamParamData);
 
     return this.fileUploadService
-      .uploadStream(encryptedData, param.data.options)
+      .uploadStream(encryptedStream)
       .pipe(
         map(fur => {
-          const digest = digestHash;
-
           return new ProximaxDataModel(
             fur.hash,
+            fur.timestamp,
             digest,
             param.data.description,
             contentType,
             param.data.metadata,
-            param.data.name,
-            fur.timestamp
+            param.data.name
           );
         })
-      );
+      )
+      .toPromise();
+  }
+
+  private async encryptedStream(
+    param: UploadParameter,
+    byteStreamParamData: AbstractByteStreamParameterData
+  ): Promise<Stream> {
+    return param.privacyStrategy.encrypt(
+      await byteStreamParamData.getByteStream()
+    );
+  }
+
+  private detectContentType(
+    param: UploadParameter,
+    paramData: AbstractByteStreamParameterData
+  ): string | undefined {
+    return !paramData.contentType && param.detectContentType
+      ? this.detectFileType()
+      : paramData.contentType;
+  }
+
+  private detectFileType(): string | undefined {
+    // TODO implement content type detection
+    // file type does not accept stream
+    // const fileType = require('file-type');
+    // const mimeType = fileType(paramData.getByteStream());
+    // return mimeType && mimeType.mime;
+    return undefined;
+  }
+
+  private async computeDigest(
+    param: UploadParameter,
+    byteStreamParamData: AbstractByteStreamParameterData
+  ): Promise<string | undefined> {
+    return param.computeDigest
+      ? DigestUtils.computeDigest(
+          await this.encryptedStream(param, byteStreamParamData)
+        )
+      : undefined;
   }
 }

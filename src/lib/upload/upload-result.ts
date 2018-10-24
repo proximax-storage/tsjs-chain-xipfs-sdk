@@ -34,18 +34,18 @@ export class UploadResult {
     /**
      * The transaction hash
      */
-    public transactionHash: string,
+    public readonly transactionHash: string,
     /**
      * The privacy type
      */
-    public privacyType: PrivacyType,
+    public readonly privacyType: PrivacyType,
     /**
      * The version
      */
-    public version: string,
+    public readonly version: string,
     /**
      * The proximax data model
      */
-    public data: ProximaxDataModel
+    public readonly data: ProximaxDataModel
   ) {}
 }

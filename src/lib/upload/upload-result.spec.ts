@@ -16,7 +16,7 @@
 
 import { expect } from 'chai';
 import 'mocha';
-import { SchemaVersion } from '../config/config.spec';
+import { SchemaVersion } from '../config/constants';
 import { ProximaxDataModel } from '../model/proximax/data-model';
 import { PrivacyType } from '../privacy/privacy-type';
 import { UploadResult } from './upload-result';
@@ -27,7 +27,7 @@ describe('UploadResult', () => {
       'test',
       PrivacyType.PLAIN,
       SchemaVersion,
-      new ProximaxDataModel('qmsc')
+      new ProximaxDataModel('qmsc', 1)
     );
     expect(uploadResult).to.be.a.instanceof(UploadResult);
   });

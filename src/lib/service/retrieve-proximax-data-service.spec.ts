@@ -1,5 +1,5 @@
 import 'mocha';
-import { BlockchainInfo, IpfsInfo } from '../config/config.spec';
+import { BlockchainInfo, IpfsInfo } from '../config/testconfig';
 import { IpfsConnection } from '../connection/ipfs-connection';
 import { Protocol } from '../connection/protocol';
 import { RetrieveProximaxDataService } from './retrieve-proximax-data-service';
@@ -7,7 +7,7 @@ import { RetrieveProximaxDataService } from './retrieve-proximax-data-service';
 import { expect } from 'chai';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { ConnectionConfig } from '../connection/connection-config';
-import { Converter } from '../helper/converter';
+import { StreamHelper } from '../helper/stream-helper';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
 
@@ -29,18 +29,15 @@ describe('RetrieveProximaxDataService', () => {
     const expectedContent = 'Proximax P2P CreateProximaxDataService';
 
     const dataHash = 'QmVjQMmQu79Q751eSVHDuR6QHtTAAGvEhexPUwRmotjzm5';
-    await retrieveProximaxDataService
-      .getStream(
-        dataHash,
-        PlainPrivacyStrategy.create(),
-        false,
-        '',
-        'text/plain'
-      )
-      .subscribe(response => {
-        // console.log(response[0].content);
-        const content = Converter.ab2str(response[0].content);
-        expect(content).to.be.equal(expectedContent);
-      });
+    const response = await retrieveProximaxDataService.getStream(
+      dataHash,
+      PlainPrivacyStrategy.create(),
+      false,
+      '',
+      'text/plain'
+    );
+
+    const content = await StreamHelper.stream2String(response);
+    expect(content).to.be.equal(expectedContent);
   });
 });

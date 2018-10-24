@@ -1,7 +1,7 @@
 import 'mocha';
 
 import { expect } from 'chai';
-import { StorageInfo } from '../config/config.spec';
+import { StorageInfo } from '../config/testconfig';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { BlockchainNetworkConnection } from './blockchain-network-connection';
 import { ConnectionConfig } from './connection-config';
