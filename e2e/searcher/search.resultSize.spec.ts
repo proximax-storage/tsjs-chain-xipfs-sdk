@@ -8,13 +8,11 @@ import {
 } from '../../src';
 import { ConnectionConfig } from '../../src/lib/connection/connection-config';
 import { Protocol } from '../../src/lib/connection/protocol';
-import { TransactionFilter } from '../../src/lib/model/blockchain/transaction-filter';
 import { SearchParameter } from '../../src/lib/search/search-parameter';
 import { Searcher } from '../../src/lib/search/searcher';
 import {
   BlockchainInfo,
   IpfsInfo,
-  RecipientAccount,
   SenderAccount
 } from '../integrationtestconfig';
 
@@ -32,33 +30,45 @@ describe('Searcher integration tests', () => {
   );
   const searcher = new Searcher(connectionConfig);
 
-  it('should search outgoing transactions', async () => {
+  it('should search with no specified result size', async () => {
+    const param = SearchParameter.createForAddress(
+      SenderAccount.address
+    ).build();
+
+    const result = await searcher.search(param);
+
+    expect(result.results.length).to.be.equal(10);
+  }).timeout(10000);
+
+  it('should search with 1 result size', async () => {
     const param = SearchParameter.createForAddress(SenderAccount.address)
-      .withTransactionFilter(TransactionFilter.OUTGOING)
+      .withResultSize(1)
       .build();
 
     const result = await searcher.search(param);
 
-    expect(result.results.length).to.be.equal(10);
+    expect(result.results.length).to.be.equal(1);
   }).timeout(10000);
 
-  it('should search incoming transactions', async () => {
-    const param = SearchParameter.createForAddress(RecipientAccount.address)
-      .withTransactionFilter(TransactionFilter.INCOMING)
+  it('should search with 20 result size', async () => {
+    const param = SearchParameter.createForAddress(SenderAccount.address)
+      .withResultSize(20)
       .build();
 
     const result = await searcher.search(param);
 
-    expect(result.results.length).to.be.equal(10);
+    expect(result.results.length).to.be.equal(20);
   }).timeout(10000);
 
-  it('should search all transactions', async () => {
-    const param = SearchParameter.createForAddress(RecipientAccount.address)
-      .withTransactionFilter(TransactionFilter.ALL)
-      .build();
+  it('failed trying to search more than 20 result size', async () => {
+    expect(() =>
+      SearchParameter.createForAddress(SenderAccount.address).withResultSize(21)
+    ).to.throw();
+  }).timeout(10000);
 
-    const result = await searcher.search(param);
-
-    expect(result.results.length).to.be.equal(10);
+  it('failed trying to search less than 1 result size', async () => {
+    expect(() =>
+      SearchParameter.createForAddress(SenderAccount.address).withResultSize(0)
+    ).to.throw();
   }).timeout(10000);
 });

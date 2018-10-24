@@ -1,9 +1,13 @@
-import {TransferTransaction} from 'proximax-nem2-sdk';
-import {AccountClient, ProximaxMessagePayloadModel, RetrieveProximaxMessagePayloadService} from '../..';
-import {ConnectionConfig} from '../connection/connection-config';
-import {SearchParameter} from './search-parameter';
-import {SearchResult} from './search-result';
-import {SearchResultItem} from './search-result-item';
+import { TransferTransaction } from 'proximax-nem2-sdk';
+import {
+  AccountClient,
+  ProximaxMessagePayloadModel,
+  RetrieveProximaxMessagePayloadService
+} from '../..';
+import { ConnectionConfig } from '../connection/connection-config';
+import { SearchParameter } from './search-parameter';
+import { SearchResult } from './search-result';
+import { SearchResultItem } from './search-result-item';
 
 export class Searcher {
   private static readonly BATCH_TRANSACTION_SIZE = 100;
@@ -56,7 +60,7 @@ export class Searcher {
 
       if (
         transactions &&
-        transactions.length < Searcher.BATCH_TRANSACTION_SIZE
+        transactions.length === Searcher.BATCH_TRANSACTION_SIZE
       ) {
         // fetch some more
         fromTransactionId = transactions[transactions.length - 1]

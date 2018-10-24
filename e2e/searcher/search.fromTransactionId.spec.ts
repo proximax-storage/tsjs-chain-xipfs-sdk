@@ -8,13 +8,11 @@ import {
 } from '../../src';
 import { ConnectionConfig } from '../../src/lib/connection/connection-config';
 import { Protocol } from '../../src/lib/connection/protocol';
-import { TransactionFilter } from '../../src/lib/model/blockchain/transaction-filter';
 import { SearchParameter } from '../../src/lib/search/search-parameter';
 import { Searcher } from '../../src/lib/search/searcher';
 import {
   BlockchainInfo,
   IpfsInfo,
-  RecipientAccount,
   SenderAccount
 } from '../integrationtestconfig';
 
@@ -32,33 +30,20 @@ describe('Searcher integration tests', () => {
   );
   const searcher = new Searcher(connectionConfig);
 
-  it('should search outgoing transactions', async () => {
+  it('should search with from transaction id', async () => {
+    const fromTransactionId = '5BCEC7EBB8FEBD00014E9886';
+    const expectedFirstTransactionHash =
+      '62E9E9D0AA6BDE8D3AB2D7B6A8B97C220C37696CA46E81148C631229563DC953';
     const param = SearchParameter.createForAddress(SenderAccount.address)
-      .withTransactionFilter(TransactionFilter.OUTGOING)
+      .withFromTransactionId(fromTransactionId)
       .build();
 
     const result = await searcher.search(param);
 
     expect(result.results.length).to.be.equal(10);
-  }).timeout(10000);
-
-  it('should search incoming transactions', async () => {
-    const param = SearchParameter.createForAddress(RecipientAccount.address)
-      .withTransactionFilter(TransactionFilter.INCOMING)
-      .build();
-
-    const result = await searcher.search(param);
-
-    expect(result.results.length).to.be.equal(10);
-  }).timeout(10000);
-
-  it('should search all transactions', async () => {
-    const param = SearchParameter.createForAddress(RecipientAccount.address)
-      .withTransactionFilter(TransactionFilter.ALL)
-      .build();
-
-    const result = await searcher.search(param);
-
-    expect(result.results.length).to.be.equal(10);
+    expect(result.fromTransactionId).to.be.equal(fromTransactionId);
+    expect(result.results[0].transactionHash).to.be.equal(
+      expectedFirstTransactionHash
+    );
   }).timeout(10000);
 });
