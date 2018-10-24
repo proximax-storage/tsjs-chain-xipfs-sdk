@@ -27,7 +27,7 @@ export class Downloader {
   private retrieveProximaxMessagePayloadService: RetrieveProximaxMessagePayloadService;
   private retrieveProximaxDataService: RetrieveProximaxDataService;
 
-  constructor(connectionConfig: ConnectionConfig) {
+  constructor(public readonly connectionConfig: ConnectionConfig) {
     this.blockchainTransactionService = new BlockchainTransactionService(
       connectionConfig.blockchainNetworkConnection
     );

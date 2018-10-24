@@ -14,25 +14,20 @@
  * limitations under the License.
  */
 
-import { PrivacyType } from '../../privacy/privacy-type';
-import { ProximaxDataModel } from './data-model';
+import { ProximaxMessagePayloadModel } from '../..';
 
 /**
- * Class represents the Proximax message payload model
+ * Class represents the search result item
  */
-export class ProximaxMessagePayloadModel {
+export class SearchResultItem {
   constructor(
     /**
-     * The privacy type
+     * The transaction hash
      */
-    public readonly privacyType: PrivacyType,
+    public readonly transactionHash: string,
     /**
-     * The proximax data model
+     * The proximax message payload
      */
-    public readonly data: ProximaxDataModel,
-    /**
-     * The message payload version
-     */
-    public readonly version: string
+    public readonly messagePayload: ProximaxMessagePayloadModel
   ) {}
 }
