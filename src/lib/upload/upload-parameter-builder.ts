@@ -36,10 +36,10 @@ export class UploadParameterBuilder {
     private data: UploadParameterData,
     private signerPrivateKey: string
   ) {
-    if (data == null) {
+    if (!data) {
       throw new Error('data is required');
     }
-    if (signerPrivateKey == null) {
+    if (!signerPrivateKey) {
       throw new Error('signerPrivateKey is required');
     }
     // TODO private key validation
