@@ -46,6 +46,7 @@ describe('BlockchainTransactionService', () => {
       SenderAccount.privateKey,
       1,
       false,
+      undefined,
       RecipientAccount.publicKey,
       RecipientAccount.address
     );
