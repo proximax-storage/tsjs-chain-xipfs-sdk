@@ -46,7 +46,7 @@ export class Uploader {
       connectionConfig.blockchainNetworkConnection
     );
     this.createProximaxDataService = new CreateProximaxDataService(
-      connectionConfig
+      connectionConfig.fileStorageConnection
     );
     this.createProximaxMessagePayloadService = new CreateProximaxMessagePayloadService();
   }
@@ -92,6 +92,7 @@ export class Uploader {
       param.signerPrivateKey,
       param.transactionDeadline,
       param.useBlockchainSecureMessage,
+      param.transactionMosaics,
       param.recipientPublicKey,
       param.recipientAddress
     );
