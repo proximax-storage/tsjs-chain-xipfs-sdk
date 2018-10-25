@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+import { FileStorageConnection } from './file-storage-connection';
+
 /**
  * Class represents the ipfs connection
  */
-export class IpfsConnection {
+export class IpfsConnection extends FileStorageConnection {
   private IPFS: any;
 
   /**
@@ -31,6 +33,7 @@ export class IpfsConnection {
     public apiPort?: number,
     public options?: object
   ) {
+    super();
     if (!this.apiHost) {
       throw new Error('Ipfs host or multi adddress is required');
     }

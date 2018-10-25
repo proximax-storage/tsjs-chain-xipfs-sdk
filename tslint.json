@@ -15,6 +15,7 @@
     ],
     "no-submodule-imports": [true, "rxjs", "ipfs"],
     "no-unused-expression": [false, "allow-fast-null-checks"],
-    "no-bitwise": false
+    "no-bitwise": false,
+    "max-line-length": [true, 150]
   }
 }

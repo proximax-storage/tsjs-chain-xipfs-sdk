@@ -1,37 +1,42 @@
-import { map } from 'rxjs/operators';
 import { Stream } from 'stream';
 import { PathUploadContentType } from '../config/constants';
-import { ConnectionConfig } from '../connection/connection-config';
-import { DigestUtils } from '../helper/digest-util';
+import { FileStorageConnection } from '../connection/file-storage-connection';
 import { PrivacyStrategy } from '../privacy/privacy';
-import { FileRepositoryFactory } from './factory/file-repository-factory';
-import { FileRepository } from './repository/file-repository';
+import { FileDownloadService } from './file-download-service';
 
 /**
  * The service class responsible for retrieving data
  */
 export class RetrieveProximaxDataService {
-  private readonly fileRepository: FileRepository;
+  private readonly fileDownloadService: FileDownloadService;
 
   /**
    * Construct this class
    *
-   * @param connectionConfig the connection config
+   * @param fileStorageConnection the connection to file storage
    */
-  constructor(public readonly connectionConfig: ConnectionConfig) {
-    this.fileRepository = FileRepositoryFactory.createFromConnectionConfig(
-      connectionConfig
-    );
+  constructor(public readonly fileStorageConnection: FileStorageConnection) {
+    this.fileDownloadService = new FileDownloadService(fileStorageConnection);
   }
 
+  /**
+   * Retrieve data's byte stream
+   *
+   * @param dataHash        the data hash of the target download
+   * @param privacyStrategy the privacy strategy to decrypt the data
+   * @param validateDigest  the flag whether to validate digest
+   * @param digest          the digest of the target download
+   * @param contentType     the content type of the target download
+   * @return the data's byte stream
+   */
   public async getStream(
-    datahash: string,
+    dataHash: string,
     privacyStrategy: PrivacyStrategy,
     validateDigest: boolean,
     digest?: string,
     contentType?: string
   ): Promise<Stream> {
-    if (!datahash) {
+    if (!dataHash) {
       throw new Error('dataHash is required');
     }
     if (!privacyStrategy) {
@@ -43,24 +48,12 @@ export class RetrieveProximaxDataService {
       throw new Error('download of path is not yet supported');
     } else {
       // stream
-      await this.validateDigest(validateDigest, datahash, digest);
-      return this.fileRepository
-        .getStream(datahash)
-        .pipe(map(encryptedStream => privacyStrategy.decrypt(encryptedStream)))
-        .toPromise();
-    }
-  }
-
-  private async validateDigest(
-    validateDigest: boolean,
-    datahash: string,
-    digest?: string
-  ): Promise<boolean> {
-    if (validateDigest && digest) {
-      const stream = await this.fileRepository.getStream(datahash).toPromise();
-      return DigestUtils.validateDigest(stream, digest);
-    } else {
-      return false;
+      const digestToUse = validateDigest ? digest : undefined;
+      return this.fileDownloadService.getStream(
+        dataHash,
+        privacyStrategy,
+        digestToUse
+      );
     }
   }
 }

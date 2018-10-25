@@ -1,11 +1,9 @@
-import { map } from 'rxjs/operators';
-import { Stream } from 'stream';
-import { ConnectionConfig } from '../connection/connection-config';
-import { DigestUtils } from '../helper/digest-util';
+import { FileStorageConnection } from '../connection/file-storage-connection';
 import { ProximaxDataModel } from '../model/proximax/data-model';
 import { AbstractByteStreamParameterData } from '../upload/abstract-byte-stream-parameter-data';
 import { PathParameterData } from '../upload/path-parameter-data';
 import { UploadParameter } from '../upload/upload-parameter';
+import { FileRepositoryFactory } from './factory/file-repository-factory';
 import { FileUploadService } from './file-upload-service';
 
 /**
@@ -17,10 +15,12 @@ export class CreateProximaxDataService {
   /**
    * Construct this class
    *
-   * @param connectionConfig the connection config
+   * @param fileStorageConnection the connection to file storage
    */
-  constructor(public readonly connectionConfig: ConnectionConfig) {
-    this.fileUploadService = new FileUploadService(connectionConfig);
+  constructor(public readonly fileStorageConnection: FileStorageConnection) {
+    this.fileUploadService = new FileUploadService(
+      FileRepositoryFactory.create(fileStorageConnection)
+    );
   }
 
   /**
@@ -50,36 +50,21 @@ export class CreateProximaxDataService {
     param: UploadParameter
   ): Promise<ProximaxDataModel> {
     const contentType = this.detectContentType(param, byteStreamParamData);
-    const encryptedStream = await this.encryptedStream(
-      param,
-      byteStreamParamData
+
+    const fileUploadResponse = await this.fileUploadService.uploadStream(
+      () => byteStreamParamData.getByteStream(),
+      param.computeDigest,
+      param.privacyStrategy
     );
-    const digest = await this.computeDigest(param, byteStreamParamData);
 
-    return this.fileUploadService
-      .uploadStream(encryptedStream)
-      .pipe(
-        map(fur => {
-          return new ProximaxDataModel(
-            fur.hash,
-            fur.timestamp,
-            digest,
-            param.data.description,
-            contentType,
-            param.data.metadata,
-            param.data.name
-          );
-        })
-      )
-      .toPromise();
-  }
-
-  private async encryptedStream(
-    param: UploadParameter,
-    byteStreamParamData: AbstractByteStreamParameterData
-  ): Promise<Stream> {
-    return param.privacyStrategy.encrypt(
-      await byteStreamParamData.getByteStream()
+    return new ProximaxDataModel(
+      fileUploadResponse.hash,
+      fileUploadResponse.timestamp,
+      fileUploadResponse.digest,
+      param.data.description,
+      contentType,
+      param.data.metadata,
+      param.data.name
     );
   }
 
@@ -99,16 +84,5 @@ export class CreateProximaxDataService {
     // const mimeType = fileType(paramData.getByteStream());
     // return mimeType && mimeType.mime;
     return undefined;
-  }
-
-  private async computeDigest(
-    param: UploadParameter,
-    byteStreamParamData: AbstractByteStreamParameterData
-  ): Promise<string | undefined> {
-    return param.computeDigest
-      ? DigestUtils.computeDigest(
-          await this.encryptedStream(param, byteStreamParamData)
-        )
-      : undefined;
   }
 }

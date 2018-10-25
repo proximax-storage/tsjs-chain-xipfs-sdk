@@ -15,6 +15,7 @@
  */
 
 // import {FilesAsZipParameterData} from "./files-as-zip-parameter-data";
+import { Mosaic } from 'proximax-nem2-sdk';
 import { Readable } from 'stream';
 import { SchemaVersion } from '../config/constants';
 import { PrivacyStrategy } from '../privacy/privacy';
@@ -123,6 +124,7 @@ export class UploadParameter {
     public readonly useBlockchainSecureMessage: boolean,
     public readonly detectContentType: boolean,
     public readonly computeDigest: boolean,
+    public readonly transactionMosaics?: Mosaic[],
     public readonly recipientPublicKey?: string,
     public readonly recipientAddress?: string
   ) {

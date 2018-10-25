@@ -1,4 +1,6 @@
-import { ConnectionConfig } from '../../connection/connection-config';
+import { IpfsConnection } from '../../..';
+import { FileStorageConnection } from '../../connection/file-storage-connection';
+import { StorageConnection } from '../../connection/storage-connection';
 import { IpfsClient } from '../client/ipfs-client';
 import { StorageNodeClient } from '../client/storage-node-client';
 import { FileRepository } from '../repository/file-repository';
@@ -24,18 +26,20 @@ import { FileRepository } from '../repository/file-repository';
  */
 export class FileRepositoryFactory {
   /**
-   * Create the file storage client based on connection config
+   * Create the file storage client based on file storage
    *
-   * @param connectionConfig the connection config
+   * @param fileStorageConnection the connection to file storage
    * @return the file storage client created
    */
-  public static createFromConnectionConfig(
-    connectionConfig: ConnectionConfig
+  public static create(
+    fileStorageConnection: FileStorageConnection
   ): FileRepository {
-    if (connectionConfig.ifpsConnection !== undefined) {
-      return new IpfsClient(connectionConfig.ifpsConnection!);
+    if (fileStorageConnection instanceof IpfsConnection) {
+      return new IpfsClient(fileStorageConnection as IpfsConnection);
+    } else if (fileStorageConnection instanceof StorageConnection) {
+      return new StorageNodeClient(fileStorageConnection as StorageConnection);
     } else {
-      return new StorageNodeClient(connectionConfig.storageConnection!);
+      throw new Error('Unknown file storage connection %s');
     }
   }
 }

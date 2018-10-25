@@ -1,5 +1,7 @@
 import { UriBuilder } from 'uribuilder';
-export class StorageConnection {
+import { FileStorageConnection } from './file-storage-connection';
+
+export class StorageConnection extends FileStorageConnection {
   private apiUrl;
 
   constructor(
@@ -9,6 +11,7 @@ export class StorageConnection {
     public bearerToken: string,
     public nemAddress: string
   ) {
+    super();
     const builder = new UriBuilder();
     builder.schema = apiProtocol;
     builder.host = apiHost;
