@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { Mosaic } from 'proximax-nem2-sdk';
 import {
   NemPrivacyStrategy,
   PasswordPrivacyStrategy,
@@ -28,6 +29,7 @@ export class UploadParameterBuilder {
   private recipientAddress?: string;
   private privacyStrategy?: PrivacyStrategy;
   private transactionDeadline?: number;
+  private transactionMosaics?: Mosaic[];
   private useBlockchainSecureMessage?: boolean;
   private detectContentType?: boolean;
   private computeDigest?: boolean;
@@ -104,6 +106,13 @@ export class UploadParameterBuilder {
     return this;
   }
 
+  public withTransactionMosaics(
+    transactionMosaics?: Mosaic[]
+  ): UploadParameterBuilder {
+    this.transactionMosaics = transactionMosaics;
+    return this;
+  }
+
   public withPrivacyStrategy(
     privacyStrategy?: PrivacyStrategy
   ): UploadParameterBuilder {
@@ -138,6 +147,7 @@ export class UploadParameterBuilder {
       this.useBlockchainSecureMessage || false,
       this.detectContentType || false,
       this.computeDigest || false,
+      this.transactionMosaics,
       this.recipientPublicKey,
       this.recipientAddress
     );

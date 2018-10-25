@@ -61,6 +61,7 @@ export class BlockchainTransactionService {
    * @param signerPrivateKey           the signer's private key for the transaction
    * @param recipientPublicKey         the recipient's public key for the transaction (if different from signer)
    * @param recipientAddress           the recipient's address for the transaction (if different from signer)
+   * @param transactionMosaics         the mosaics to use on upload transaction
    * @param transactionDeadline        the transaction deadline in hours
    * @param useBlockchainSecureMessage the flag to indicate if secure message will be created
    * @return the transaction hash
@@ -70,6 +71,7 @@ export class BlockchainTransactionService {
     signerPrivateKey: string,
     transactionDeadline: number,
     useBlockchainSecureMessage: boolean,
+    transactionMosaics?: Mosaic[],
     recipientPublicKey?: string,
     recipientAddress?: string
   ): Promise<string> {
@@ -95,7 +97,8 @@ export class BlockchainTransactionService {
     const transferTransaction = this.createTransaction(
       recipient,
       transactionDeadline,
-      message
+      message,
+      transactionMosaics
     );
     const signerAccount = Account.createFromPrivateKey(
       signerPrivateKey,
@@ -153,12 +156,17 @@ export class BlockchainTransactionService {
   private createTransaction(
     recipientAddress: Address,
     transactionDeadline: number,
-    message: Message
+    message: Message,
+    transactionMosaicsParam?: Mosaic[]
   ): TransferTransaction {
+    const mosaic =
+      transactionMosaicsParam === undefined
+        ? [new Mosaic(new MosaicId('prx:xpx'), UInt64.fromUint(1))]
+        : transactionMosaicsParam;
     return TransferTransaction.create(
       Deadline.create(transactionDeadline, ChronoUnit.HOURS),
       recipientAddress,
-      [new Mosaic(new MosaicId('prx:xpx'), UInt64.fromUint(1))],
+      mosaic,
       message,
       this.networkType
     );
