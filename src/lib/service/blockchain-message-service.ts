@@ -85,6 +85,7 @@ export class BlockchainMessageService {
     if (transferTransaction.message instanceof PlainMessage) {
       return transferTransaction.message.payload;
     }
+
     if (transferTransaction.message instanceof SecureMessage) {
       if (!accountPrivateKey) {
         throw new Error('transferTransaction is required');
@@ -95,7 +96,18 @@ export class BlockchainMessageService {
         this.networkType
       );
 
-      const secureMessage = transferTransaction.message as SecureMessage;
+      // Catapult double encode the payload
+      // TODO: find the better way to fix this issue
+      /*const secureMessageObj = {
+        payload: Converter.decodeHex(transferTransaction.message.payload),
+        type: 1
+      };*/
+
+      // const secureMessage = transferTransaction.message as SecureMessage;
+      const secureMessage = SecureMessage.createFromDTO(
+        Converter.decodeHex(transferTransaction.message.payload)
+      );
+      console.log(secureMessage);
 
       return secureMessage.decrypt(
         await this.getTransactionOtherPartyPublicKey(
