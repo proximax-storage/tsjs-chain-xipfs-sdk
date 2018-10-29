@@ -107,7 +107,7 @@ export class BlockchainMessageService {
       const secureMessage = SecureMessage.createFromDTO(
         Converter.decodeHex(transferTransaction.message.payload)
       );
-      console.log(secureMessage);
+     
 
       return secureMessage.decrypt(
         await this.getTransactionOtherPartyPublicKey(
