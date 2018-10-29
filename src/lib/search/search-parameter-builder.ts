@@ -73,9 +73,9 @@ export class SearchParameterBuilder {
   }
 
   public withResultSize(resultSize?: number): SearchParameterBuilder {
-    /*if (resultSize !== undefined && (resultSize < 1 || resultSize > 20)) {
+    if (resultSize !== undefined && (resultSize < 1 || resultSize > 20)) {
       throw new Error('result size should be between 1 and 20');
-    }*/
+    }
     this.resultSize = resultSize;
     return this;
   }
