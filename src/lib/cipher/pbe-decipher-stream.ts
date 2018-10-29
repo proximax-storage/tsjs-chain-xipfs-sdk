@@ -20,8 +20,10 @@ export class PbeDecipherStream extends Transform {
     this.password = options.password;
     this.saltBytesRead = 0;
     this.ivBytesRead = 0;
-    this.salt = new Buffer(PbeDecipherStream.SaltLength);
-    this.iv = new Buffer(PbeDecipherStream.IvLength);
+    this.salt = Buffer.alloc(PbeDecipherStream.SaltLength);
+    this.iv = Buffer.alloc(PbeDecipherStream.IvLength);
+    // this.salt = new Buffer(PbeDecipherStream.SaltLength);
+    // this.iv = new Buffer(PbeDecipherStream.IvLength);
   }
 
   public _transform(chunk: any, _: string, callback: TransformCallback): void {

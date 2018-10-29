@@ -5,10 +5,10 @@ export abstract class UploadParameterData {
   public static TYPE_BYTE_STREAM = 1;
   public static TYPE_PATH = 2;
 
-  private static MAX_DESCRIPTION_LENGTH = 100;
+  private static MAX_DESCRIPTION_LENGTH = 255;
   private static MAX_NAME_LENGTH = 100;
-  private static MAX_CONTENT_TYPE_LENGTH = 30;
-  private static MAX_METADATA_JSON_LENGTH = 400;
+  private static MAX_CONTENT_TYPE_LENGTH = 127;
+  // private static MAX_METADATA_JSON_LENGTH = 1000;
 
   constructor(
     /**
@@ -62,6 +62,7 @@ export abstract class UploadParameterData {
       );
     }
 
+    /*
     if (
       this.metadata &&
       JSON.stringify(this.metadata).length >
@@ -72,6 +73,6 @@ export abstract class UploadParameterData {
           UploadParameterData.MAX_METADATA_JSON_LENGTH +
           ' characters'
       );
-    }
+    }*/
   }
 }
