@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { ChronoUnit } from 'js-joda';
 import {
   Account,
   Address,
@@ -161,10 +160,10 @@ export class BlockchainTransactionService {
   ): TransferTransaction {
     const mosaic =
       transactionMosaicsParam === undefined
-        ? [new Mosaic(new MosaicId('prx:xpx'), UInt64.fromUint(1))]
+        ? [new Mosaic(new MosaicId('prx:xpx'), UInt64.fromUint(0))]
         : transactionMosaicsParam;
     return TransferTransaction.create(
-      Deadline.create(transactionDeadline, ChronoUnit.HOURS),
+      Deadline.create(transactionDeadline),
       recipientAddress,
       mosaic,
       message,

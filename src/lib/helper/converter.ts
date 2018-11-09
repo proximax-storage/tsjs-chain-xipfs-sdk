@@ -1,4 +1,5 @@
 import { NetworkType } from 'proximax-nem2-sdk';
+import { decode } from 'utf-8';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 
 export class Converter {
@@ -82,15 +83,15 @@ export class Converter {
   //   const a = parseInt(h, 16);
   //   return a.toString(16) === h.toLowerCase();
   // }
-  // public static decodeHex(hex: string): string {
-  //   let str = '';
-  //   for (let i = 0; i < hex.length; i += 2) {
-  //     str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-  //   }
-  //   try {
-  //     return utf8.decode(str);
-  //   } catch (e) {
-  //     return str;
-  //   }
-  // }
+  public static decodeHex(hex: string): string {
+    let str = '';
+    for (let i = 0; i < hex.length; i += 2) {
+      str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    }
+    try {
+      return decode(str);
+    } catch (e) {
+      return str;
+    }
+  }
 }

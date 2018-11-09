@@ -7,7 +7,7 @@ export const IpfsInfo = {
 };
 
 export const BlockchainInfo = {
-  apiHost: '54.191.139.78',
+  apiHost: 'privatetest1.proximax.io',
   apiPort: 3000,
   apiProtocol: 'http'
 };
@@ -39,6 +39,13 @@ export const NoFundsAccount = {
   privateKey:
     '828B06238F2B304864D6A2131F628673AF1EC364060101BA4765988B16C42B0D',
   publicKey: 'F5CA31ED0A0263287D5851C3A491CA99694B0BF57F2889131BA405ED2AB3B07A'
+};
+
+export const NoOutgoingTransactions = {
+  address: 'SCTAND733LOVJMZJ654ZZG7NH3UMDDMK7EU3WNEH',
+  privateKey:
+    '565C5494F3F5AC055ACE1030E6CEFBAAE6DA3DDB475448B3887560B689875110',
+  publicKey: 'A3010D500EFA589408DE717BC9B753F7703CAEB0279C58165FB14FA805938546'
 };
 
 export const SchemaVersion = '1.0';

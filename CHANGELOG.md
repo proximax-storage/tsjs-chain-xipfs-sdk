@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.34"></a>
+## [0.0.34](https://github.com/proximax-storage/xpx2-ts-js-sdk/compare/v0.0.33...v0.0.34) (2018-10-31)
+
+
+
+<a name="0.0.33"></a>
+## [0.0.33](https://github.com/proximax-storage/xpx2-ts-js-sdk/compare/v0.0.32...v0.0.33) (2018-10-31)
+
+
+
+<a name="0.0.32"></a>
+## [0.0.32](https://github.com/proximax-storage/xpx2-ts-js-sdk/compare/v0.0.31...v0.0.32) (2018-10-29)
+
+
+
+<a name="0.0.31"></a>
+## [0.0.31](https://github.com/proximax-storage/xpx2-ts-js-sdk/compare/v0.0.30...v0.0.31) (2018-10-27)
+
+
+
+<a name="0.0.30"></a>
+## [0.0.30](https://github.com/proximax-storage/xpx2-ts-js-sdk/compare/v0.0.29...v0.0.30) (2018-10-27)
+
+
+
+<a name="0.0.29"></a>
+## [0.0.29](https://github.com/proximax-storage/xpx2-ts-js-sdk/compare/v0.0.28...v0.0.29) (2018-10-27)
+
+
+
+<a name="0.0.28"></a>
+## [0.0.28](https://github.com/proximax-storage/xpx2-ts-js-sdk/compare/v0.0.20...v0.0.28) (2018-10-27)
+
+
+
 <a name="0.0.20"></a>
 ## [0.0.20](https://github.com/proximax-storage/xpx2-ts-js-sdk/compare/v0.0.19...v0.0.20) (2018-09-24)
 

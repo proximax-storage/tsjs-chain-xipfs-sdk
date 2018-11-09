@@ -18,7 +18,7 @@ import {
 
 chai.use(chaiAsPromised);
 
-describe('Searcher integration tests', () => {
+describe('Searcher integration tests for filter', () => {
   const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
     new BlockchainNetworkConnection(
       BlockchainNetworkType.MIJIN_TEST,

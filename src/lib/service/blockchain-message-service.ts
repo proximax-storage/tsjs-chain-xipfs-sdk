@@ -83,8 +83,9 @@ export class BlockchainMessageService {
     }
 
     if (transferTransaction.message instanceof PlainMessage) {
-      return transferTransaction.message.payload;
+      return transferTransaction.message.payload!;
     }
+
     if (transferTransaction.message instanceof SecureMessage) {
       if (!accountPrivateKey) {
         throw new Error('transferTransaction is required');

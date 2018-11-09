@@ -18,7 +18,7 @@ import {
 
 chai.use(chaiAsPromised);
 
-describe('Searcher integration tests', () => {
+describe('Searcher integration tests for fromTransactionId', () => {
   const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
     new BlockchainNetworkConnection(
       BlockchainNetworkType.MIJIN_TEST,
@@ -31,9 +31,9 @@ describe('Searcher integration tests', () => {
   const searcher = new Searcher(connectionConfig);
 
   it('should search with from transaction id', async () => {
-    const fromTransactionId = '5BCEC7EBB8FEBD00014E9886';
+    const fromTransactionId = '5BDEDB565D6F4B0001155AFF';
     const expectedFirstTransactionHash =
-      '62E9E9D0AA6BDE8D3AB2D7B6A8B97C220C37696CA46E81148C631229563DC953';
+      '90F151B2672F56157937CC3B56DF13A021E20A488DA5853D08FDA415B68742BA';
     const param = SearchParameter.createForAddress(SenderAccount.address)
       .withFromTransactionId(fromTransactionId)
       .build();

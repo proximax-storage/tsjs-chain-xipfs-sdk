@@ -7,7 +7,7 @@ export abstract class UploadParameterData {
 
   private static MAX_DESCRIPTION_LENGTH = 100;
   private static MAX_NAME_LENGTH = 100;
-  private static MAX_CONTENT_TYPE_LENGTH = 30;
+  private static MAX_CONTENT_TYPE_LENGTH = 80;
   private static MAX_METADATA_JSON_LENGTH = 400;
 
   constructor(

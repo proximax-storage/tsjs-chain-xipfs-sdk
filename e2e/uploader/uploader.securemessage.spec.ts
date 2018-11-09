@@ -43,6 +43,9 @@ describe('Uploader integration tests for secure message', () => {
 
     expect(result.transactionHash.length > 0).to.be.true;
     expect(result.data.dataHash.length > 0).to.be.true;
+
+    console.log(`Transaction Hash: ${result.transactionHash}`);
+    console.log(`Data Hash: ${result.data.dataHash}`);
   }).timeout(10000);
 
   it('should upload with secured message and specified recipient public key', async () => {
@@ -58,6 +61,9 @@ describe('Uploader integration tests for secure message', () => {
 
     expect(result.transactionHash.length > 0).to.be.true;
     expect(result.data.dataHash.length > 0).to.be.true;
+
+    console.log(`Transaction Hash: ${result.transactionHash}`);
+    console.log(`Data Hash: ${result.data.dataHash}`);
   }).timeout(10000);
 
   it('should upload with secured message and specified recipient address', async () => {
@@ -73,6 +79,9 @@ describe('Uploader integration tests for secure message', () => {
 
     expect(result.transactionHash.length > 0).to.be.true;
     expect(result.data.dataHash.length > 0).to.be.true;
+
+    console.log(`Transaction Hash: ${result.transactionHash}`);
+    console.log(`Data Hash: ${result.data.dataHash}`);
   }).timeout(10000);
 
   it('fail to upload with secured message when recipient public key is not yet known on blockchain', async () => {

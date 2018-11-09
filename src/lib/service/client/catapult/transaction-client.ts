@@ -43,7 +43,7 @@ export class TransactionClient {
     this.transactionHttp = new TransactionHttp(connection.getApiUrl());
     this.blockchainNetworkRestApiUrl = connection
       .getApiUrl()
-      .replace('https://', 'https://')
+      .replace('https://', 'wss://')
       .replace('http://', 'ws://');
   }
 

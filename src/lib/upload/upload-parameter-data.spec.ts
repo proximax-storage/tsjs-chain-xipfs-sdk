@@ -39,8 +39,11 @@ describe('UploadParameterData', () => {
 
   it('should throw error if the upload parameter data description length more than 100 characters', () => {
     expect(() => {
-      const description =
+      let description =
         'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHCpwe3i9Ac1TujbVoW4Zi8P4lFTrPOYMD60yBqM7YgTAopA3vS20GGThYZpDm12';
+      description +=
+        'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHCpwe3i9Ac1TujbVoW4Zi8P4lFTrPOYMD60yBqM7YgTAopA3vS20GGThYZpDm12';
+
       const metadata = new Map<string, string>();
       metadata.set('Author', 'Proximax');
       StringParameterData.create(
@@ -54,9 +57,13 @@ describe('UploadParameterData', () => {
     }).to.throw();
   });
 
-  it('should throw error if the upload parameter data content length more than 30 characters', () => {
+  it('should throw error if the upload parameter data content length more than 80 characters', () => {
     expect(() => {
-      const contentType = 'vphOlpiuPmKFhSKRLqMtG4pkL6n1VPvXzRfitdKcHC';
+      let contentType =
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document/';
+      contentType +=
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
       const metadata = new Map<string, string>();
       metadata.set('Author', 'Proximax');
       StringParameterData.create(

@@ -53,7 +53,7 @@ export class IpfsClient implements FileRepository {
     }
 
     return from<IpfsContent[]>(
-      this.ipfsConnection.getIpfs().files.add(stream)
+      this.ipfsConnection.getIpfs().files.add(stream, { pin: true })
     ).pipe(map(hashList => hashList[0].hash));
   }
 
