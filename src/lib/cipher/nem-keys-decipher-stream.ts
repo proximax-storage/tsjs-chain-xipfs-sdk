@@ -25,8 +25,6 @@ export class NemKeysDecipherStream extends Transform {
     this.ivBytesRead = 0;
     this.salt = Buffer.alloc(NemKeysDecipherStream.SaltLength);
     this.iv = Buffer.alloc(NemKeysDecipherStream.IvLength);
-    // this.salt = new Buffer(NemKeysDecipherStream.SaltLength);
-    // this.iv = new Buffer(NemKeysDecipherStream.IvLength);
   }
 
   public _transform(chunk: any, _: string, callback: TransformCallback): void {

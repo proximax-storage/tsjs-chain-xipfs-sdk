@@ -13,7 +13,7 @@ import { Searcher } from '../../src/lib/search/searcher';
 import {
   BlockchainInfo,
   IpfsInfo,
-  NoFundsAccount,
+  NoOutgoingTransactions,
   SenderAccount
 } from '../integrationtestconfig';
 
@@ -69,7 +69,7 @@ describe('Searcher integration tests', () => {
 
   it('should search account with no upload transactions', async () => {
     const param = SearchParameter.createForPrivateKey(
-      NoFundsAccount.privateKey
+      NoOutgoingTransactions.privateKey
     ).build();
 
     const result = await searcher.search(param);
