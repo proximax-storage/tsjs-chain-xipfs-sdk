@@ -25,7 +25,7 @@ class App extends Component {
   connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
     new BlockchainNetworkConnection(
       BlockchainNetworkType.MIJIN_TEST,
-      '54.191.139.78',
+      'privatetest1.proximax.io',
       3000,
       Protocol.HTTP
     ),

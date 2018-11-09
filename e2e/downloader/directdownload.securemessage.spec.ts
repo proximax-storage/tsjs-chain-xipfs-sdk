@@ -34,7 +34,7 @@ describe('Downloader integration tests for direct download with secure message',
   const downloader = new Downloader(connectionConfig);
 
   const transactionHashOfSecureMessageUpload =
-    'C6450FAFB9127E3D396DAF2C90A2DBB05AC70AC1575690971C771D16D085042D';
+    '3ED839B84D14FE711D9795D121B3AC465BAAE87B7C1F58A8FAFE5CFE5A865A7C';
 
   it('should direct download upload with secure message as sender', async () => {
     const expectedText = 'Proximax P2P Uploader with secured message';

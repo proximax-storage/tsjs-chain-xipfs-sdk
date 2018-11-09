@@ -83,7 +83,7 @@ export class BlockchainMessageService {
     }
 
     if (transferTransaction.message instanceof PlainMessage) {
-      return transferTransaction.message.payload;
+      return transferTransaction.message.payload!;
     }
 
     if (transferTransaction.message instanceof SecureMessage) {
@@ -96,17 +96,7 @@ export class BlockchainMessageService {
         this.networkType
       );
 
-      // Catapult double encode the payload
-      // TODO: find the better way to fix this issue
-      /*const secureMessageObj = {
-        payload: Converter.decodeHex(transferTransaction.message.payload),
-        type: 1
-      };*/
-
-      // const secureMessage = transferTransaction.message as SecureMessage;
-      const secureMessage = SecureMessage.createFromDTO(
-        Converter.decodeHex(transferTransaction.message.payload)
-      );
+      const secureMessage = transferTransaction.message as SecureMessage;
 
       return secureMessage.decrypt(
         await this.getTransactionOtherPartyPublicKey(

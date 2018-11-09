@@ -66,8 +66,8 @@
     "ipfs-api": "^24.0.2",
     "js-joda": "^1.9.2",
     "node-fetch": "^2.2.0",
-    "proximax-nem2-library": "^0.9.9",
-    "proximax-nem2-sdk": "^0.10.9",
+    "proximax-nem2-library": "^0.9.10",
+    "proximax-nem2-sdk": "^0.10.10",
     "rxjs": "^6.3.3",
     "uribuilder": "^1.0.5",
     "utf-8": "^2.0.0"

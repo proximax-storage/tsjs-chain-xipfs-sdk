@@ -7,7 +7,7 @@ export const IpfsInfo = {
 };
 
 export const BlockchainInfo = {
-  apiHost: '54.191.139.78',
+  apiHost: 'privatetest1.proximax.io',
   apiPort: 3000,
   apiProtocol: 'http'
 };
