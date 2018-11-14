@@ -1,7 +1,6 @@
-import { NetworkType, PublicAccount } from 'proximax-nem2-sdk';
+import { Account, NetworkType, PublicAccount } from 'proximax-nem2-sdk';
 import { Converter } from '../helper/converter';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
-import { Account } from '../model/nem/Account';
 
 /**
  * NemUtils
