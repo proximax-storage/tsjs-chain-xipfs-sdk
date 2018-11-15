@@ -13,6 +13,10 @@ export class Converter {
         return BlockchainNetworkType[BlockchainNetworkType.MIJIN_TEST];
       case NetworkType.TEST_NET:
         return BlockchainNetworkType[BlockchainNetworkType.TEST_NET];
+      case NetworkType.PRIVATE_TEST:
+        return BlockchainNetworkType[BlockchainNetworkType.PRIVATE_TEST];
+      case NetworkType.PRIVATE:
+        return BlockchainNetworkType[BlockchainNetworkType.PRIVATE];
     }
   }
 
@@ -28,6 +32,10 @@ export class Converter {
         return NetworkType.TEST_NET;
       case BlockchainNetworkType.MIJIN_TEST:
         return NetworkType.MIJIN_TEST;
+      case BlockchainNetworkType.PRIVATE:
+        return NetworkType.PRIVATE;
+      case BlockchainNetworkType.PRIVATE_TEST:
+        return NetworkType.PRIVATE_TEST;
       default:
         return NetworkType.MIJIN_TEST;
     }

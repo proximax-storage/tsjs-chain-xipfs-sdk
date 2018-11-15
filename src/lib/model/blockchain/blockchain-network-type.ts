@@ -23,5 +23,7 @@ export enum BlockchainNetworkType {
   MIJIN = NetworkType.MIJIN,
   MIJIN_TEST = NetworkType.MIJIN_TEST,
   MAIN_NET = NetworkType.MAIN_NET,
-  TEST_NET = NetworkType.TEST_NET
+  TEST_NET = NetworkType.TEST_NET,
+  PRIVATE = NetworkType.PRIVATE,
+  PRIVATE_TEST = NetworkType.PRIVATE_TEST
 }

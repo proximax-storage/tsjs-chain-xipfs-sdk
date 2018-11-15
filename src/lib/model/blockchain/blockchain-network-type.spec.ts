@@ -19,19 +19,27 @@ import 'mocha';
 import { BlockchainNetworkType } from './blockchain-network-type';
 
 describe('BlockchainNetworkType', () => {
-  it('MAIN_NET is 104', () => {
-    expect(BlockchainNetworkType.MAIN_NET).to.be.equal(104);
+  it('MAIN_NET is 184', () => {
+    expect(BlockchainNetworkType.MAIN_NET).to.be.equal(184);
   });
 
   it('MIJIN is 96', () => {
     expect(BlockchainNetworkType.MIJIN).to.be.equal(96);
   });
 
-  it('TEST_NET is 152', () => {
-    expect(BlockchainNetworkType.TEST_NET).to.be.equal(152);
+  it('TEST_NET is 168', () => {
+    expect(BlockchainNetworkType.TEST_NET).to.be.equal(168);
   });
 
   it('MIJIN_TEST is 104', () => {
     expect(BlockchainNetworkType.MIJIN_TEST).to.be.equal(144);
+  });
+
+  it('PRIVATE_TEST is 176', () => {
+    expect(BlockchainNetworkType.PRIVATE_TEST).to.be.equal(176);
+  });
+
+  it('PRIVATE is 200', () => {
+    expect(BlockchainNetworkType.PRIVATE).to.be.equal(200);
   });
 });
