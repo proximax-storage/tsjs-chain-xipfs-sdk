@@ -44,7 +44,7 @@ describe('Searcher integration tests for filter', () => {
       )
     ).to.be.true;
     expect(result.results.length).to.be.equal(10);
-  }).timeout(10000);
+  }).timeout(60000);
 
   it('should search with description filter', async () => {
     const descriptionFilter = 'test description';
@@ -60,7 +60,7 @@ describe('Searcher integration tests for filter', () => {
       )
     ).to.be.true;
     expect(result.results.length).to.be.equal(10);
-  }).timeout(10000);
+  }).timeout(60000);
 
   it('should search with metadata key filter', async () => {
     const metadataKeyFilter = 'author';
@@ -78,7 +78,7 @@ describe('Searcher integration tests for filter', () => {
       )
     ).to.be.true;
     expect(result.results.length).to.be.equal(10);
-  }).timeout(10000);
+  }).timeout(60000);
 
   it('should search with metadata key and value filter', async () => {
     const metadataKeyFilter = 'author';
@@ -98,7 +98,7 @@ describe('Searcher integration tests for filter', () => {
       )
     ).to.be.true;
     expect(result.results.length).to.be.equal(10);
-  }).timeout(10000);
+  }).timeout(60000);
 
   it('should search with all filters', async () => {
     const metadataKeyFilter = 'author';
@@ -133,5 +133,5 @@ describe('Searcher integration tests for filter', () => {
       )
     ).to.be.true;
     expect(result.results.length).to.be.equal(10);
-  }).timeout(10000);
+  }).timeout(60000);
 });

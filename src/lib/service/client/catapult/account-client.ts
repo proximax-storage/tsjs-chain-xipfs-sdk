@@ -1,13 +1,10 @@
 import {
-  Account,
   AccountHttp,
   Address,
-  NetworkType,
   PublicAccount,
   QueryParams,
   Transaction
 } from 'proximax-nem2-sdk';
-import { Converter } from '../../../..';
 import { BlockchainNetworkConnection } from '../../../connection/blockchain-network-connection';
 import { TransactionFilter } from '../../../model/blockchain/transaction-filter';
 
@@ -22,7 +19,6 @@ export class AccountClient {
     '0000000000000000000000000000000000000000000000000000000000000000';
 
   private readonly accountHttp: AccountHttp;
-  private readonly networkType: NetworkType;
 
   /**
    * Create instance of AccountClient
@@ -37,9 +33,6 @@ export class AccountClient {
     }
 
     this.accountHttp = new AccountHttp(blockchainNetworkConnection.getApiUrl());
-    this.networkType = Converter.getNemNetworkType(
-      this.blockchainNetworkConnection.networkType
-    );
   }
 
   public async getPublicKey(address: string): Promise<string> {
@@ -60,20 +53,13 @@ export class AccountClient {
   public async getTransactions(
     transactionFilter: TransactionFilter,
     resultSize: number,
-    accountPrivateKey?: string,
-    accountPublicKey?: string,
-    accountAddress?: string,
+    publicAccount: PublicAccount,
     fromTransactionId?: string
   ): Promise<Transaction[]> {
     if (!transactionFilter) {
       throw new Error('transactionFilter is required');
     }
 
-    const publicAccount = await this.getPublicAccount(
-      accountPrivateKey,
-      accountPublicKey,
-      accountAddress
-    );
     const queryParams = new QueryParams(resultSize, fromTransactionId);
 
     if (transactionFilter === TransactionFilter.ALL) {
@@ -90,31 +76,6 @@ export class AccountClient {
         .toPromise();
     } else {
       throw new Error(`Unknown transactionFilter ${transactionFilter}`);
-    }
-  }
-
-  private async getPublicAccount(
-    accountPrivateKey?: string,
-    accountPublicKey?: string,
-    accountAddress?: string
-  ): Promise<PublicAccount> {
-    if (accountPrivateKey) {
-      return Account.createFromPrivateKey(accountPrivateKey, this.networkType)
-        .publicAccount;
-    } else if (accountPublicKey) {
-      return PublicAccount.createFromPublicKey(
-        accountPublicKey,
-        this.networkType
-      );
-    } else if (accountAddress) {
-      return PublicAccount.createFromPublicKey(
-        await this.getPublicKey(accountAddress),
-        this.networkType
-      );
-    } else {
-      throw new Error(
-        'accountPrivateKey, accountPublicKey or accountAddress must be provided'
-      );
     }
   }
 }

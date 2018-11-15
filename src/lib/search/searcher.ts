@@ -1,6 +1,12 @@
-import { TransferTransaction } from 'proximax-nem2-sdk';
+import {
+  Account,
+  NetworkType,
+  PublicAccount,
+  TransferTransaction
+} from 'proximax-nem2-sdk';
 import {
   AccountClient,
+  Converter,
   ProximaxMessagePayloadModel,
   RetrieveProximaxMessagePayloadService
 } from '../..';
@@ -12,10 +18,14 @@ import { SearchResultItem } from './search-result-item';
 export class Searcher {
   private static readonly BATCH_TRANSACTION_SIZE = 100;
 
+  private readonly networkType: NetworkType;
   private readonly accountClient: AccountClient;
   private readonly retrieveProximaxMessagePayloadService: RetrieveProximaxMessagePayloadService;
 
   constructor(public readonly connectionConfig: ConnectionConfig) {
+    this.networkType = Converter.getNemNetworkType(
+      this.connectionConfig.blockchainNetworkConnection.networkType
+    );
     this.accountClient = new AccountClient(
       connectionConfig.blockchainNetworkConnection
     );
@@ -32,13 +42,17 @@ export class Searcher {
     let fromTransactionId = param.fromTransactionId;
     let toTransactionId: string | undefined;
     const results: SearchResultItem[] = [];
+    const publicAccount: PublicAccount = await this.getPublicAccount(
+      param.accountPrivateKey,
+      param.accountPublicKey,
+      param.accountAddress
+    );
+
     while (results.length < param.resultSize) {
       const transactions = await this.accountClient.getTransactions(
         param.transactionFilter,
         Searcher.BATCH_TRANSACTION_SIZE,
-        param.accountPrivateKey,
-        param.accountPublicKey,
-        param.accountAddress,
+        publicAccount,
         fromTransactionId
       );
 
@@ -165,5 +179,30 @@ export class Searcher {
       }
     }
     return true;
+  }
+
+  private async getPublicAccount(
+    accountPrivateKey?: string,
+    accountPublicKey?: string,
+    accountAddress?: string
+  ): Promise<PublicAccount> {
+    if (accountPrivateKey) {
+      return Account.createFromPrivateKey(accountPrivateKey, this.networkType)
+        .publicAccount;
+    } else if (accountPublicKey) {
+      return PublicAccount.createFromPublicKey(
+        accountPublicKey,
+        this.networkType
+      );
+    } else if (accountAddress) {
+      return PublicAccount.createFromPublicKey(
+        await this.accountClient.getPublicKey(accountAddress),
+        this.networkType
+      );
+    } else {
+      throw new Error(
+        'accountPrivateKey, accountPublicKey or accountAddress must be provided'
+      );
+    }
   }
 }

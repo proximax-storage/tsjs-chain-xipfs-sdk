@@ -48,6 +48,3 @@ export * from './lib/upload/url-resource-parameter-data';
 export * from './lib/helper/converter';
 export * from './lib/helper/stream-helper';
 export * from './lib/utils/nem-utils';
-export * from './lib/model/nem/Account';
-export * from './lib/model/nem/Listener';
-export * from './lib/model/nem/PublicAccount';
