@@ -17,6 +17,7 @@ import {
   RecipientAccount,
   SenderAccount
 } from '../integrationtestconfig';
+import { TestDataRepository } from '../testdatarepository';
 
 chai.use(chaiAsPromised);
 
@@ -32,8 +33,10 @@ describe('Downloader integration tests for download with secure message', () => 
   );
   const downloader = new Downloader(connectionConfig);
 
-  const transactionHashOfSecureMessageUpload =
-    '3ED839B84D14FE711D9795D121B3AC465BAAE87B7C1F58A8FAFE5CFE5A865A7C';
+  const transactionHashOfSecureMessageUpload = TestDataRepository.getData(
+    'shouldUploadWithUseBlockchainSecureMessageAndRecipientPublicKey',
+    'transactionHash'
+  );
 
   it('should download upload with secure message as sender', async () => {
     const expectedText = 'Proximax P2P Uploader with secured message';

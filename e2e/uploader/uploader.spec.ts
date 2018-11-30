@@ -18,6 +18,7 @@ import {
   IpfsInfo,
   SenderAccount
 } from '../integrationtestconfig';
+import { TestDataRepository } from '../testdatarepository';
 
 describe('Uploader integration tests', () => {
   const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
@@ -51,8 +52,7 @@ describe('Uploader integration tests', () => {
     expect(result.data.description).to.be.undefined;
     expect(result.data.name).to.be.undefined;
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(result, 'shouldUploadUint8Array');
   }).timeout(10000);
 
   it('should upload uint8 array with complete details', async () => {
@@ -84,8 +84,10 @@ describe('Uploader integration tests', () => {
     expect(result.data.description).to.be.equal('test description');
     expect(result.data.name).to.be.equal('test name');
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadUint8ArrayWithCompleteDetails'
+    );
   }).timeout(10000);
 
   it('should upload file', async () => {
@@ -103,8 +105,7 @@ describe('Uploader integration tests', () => {
     expect(result.data.description).to.be.undefined;
     expect(result.data.name).to.be.undefined;
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(result, 'shouldUploadFile');
   }).timeout(10000);
 
   it('should upload file with complete details', async () => {
@@ -133,8 +134,10 @@ describe('Uploader integration tests', () => {
     expect(result.data.description).to.be.equal('test description');
     expect(result.data.name).to.be.equal('test name');
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadFileWithCompleteDetails'
+    );
   }).timeout(10000);
 
   it('should upload url resource', async () => {
@@ -152,8 +155,7 @@ describe('Uploader integration tests', () => {
     expect(result.data.description).to.be.undefined;
     expect(result.data.name).to.be.undefined;
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(result, 'shouldUploadUrlResource');
   }).timeout(10000);
 
   it('should upload url resource with complete details', async () => {
@@ -182,8 +184,10 @@ describe('Uploader integration tests', () => {
     expect(result.data.description).to.be.equal('test description');
     expect(result.data.name).to.be.equal('test name');
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadUrlResourceWithCompleteDetails'
+    );
   }).timeout(10000);
 
   it('should upload string', async () => {
@@ -201,8 +205,7 @@ describe('Uploader integration tests', () => {
     expect(result.data.description).to.be.undefined;
     expect(result.data.name).to.be.undefined;
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(result, 'shouldUploadString');
   }).timeout(10000);
 
   it('should upload string with complete details', async () => {
@@ -232,8 +235,10 @@ describe('Uploader integration tests', () => {
     expect(result.data.description).to.be.equal('test description');
     expect(result.data.name).to.be.equal('test name');
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadStringWithCompleteDetails'
+    );
   }).timeout(10000);
 
   it('should upload readable stream', async () => {
@@ -251,8 +256,7 @@ describe('Uploader integration tests', () => {
     expect(result.data.description).to.be.undefined;
     expect(result.data.name).to.be.undefined;
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(result, 'shouldUploadReadableStream');
   }).timeout(10000);
 
   it('should upload readable stream with complete details', async () => {
@@ -281,7 +285,9 @@ describe('Uploader integration tests', () => {
     expect(result.data.description).to.be.equal('test description');
     expect(result.data.name).to.be.equal('test name');
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadReadableStreamWithCompleteDetails'
+    );
   }).timeout(10000);
 });

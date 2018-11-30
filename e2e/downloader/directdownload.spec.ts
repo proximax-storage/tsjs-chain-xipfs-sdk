@@ -13,6 +13,7 @@ import { DirectDownloadParameter } from '../../src/lib/download/direct-download-
 import { Downloader } from '../../src/lib/download/downloader';
 import { StreamHelper } from '../../src/lib/helper/stream-helper';
 import { BlockchainInfo, IpfsInfo } from '../integrationtestconfig';
+import { TestDataRepository } from '../testdatarepository';
 
 chai.use(chaiAsPromised);
 
@@ -40,9 +41,10 @@ describe('Downloader integration tests for direct download', () => {
   }).timeout(10000);
 
   it('should download uint8array upload', async () => {
-    const transactionHash =
-      '14FEB7849A910B10075030BEB2F5276322AEBD7EC0CB88D1E9E765A8EF793125';
-
+    const transactionHash = TestDataRepository.getData(
+      'shouldUploadUint8Array',
+      'transactionHash'
+    );
     const expectedText = 'Proximax P2P Uploader test';
 
     const param = DirectDownloadParameter.createFromTransactionHash(
@@ -56,9 +58,10 @@ describe('Downloader integration tests for direct download', () => {
   }).timeout(10000);
 
   it('should download file upload', async () => {
-    const transactionHash =
-      '5605CA0590C2ADC5527276534FC56B16070EAF8373DA038A5C5D7EF154C7E42D';
-
+    const transactionHash = TestDataRepository.getData(
+      'shouldUploadFile',
+      'transactionHash'
+    );
     const expectedBuffer = await StreamHelper.stream2Buffer(
       fs.createReadStream('./e2e/testresources/test_pdf_file_2.pdf')
     );
@@ -74,9 +77,10 @@ describe('Downloader integration tests for direct download', () => {
   }).timeout(10000);
 
   it('should download url resource upload', async () => {
-    const transactionHash =
-      '98FC1EB6373CB72BA06F229C1B5A4C92654217500AA4380C164D1C3CFCF4EC8D';
-
+    const transactionHash = TestDataRepository.getData(
+      'shouldUploadUrlResource',
+      'transactionHash'
+    );
     const urlReadableStream = await StreamHelper.urlReadableStream(
       'https://proximax.io/wp-content/uploads/2018/03/ProximaX-logotype.png'
     );
@@ -93,9 +97,10 @@ describe('Downloader integration tests for direct download', () => {
   }).timeout(10000);
 
   it('should download string upload', async () => {
-    const transactionHash =
-      'E8F295D6D96200A2684FE42B359C92AF3763BE0A5B699595D2DC64B00E8E609A';
-
+    const transactionHash = TestDataRepository.getData(
+      'shouldUploadString',
+      'transactionHash'
+    );
     const expectedText = 'the quick brown fox jumps over the lazy dog';
 
     const param = DirectDownloadParameter.createFromTransactionHash(
@@ -109,9 +114,10 @@ describe('Downloader integration tests for direct download', () => {
   }).timeout(10000);
 
   it('should download readable stream upload', async () => {
-    const transactionHash =
-      'E712BD47D33C3A0A13357E93DC86024E50520B7BBC74EA86FDE947788C5D83B9';
-
+    const transactionHash = TestDataRepository.getData(
+      'shouldUploadReadableStream',
+      'transactionHash'
+    );
     const expectedText = 'readable stream is awesome';
 
     const param = DirectDownloadParameter.createFromTransactionHash(

@@ -8,6 +8,8 @@ examples/dist
 examples/sekubox/node_modules
 examples/sekubox/dist
 
+e2e/testdata.json
+
 coverage
 .nyc_output
 *.log

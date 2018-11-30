@@ -10,11 +10,7 @@ import { ConnectionConfig } from '../../src/lib/connection/connection-config';
 import { Protocol } from '../../src/lib/connection/protocol';
 import { SearchParameter } from '../../src/lib/search/search-parameter';
 import { Searcher } from '../../src/lib/search/searcher';
-import {
-  BlockchainInfo,
-  IpfsInfo,
-  SenderAccount
-} from '../integrationtestconfig';
+import { BlockchainInfo, IpfsInfo } from '../integrationtestconfig';
 
 chai.use(chaiAsPromised);
 
@@ -33,8 +29,10 @@ describe('Searcher integration tests for fromTransactionId', () => {
   it('should search with from transaction id', async () => {
     const fromTransactionId = '5BDEDB565D6F4B0001155AFF';
     const expectedFirstTransactionHash =
-      '90F151B2672F56157937CC3B56DF13A021E20A488DA5853D08FDA415B68742BA';
-    const param = SearchParameter.createForAddress(SenderAccount.address)
+      '471C6C6A3EAC3F18849C1CA2C06D532AA2A83D7E89D99858F52DEE6DCD0D3762';
+    const param = SearchParameter.createForAddress(
+      'SDB5DP6VGVNPSQJYEC2X3QIWKAFJ3DCMNQCIF6OA'
+    )
       .withFromTransactionId(fromTransactionId)
       .build();
 

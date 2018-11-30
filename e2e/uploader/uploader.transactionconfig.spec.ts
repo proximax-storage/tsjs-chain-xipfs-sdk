@@ -28,6 +28,7 @@ import {
   RecipientAccount,
   SenderAccount
 } from '../integrationtestconfig';
+import { TestDataRepository } from '../testdatarepository';
 
 chai.use(chaiAsPromised);
 
@@ -63,6 +64,11 @@ describe('Uploader integration tests for transaction config', () => {
     expect((transaction as TransferTransaction).recipient.plain()).to.be.equal(
       SenderAccount.address
     );
+
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadWithSignerAsRecipientByDefault'
+    );
   }).timeout(30000);
 
   it('should upload with recipient public key', async () => {
@@ -85,6 +91,11 @@ describe('Uploader integration tests for transaction config', () => {
     expect((transaction as TransferTransaction).recipient.plain()).to.be.equal(
       RecipientAccount.address
     );
+
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadWithRecipientPublicKeyProvided'
+    );
   }).timeout(60000);
 
   it('should upload with recipient address', async () => {
@@ -106,6 +117,11 @@ describe('Uploader integration tests for transaction config', () => {
     expect(transaction instanceof TransferTransaction).to.be.true;
     expect((transaction as TransferTransaction).recipient.plain()).to.be.equal(
       RecipientAccount.address
+    );
+
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadWithRecipientAddressProvided'
     );
   }).timeout(60000);
 
@@ -144,6 +160,11 @@ describe('Uploader integration tests for transaction config', () => {
         Deadline.create(2, ChronoUnit.HOURS).value
       )
     ).to.be.true;
+
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadWithTransactionDeadlineProvided'
+    );
   }).timeout(60000);
 
   it('should upload with transaction mosaics', async () => {
@@ -173,6 +194,11 @@ describe('Uploader integration tests for transaction config', () => {
     expect(
       (transaction as TransferTransaction).mosaics[0].id.id.toHex()
     ).to.be.eql(new MosaicId('prx:xpx').id.toHex());
+
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadWithTransactionMosaicsProvided'
+    );
   }).timeout(60000);
 
   it('should upload with empty transaction mosaics', async () => {
@@ -193,6 +219,11 @@ describe('Uploader integration tests for transaction config', () => {
     expect(result.data.dataHash.length > 0).to.be.true;
     expect(transaction instanceof TransferTransaction).to.be.true;
     expect((transaction as TransferTransaction).mosaics).to.be.eql([]);
+
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadWithEmptyTransactionMosaicsProvided'
+    );
   }).timeout(60000);
 
   const waitForTransactionConfirmation = async (

@@ -11,6 +11,7 @@ import { Protocol } from '../../src/lib/connection/protocol';
 import { DownloadParameter } from '../../src/lib/download/download-parameter';
 import { Downloader } from '../../src/lib/download/downloader';
 import { BlockchainInfo, IpfsInfo } from '../integrationtestconfig';
+import { TestDataRepository } from '../testdatarepository';
 
 chai.use(chaiAsPromised);
 
@@ -27,8 +28,10 @@ describe('Downloader integration tests for download with digest validation', () 
   const downloader = new Downloader(connectionConfig);
 
   it('should download with enabled validate digest', async () => {
-    const transactionHash =
-      '74B5B26AD0CA967F136B808CF41FEDA6D196E52810144AFBE08921A96B52489E';
+    const transactionHash = TestDataRepository.getData(
+      'shouldUploadWithEnabledComputeDigest',
+      'transactionHash'
+    );
     const expectedText = 'Proximax P2P Uploader for string test';
 
     const param = DownloadParameter.create(transactionHash)
@@ -42,8 +45,10 @@ describe('Downloader integration tests for download with digest validation', () 
   }).timeout(10000);
 
   it('should download with disabled validate digest', async () => {
-    const transactionHash =
-      '74B5B26AD0CA967F136B808CF41FEDA6D196E52810144AFBE08921A96B52489E';
+    const transactionHash = TestDataRepository.getData(
+      'shouldUploadWithEnabledComputeDigest',
+      'transactionHash'
+    );
     const expectedText = 'Proximax P2P Uploader for string test';
 
     const param = DownloadParameter.create(transactionHash)

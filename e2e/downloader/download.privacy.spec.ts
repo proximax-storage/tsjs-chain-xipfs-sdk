@@ -18,6 +18,7 @@ import {
   SamplePassword,
   SenderAccount
 } from '../integrationtestconfig';
+import { TestDataRepository } from '../testdatarepository';
 
 chai.use(chaiAsPromised);
 
@@ -34,8 +35,10 @@ describe('Downloader integration tests for download with privacy strategies', ()
   const downloader = new Downloader(connectionConfig);
 
   it('should download upload with plain privacy', async () => {
-    const transactionHash =
-      '520635F1435F78D0840786FD298AD4034D69B21E1549C611E25C59258D48521A';
+    const transactionHash = TestDataRepository.getData(
+      'shouldUploadWithPlainPrivacyStrategy',
+      'transactionHash'
+    );
     const expectedText = 'Proximax P2P Uploader with plain privacy';
 
     const param = DownloadParameter.create(transactionHash)
@@ -49,8 +52,10 @@ describe('Downloader integration tests for download with privacy strategies', ()
   }).timeout(10000);
 
   it('should download upload with nem keys privacy', async () => {
-    const transactionHash =
-      '06AC4209AAFC5B9FE5CE2C06DA16E21DE5E5753E24AE9B65A1CDB620FFCDA6DA';
+    const transactionHash = TestDataRepository.getData(
+      'shouldUploadWithSecuredWithNemKeysPrivacyStrategy',
+      'transactionHash'
+    );
     const expectedText = 'Proximax P2P Uploader with nem keys privacy';
 
     const param = DownloadParameter.create(transactionHash)
@@ -64,9 +69,10 @@ describe('Downloader integration tests for download with privacy strategies', ()
   }).timeout(10000);
 
   it('fail to download with wrong private key', async () => {
-    const transactionHash =
-      '06AC4209AAFC5B9FE5CE2C06DA16E21DE5E5753E24AE9B65A1CDB620FFCDA6DA';
-
+    const transactionHash = TestDataRepository.getData(
+      'shouldUploadWithSecuredWithNemKeysPrivacyStrategy',
+      'transactionHash'
+    );
     const param = DownloadParameter.create(transactionHash)
       .withNemKeysPrivacy(NoFundsAccount.privateKey, RecipientAccount.publicKey)
       .build();
@@ -77,8 +83,10 @@ describe('Downloader integration tests for download with privacy strategies', ()
   }).timeout(10000);
 
   it('should download upload with password privacy', async () => {
-    const transactionHash =
-      'E853948733C1DD97641BEF6D7641FA70ECFDB63B11DE9EA50A2531CD2D0A165F';
+    const transactionHash = TestDataRepository.getData(
+      'shouldUploadWithSecuredWithPasswordPrivacyStrategy',
+      'transactionHash'
+    );
     const expectedText = 'Proximax P2P Uploader with password privacy';
 
     const param = DownloadParameter.create(transactionHash)
@@ -92,9 +100,10 @@ describe('Downloader integration tests for download with privacy strategies', ()
   }).timeout(10000);
 
   it('fail to download with wrong password', async () => {
-    const transactionHash =
-      'E853948733C1DD97641BEF6D7641FA70ECFDB63B11DE9EA50A2531CD2D0A165F';
-
+    const transactionHash = TestDataRepository.getData(
+      'shouldUploadWithSecuredWithPasswordPrivacyStrategy',
+      'transactionHash'
+    );
     const param = DownloadParameter.create(transactionHash)
       .withPasswordPrivacy('WrongPassword')
       .build();

@@ -16,6 +16,7 @@ import {
   SamplePassword,
   SenderAccount
 } from '../integrationtestconfig';
+import { TestDataRepository } from '../testdatarepository';
 
 chai.use(chaiAsPromised);
 
@@ -46,8 +47,10 @@ describe('Uploader integration tests for privacy strategies', () => {
     expect(result.data.dataHash.length > 0).to.be.true;
     expect(result.privacyType).to.be.equal(PrivacyType.PLAIN);
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadWithPlainPrivacyStrategy'
+    );
   }).timeout(10000);
 
   it('should upload secured with nem keys privacy', async () => {
@@ -64,8 +67,10 @@ describe('Uploader integration tests for privacy strategies', () => {
     expect(result.data.dataHash.length > 0).to.be.true;
     expect(result.privacyType).to.be.equal(PrivacyType.NEM_KEYS);
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadWithSecuredWithNemKeysPrivacyStrategy'
+    );
   }).timeout(10000);
 
   it('should upload secured with password privacy', async () => {
@@ -82,7 +87,9 @@ describe('Uploader integration tests for privacy strategies', () => {
     expect(result.data.dataHash.length > 0).to.be.true;
     expect(result.privacyType).to.be.equal(PrivacyType.PASSWORD);
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadWithSecuredWithPasswordPrivacyStrategy'
+    );
   }).timeout(10000);
 });

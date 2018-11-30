@@ -1,5 +1,4 @@
-import http from 'http';
-import https from 'https';
+import request from 'request';
 import { PassThrough, Readable, Stream } from 'stream';
 
 export class StreamHelper {
@@ -42,13 +41,10 @@ export class StreamHelper {
 
   public static async urlReadableStream(url: string): Promise<Readable> {
     return new Promise<Readable>((resolve, reject) => {
-      if (url.startsWith('http://')) {
-        http.get(url, stream => resolve(stream));
-      } else if (url.startsWith('https://')) {
-        https.get(url, stream => resolve(stream));
-      } else {
-        reject(`url ${url} is not valid`);
-      }
+      request
+        .get(url)
+        .on('response', stream => resolve(stream))
+        .on('error', err => reject(err));
     });
   }
 }

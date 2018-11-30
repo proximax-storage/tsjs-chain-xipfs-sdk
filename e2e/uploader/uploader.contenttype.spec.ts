@@ -13,6 +13,7 @@ import {
   IpfsInfo,
   SenderAccount
 } from '../integrationtestconfig';
+import { TestDataRepository } from '../testdatarepository';
 
 chai.use(chaiAsPromised);
 
@@ -44,8 +45,7 @@ describe('Uploader integration tests for content type detection', () => {
   //   expect(result.data.dataHash.length > 0).to.be.true;
   //   expect(result.data.contentType).to.be.equal('text/plain');
   //
-  //   console.log(`Transaction Hash: ${result.transactionHash}`);
-  //   console.log(`Data Hash: ${result.data.dataHash}`);
+  // TestDataRepository.logAndSaveResult(result, "shouldUploadWithEnabledDetectContentType");
   // }).timeout(10000);
 
   it('should upload with disabled detect content type', async () => {
@@ -65,7 +65,9 @@ describe('Uploader integration tests for content type detection', () => {
         result.data.contentType.length > 0
     ).to.be.false;
 
-    console.log(`Transaction Hash: ${result.transactionHash}`);
-    console.log(`Data Hash: ${result.data.dataHash}`);
+    TestDataRepository.logAndSaveResult(
+      result,
+      'shouldUploadWithDisabledDetectContentType'
+    );
   }).timeout(10000);
 });
