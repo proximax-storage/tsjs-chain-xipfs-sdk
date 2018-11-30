@@ -25,7 +25,7 @@ describe('Uploader integration tests for content type detection', () => {
       BlockchainInfo.apiPort,
       Protocol.HTTP
     ),
-    new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
+    new IpfsConnection(IpfsInfo.host, IpfsInfo.port)
   );
 
   const uploader = new Uploader(connectionConfig);

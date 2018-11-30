@@ -4,6 +4,7 @@ import { Stream } from 'stream';
 import { StreamHelper } from '../../..';
 import { StorageConnection } from '../../connection/storage-connection';
 import { FileRepository } from '../repository/file-repository';
+import { NodeInfoResponse } from './node-info-response';
 
 export class StorageNodeClient implements FileRepository {
   public static readonly HEADER_CREDENTIALS = 'HeaderCredentials';
@@ -50,6 +51,26 @@ export class StorageNodeClient implements FileRepository {
         request
           .get(this.apiUrl + `/upload/file?dataHash=${dataHash}`, { headers })
           .on('response', stream => resolve(stream))
+          .on('error', err => reject(err));
+      })
+    );
+  }
+
+  public getNodeInfo(): Observable<NodeInfoResponse> {
+    const headers = {};
+    headers[StorageNodeClient.HEADER_CREDENTIALS] = this.headerCredentials;
+
+    return from(
+      new Promise<NodeInfoResponse>((resolve, reject) => {
+        request
+          .get(this.apiUrl + `/node/info`, { headers })
+          .on('response', response =>
+            resolve(
+              StreamHelper.stream2String(response).then(
+                resp => JSON.parse(resp) as NodeInfoResponse
+              )
+            )
+          )
           .on('error', err => reject(err));
       })
     );

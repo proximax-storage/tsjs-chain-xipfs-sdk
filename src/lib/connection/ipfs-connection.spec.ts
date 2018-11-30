@@ -21,11 +21,11 @@ import { IpfsConnection } from './ipfs-connection';
 
 describe('IpfsConnection', () => {
   it('should create new ipfs connection with host, port and protocol', () => {
-    const multiAddress = IpfsInfo.multiaddress;
+    const host = IpfsInfo.host;
     const port = IpfsInfo.port;
     const options = IpfsInfo.options;
 
-    const connection = new IpfsConnection(multiAddress, port, options);
+    const connection = new IpfsConnection(host, port, options);
 
     expect(connection.getIpfs() != null).to.be.true;
   });
@@ -46,10 +46,10 @@ describe('IpfsConnection', () => {
   });
 
   it('should throw error if port is not valid', () => {
-    const multiAddress = IpfsInfo.multiaddress;
+    const host = IpfsInfo.host;
     const port = -1;
     expect(() => {
-      new IpfsConnection(multiAddress, port);
+      new IpfsConnection(host, port);
     }).to.throw();
   });
 });

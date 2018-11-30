@@ -6,7 +6,7 @@ import { StreamHelper } from '../../helper/stream-helper';
 import { IpfsClient } from './ipfs-client';
 
 describe('IpfsClient', () => {
-  const connection = new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port);
+  const connection = new IpfsConnection(IpfsInfo.host, IpfsInfo.port);
   const client = new IpfsClient(connection);
 
   it('should add data to ipfs storage and return data hash', async () => {

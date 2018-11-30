@@ -9,7 +9,7 @@ import { FileUploadService } from './file-upload-service';
 describe('FileUploadService', () => {
   it('should upload content to file repository', async () => {
     const ipfsClient = FileRepositoryFactory.create(
-      new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
+      new IpfsConnection(IpfsInfo.host, IpfsInfo.port)
     );
 
     const fileUploadService = new FileUploadService(ipfsClient);

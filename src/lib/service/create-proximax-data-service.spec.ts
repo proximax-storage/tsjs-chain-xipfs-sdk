@@ -12,7 +12,7 @@ import { CreateProximaxDataService } from './create-proximax-data-service';
 
 describe('CreateProximaxDataService', () => {
   const createProximaxDataService = new CreateProximaxDataService(
-    new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
+    new IpfsConnection(IpfsInfo.host, IpfsInfo.port)
   );
 
   it('should add data to ipfs and return ProximaxDataModel', async () => {

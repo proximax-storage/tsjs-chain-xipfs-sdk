@@ -9,7 +9,7 @@ import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
 
 describe('RetrieveProximaxDataService', () => {
   const retrieveProximaxDataService = new RetrieveProximaxDataService(
-    new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
+    new IpfsConnection(IpfsInfo.host, IpfsInfo.port)
   );
 
   it('should get stream with datahash', async () => {

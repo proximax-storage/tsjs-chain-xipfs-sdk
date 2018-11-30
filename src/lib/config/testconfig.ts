@@ -1,7 +1,7 @@
 export const BaseHost = '192.168.0.6';
 
 export const IpfsInfo = {
-  multiaddress: 'ipfs1.dev.proximax.io',
+  host: 'ipfs1.dev.proximax.io',
   options: { protocol: 'http' },
   port: 5001
 };

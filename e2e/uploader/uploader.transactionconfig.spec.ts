@@ -41,7 +41,7 @@ describe('Uploader integration tests for transaction config', () => {
   );
   const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
     blockchainNetworkConnection,
-    new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
+    new IpfsConnection(IpfsInfo.host, IpfsInfo.port)
   );
 
   const uploader = new Uploader(connectionConfig);

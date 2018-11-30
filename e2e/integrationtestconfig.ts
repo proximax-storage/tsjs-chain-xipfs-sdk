@@ -1,7 +1,5 @@
-export const BaseHost = '192.168.0.6';
-
 export const IpfsInfo = {
-  multiaddress: 'ipfs1.dev.proximax.io',
+  host: 'ipfs1.dev.proximax.io',
   options: { protocol: 'http' },
   port: 5001
 };
@@ -12,12 +10,12 @@ export const BlockchainInfo = {
   apiProtocol: 'http'
 };
 
-export const StorageInfo = {
-  address: 'SAVQU4LEDFRBXNPJ5UQJOGFWAC7K72QF3RIJSEJG',
-  apiHost: BaseHost,
-  apiPort: 3000,
+export const StorageNodeApi = {
+  apiHost: '127.0.0.1',
+  apiPort: 8081,
   apiProtocol: 'http',
-  bearerToken: 'ZZZZZ'
+  bearerToken: '11111',
+  nemAddress: 'nem:test'
 };
 
 export const SenderAccount = {

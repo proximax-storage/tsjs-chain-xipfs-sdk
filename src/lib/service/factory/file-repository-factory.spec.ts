@@ -11,7 +11,7 @@ import { FileRepositoryFactory } from './file-repository-factory';
 describe('FileRepositoryFactory', () => {
   it('should create the ipfs client by the connnection config', () => {
     const ipfsClient = FileRepositoryFactory.create(
-      new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
+      new IpfsConnection(IpfsInfo.host, IpfsInfo.port)
     );
 
     expect(ipfsClient).to.be.a.instanceof(IpfsClient);

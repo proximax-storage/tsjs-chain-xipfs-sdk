@@ -25,7 +25,7 @@ describe('Downloader integration tests for direct download', () => {
       BlockchainInfo.apiPort,
       Protocol.HTTP
     ),
-    new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
+    new IpfsConnection(IpfsInfo.host, IpfsInfo.port)
   );
   const downloader = new Downloader(connectionConfig);
 

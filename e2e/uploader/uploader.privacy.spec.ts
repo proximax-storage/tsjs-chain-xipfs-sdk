@@ -28,7 +28,7 @@ describe('Uploader integration tests for privacy strategies', () => {
       BlockchainInfo.apiPort,
       Protocol.HTTP
     ),
-    new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
+    new IpfsConnection(IpfsInfo.host, IpfsInfo.port)
   );
 
   const uploader = new Uploader(connectionConfig);

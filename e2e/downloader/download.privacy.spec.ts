@@ -30,7 +30,7 @@ describe('Downloader integration tests for download with privacy strategies', ()
       BlockchainInfo.apiPort,
       Protocol.HTTP
     ),
-    new IpfsConnection(IpfsInfo.multiaddress, IpfsInfo.port)
+    new IpfsConnection(IpfsInfo.host, IpfsInfo.port)
   );
   const downloader = new Downloader(connectionConfig);
 

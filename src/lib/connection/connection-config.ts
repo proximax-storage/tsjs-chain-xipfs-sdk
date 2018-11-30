@@ -1,3 +1,4 @@
+import { Converter, StorageNodeClient } from '../..';
 import { BlockchainNetworkConnection } from './blockchain-network-connection';
 import { FileStorageConnection } from './file-storage-connection';
 import { IpfsConnection } from './ipfs-connection';
@@ -31,6 +32,22 @@ export class ConnectionConfig {
     blockchainNetworkConnection: BlockchainNetworkConnection,
     storageConnection: StorageConnection
   ): ConnectionConfig {
+    return new ConnectionConfig(blockchainNetworkConnection, storageConnection);
+  }
+
+  public static async createWithStorageConnectionOnly(
+    storageConnection: StorageConnection
+  ): Promise<ConnectionConfig> {
+    const storageNodeClient = new StorageNodeClient(storageConnection);
+    const nodeInfoResponse = await storageNodeClient.getNodeInfo().toPromise();
+    const blockchainNetworkConnection = new BlockchainNetworkConnection(
+      Converter.toBlockchainNetworkType(
+        nodeInfoResponse.blockchainNetwork.network
+      ),
+      nodeInfoResponse.blockchainNetwork.host,
+      nodeInfoResponse.blockchainNetwork.port,
+      Converter.toProtocol(nodeInfoResponse.blockchainNetwork.protocol)
+    );
     return new ConnectionConfig(blockchainNetworkConnection, storageConnection);
   }
 
