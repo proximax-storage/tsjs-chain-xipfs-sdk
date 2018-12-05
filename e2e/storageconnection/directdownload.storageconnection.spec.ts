@@ -1,30 +1,32 @@
-import chai, { expect } from 'chai';
+import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import 'mocha';
-import {
-  BlockchainNetworkConnection,
-  BlockchainNetworkType,
-  IpfsConnection
-} from '../../src/index';
-import { ConnectionConfig } from '../../src/lib/connection/connection-config';
-import { Protocol } from '../../src/lib/connection/protocol';
-import { DirectDownloadParameter } from '../../src/lib/download/direct-download-parameter';
-import { Downloader } from '../../src/lib/download/downloader';
-import { StreamHelper } from '../../src/lib/helper/stream-helper';
-import { BlockchainInfo, IpfsInfo } from '../integrationtestconfig';
-import { TestDataRepository } from '../testdatarepository';
+import {BlockchainNetworkConnection, BlockchainNetworkType, StorageConnection} from '../../src/index';
+import {ConnectionConfig} from '../../src/lib/connection/connection-config';
+import {Protocol} from '../../src/lib/connection/protocol';
+import {DirectDownloadParameter} from '../../src/lib/download/direct-download-parameter';
+import {Downloader} from '../../src/lib/download/downloader';
+import {StreamHelper} from '../../src/lib/helper/stream-helper';
+import {BlockchainInfo, StorageNodeApi} from '../integrationtestconfig';
+import {TestDataRepository} from '../testdatarepository';
 
 chai.use(chaiAsPromised);
 
 describe('Downloader direct download integration tests for storage connection', () => {
-  const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
+  const connectionConfig = ConnectionConfig.createWithStorageConnection(
     new BlockchainNetworkConnection(
       BlockchainNetworkType.MIJIN_TEST,
       BlockchainInfo.apiHost,
       BlockchainInfo.apiPort,
       Protocol.HTTP
     ),
-    new IpfsConnection(IpfsInfo.host, IpfsInfo.port)
+    new StorageConnection(
+      StorageNodeApi.apiHost,
+      StorageNodeApi.apiPort,
+      StorageNodeApi.apiProtocol,
+      StorageNodeApi.bearerToken,
+      StorageNodeApi.nemAddress
+    )
   );
   const downloader = new Downloader(connectionConfig);
 

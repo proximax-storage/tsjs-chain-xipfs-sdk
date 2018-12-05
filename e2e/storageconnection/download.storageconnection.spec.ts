@@ -1,29 +1,35 @@
-import chai, { expect } from 'chai';
+import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import 'mocha';
 import {
   BlockchainNetworkConnection,
   BlockchainNetworkType,
   DownloadParameter,
-  IpfsConnection
+  StorageConnection
 } from '../../src/index';
-import { ConnectionConfig } from '../../src/lib/connection/connection-config';
-import { Protocol } from '../../src/lib/connection/protocol';
-import { Downloader } from '../../src/lib/download/downloader';
-import { BlockchainInfo, IpfsInfo } from '../integrationtestconfig';
-import { TestDataRepository } from '../testdatarepository';
+import {ConnectionConfig} from '../../src/lib/connection/connection-config';
+import {Protocol} from '../../src/lib/connection/protocol';
+import {Downloader} from '../../src/lib/download/downloader';
+import {BlockchainInfo, StorageNodeApi} from '../integrationtestconfig';
+import {TestDataRepository} from '../testdatarepository';
 
 chai.use(chaiAsPromised);
 
 describe('Downloader download integration tests for storage connection', () => {
-  const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
+  const connectionConfig = ConnectionConfig.createWithStorageConnection(
     new BlockchainNetworkConnection(
       BlockchainNetworkType.MIJIN_TEST,
       BlockchainInfo.apiHost,
       BlockchainInfo.apiPort,
       Protocol.HTTP
     ),
-    new IpfsConnection(IpfsInfo.host, IpfsInfo.port)
+    new StorageConnection(
+      StorageNodeApi.apiHost,
+      StorageNodeApi.apiPort,
+      StorageNodeApi.apiProtocol,
+      StorageNodeApi.bearerToken,
+      StorageNodeApi.nemAddress
+    )
   );
   const downloader = new Downloader(connectionConfig);
 

@@ -1,32 +1,34 @@
-import chai, { expect } from 'chai';
+import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import 'mocha';
 import {
   BlockchainNetworkConnection,
   BlockchainNetworkType,
-  IpfsConnection,
+  StorageConnection,
   Uploader,
   UploadParameter
 } from '../../src/index';
-import { ConnectionConfig } from '../../src/lib/connection/connection-config';
-import { Protocol } from '../../src/lib/connection/protocol';
-import {
-  BlockchainInfo,
-  IpfsInfo,
-  SenderAccount
-} from '../integrationtestconfig';
+import {ConnectionConfig} from '../../src/lib/connection/connection-config';
+import {Protocol} from '../../src/lib/connection/protocol';
+import {BlockchainInfo, SenderAccount, StorageNodeApi} from '../integrationtestconfig';
 
 chai.use(chaiAsPromised);
 
 describe('Uploader integration tests for storage connection', () => {
-  const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
+  const connectionConfig = ConnectionConfig.createWithStorageConnection(
     new BlockchainNetworkConnection(
       BlockchainNetworkType.MIJIN_TEST,
       BlockchainInfo.apiHost,
       BlockchainInfo.apiPort,
       Protocol.HTTP
     ),
-    new IpfsConnection(IpfsInfo.host, IpfsInfo.port)
+    new StorageConnection(
+      StorageNodeApi.apiHost,
+      StorageNodeApi.apiPort,
+      StorageNodeApi.apiProtocol,
+      StorageNodeApi.bearerToken,
+      StorageNodeApi.nemAddress
+    )
   );
   const uploader = new Uploader(connectionConfig);
 
