@@ -42,7 +42,7 @@ export class IpfsConnection extends FileStorageConnection {
       throw new Error('Ipfs port should not be negative');
     }
 
-    const API = require('ipfs-api');
+    const API = require('ipfs-http-client');
     this.IPFS = new API(apiHost, apiPort, options);
   }
 

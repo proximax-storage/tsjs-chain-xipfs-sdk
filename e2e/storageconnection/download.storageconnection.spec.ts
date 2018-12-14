@@ -1,4 +1,4 @@
-import chai, {expect} from 'chai';
+import chai, { expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import 'mocha';
 import {
@@ -7,11 +7,11 @@ import {
   DownloadParameter,
   StorageConnection
 } from '../../src/index';
-import {ConnectionConfig} from '../../src/lib/connection/connection-config';
-import {Protocol} from '../../src/lib/connection/protocol';
-import {Downloader} from '../../src/lib/download/downloader';
-import {BlockchainInfo, StorageNodeApi} from '../integrationtestconfig';
-import {TestDataRepository} from '../testdatarepository';
+import { ConnectionConfig } from '../../src/lib/connection/connection-config';
+import { Protocol } from '../../src/lib/connection/protocol';
+import { Downloader } from '../../src/lib/download/downloader';
+import { BlockchainInfo, StorageNodeApi } from '../integrationtestconfig';
+import { TestDataRepository } from '../testdatarepository';
 
 chai.use(chaiAsPromised);
 
