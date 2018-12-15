@@ -53,7 +53,7 @@ export class IpfsClient implements FileRepository {
     }
 
     return from<IpfsContent[]>(
-      this.ipfsConnection.getIpfs().files.add(stream, { pin: true })
+      this.ipfsConnection.getIpfs().add(stream, { pin: true })
     ).pipe(map(hashList => hashList[0].hash));
   }
 
@@ -71,6 +71,6 @@ export class IpfsClient implements FileRepository {
       throw new Error('dataHash is required');
     }
 
-    return of(this.ipfsConnection.getIpfs().files.catReadableStream(dataHash));
+    return of(this.ipfsConnection.getIpfs().catReadableStream(dataHash));
   }
 }

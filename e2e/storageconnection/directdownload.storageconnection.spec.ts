@@ -1,14 +1,18 @@
-import chai, {expect} from 'chai';
+import chai, { expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import 'mocha';
-import {BlockchainNetworkConnection, BlockchainNetworkType, StorageConnection} from '../../src/index';
-import {ConnectionConfig} from '../../src/lib/connection/connection-config';
-import {Protocol} from '../../src/lib/connection/protocol';
-import {DirectDownloadParameter} from '../../src/lib/download/direct-download-parameter';
-import {Downloader} from '../../src/lib/download/downloader';
-import {StreamHelper} from '../../src/lib/helper/stream-helper';
-import {BlockchainInfo, StorageNodeApi} from '../integrationtestconfig';
-import {TestDataRepository} from '../testdatarepository';
+import {
+  BlockchainNetworkConnection,
+  BlockchainNetworkType,
+  StorageConnection
+} from '../../src/index';
+import { ConnectionConfig } from '../../src/lib/connection/connection-config';
+import { Protocol } from '../../src/lib/connection/protocol';
+import { DirectDownloadParameter } from '../../src/lib/download/direct-download-parameter';
+import { Downloader } from '../../src/lib/download/downloader';
+import { StreamHelper } from '../../src/lib/helper/stream-helper';
+import { BlockchainInfo, StorageNodeApi } from '../integrationtestconfig';
+import { TestDataRepository } from '../testdatarepository';
 
 chai.use(chaiAsPromised);
 
