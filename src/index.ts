@@ -34,6 +34,7 @@ export * from './lib/download/download-result';
 export * from './lib/download/download-result-data';
 export * from './lib/download/downloader';
 export * from './lib/download/download-parameter-builder';
+export * from './lib/download/direct-download-parameter';
 export * from './lib/connection/ipfs-connection';
 export * from './lib/model/proximax/data-model';
 export * from './lib/model/proximax/message-payload-model';
@@ -50,3 +51,4 @@ export * from './lib/upload/url-resource-parameter-data';
 export * from './lib/helper/converter';
 export * from './lib/helper/stream-helper';
 export * from './lib/utils/nem-utils';
+
