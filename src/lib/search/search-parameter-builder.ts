@@ -64,6 +64,7 @@ export class SearchParameterBuilder {
   private accountPublicKey?: string;
   private accountPrivateKey?: string;
   private fromTransactionId?: string;
+  private dataHash?: string;
 
   public withTransactionFilter(
     transactionFilter?: TransactionFilter
@@ -82,6 +83,11 @@ export class SearchParameterBuilder {
 
   public withNameFilter(nameFilter?: string): SearchParameterBuilder {
     this.nameFilter = nameFilter;
+    return this;
+  }
+
+  public withDataHashFilter(dataHash?: string): SearchParameterBuilder {
+    this.dataHash = dataHash;
     return this;
   }
 
@@ -124,7 +130,8 @@ export class SearchParameterBuilder {
       this.descriptionFilter,
       this.metadataKeyFilter,
       this.metadataValueFilter,
-      this.fromTransactionId
+      this.fromTransactionId,
+      this.dataHash
     );
   }
 }
