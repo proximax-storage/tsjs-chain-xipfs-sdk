@@ -162,7 +162,7 @@ export class Searcher {
       if (
         !(
           messagePayload.data.dataHash &&
-          messagePayload.data.dataHash.includes(dataHashFilter!)
+          messagePayload.data.dataHash === dataHashFilter!
         )
       ) {
         return false;
