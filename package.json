@@ -16,7 +16,7 @@
     "url": "git+https://github.com/proximax-storage/xpx2-ts-js-sdk.git"
   },
   "publishConfig": {
-    "registry": "https://nexus.internal.proximax.io/repository/npm-private/"
+    "registry": "http://localhost:8081/repository/npm-private/"
   },
   "scripts": {
     "info": "npm-scripts-info",

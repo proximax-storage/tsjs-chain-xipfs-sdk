@@ -1,13 +1,13 @@
 export const BaseHost = '192.168.0.6';
 
 export const IpfsInfo = {
-  host: 'ipfs1.dev.proximax.io',
+  host: 'ipfs1-dev.xpxsirius.io',
   options: { protocol: 'http' },
   port: 5001
 };
 
 export const BlockchainInfo = {
-  apiHost: 'privatetest1.proximax.io',
+  apiHost: 'privatetest1.xpxsirius.io',
   apiPort: 3000,
   apiProtocol: 'http'
 };
