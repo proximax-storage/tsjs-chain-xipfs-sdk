@@ -46,6 +46,22 @@ describe('Searcher integration tests for filter', () => {
     expect(result.results.length).to.be.equal(10);
   }).timeout(60000);
 
+  it('should search with data hash filter', async () => {
+    const datahashFilter = 'QmTm8jMv1BSELqBkGkgejk6P6Jg2iwKwYBPbRReAihfDxZ';
+    const param = SearchParameter.createForAddress(SenderAccount.address)
+      .withDataHashFilter(datahashFilter)
+      .build();
+
+    const result = await searcher.search(param);
+
+    expect(
+      result.results.every(item =>
+        item.messagePayload.data.dataHash!.includes(datahashFilter)
+      )
+    ).to.be.true;
+    expect(result.results.length).to.be.equal(10);
+  }).timeout(600000);
+
   it('should search with description filter', async () => {
     const descriptionFilter = 'test description';
     const param = SearchParameter.createForAddress(SenderAccount.address)

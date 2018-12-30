@@ -113,7 +113,8 @@ export class Searcher {
               param.nameFilter,
               param.descriptionFilter,
               param.metadataKeyFilter,
-              param.metadataValueFilter
+              param.metadataValueFilter,
+              param.dataHash
             )
           ) {
             return new SearchResultItem(
@@ -134,7 +135,8 @@ export class Searcher {
     nameFilter?: string,
     descriptionFilter?: string,
     metadataKeyFilter?: string,
-    metadataValueFilter?: string
+    metadataValueFilter?: string,
+    dataHashFilter?: string
   ): boolean {
     if (nameFilter) {
       if (
@@ -151,6 +153,16 @@ export class Searcher {
         !(
           messagePayload.data.description &&
           messagePayload.data.description.includes(descriptionFilter!)
+        )
+      ) {
+        return false;
+      }
+    }
+    if (dataHashFilter) {
+      if (
+        !(
+          messagePayload.data.dataHash &&
+          messagePayload.data.dataHash === dataHashFilter!
         )
       ) {
         return false;

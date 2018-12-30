@@ -49,6 +49,7 @@ export class SearchParameter {
     public readonly descriptionFilter?: string,
     public readonly metadataKeyFilter?: string,
     public readonly metadataValueFilter?: string,
-    public readonly fromTransactionId?: string
+    public readonly fromTransactionId?: string,
+    public readonly dataHash?: string
   ) {}
 }
