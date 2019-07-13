@@ -3,7 +3,7 @@ import {
   NetworkType,
   PublicAccount,
   TransferTransaction
-} from 'proximax-nem2-sdk';
+} from 'tsjs-xpx-chain-sdk';
 import {
   AccountClient,
   Converter,

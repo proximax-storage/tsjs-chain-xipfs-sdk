@@ -1,4 +1,4 @@
-import { TransferTransaction } from 'proximax-nem2-sdk';
+import { TransferTransaction } from 'tsjs-xpx-chain-sdk';
 import {
   BlockchainNetworkConnection,
   ProximaxMessagePayloadModel

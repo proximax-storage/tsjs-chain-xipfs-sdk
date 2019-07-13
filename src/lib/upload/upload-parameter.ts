@@ -15,8 +15,8 @@
  */
 
 // import {FilesAsZipParameterData} from "./files-as-zip-parameter-data";
-import { Mosaic } from 'proximax-nem2-sdk';
 import { Readable } from 'stream';
+import { Mosaic } from 'tsjs-xpx-chain-sdk';
 import { SchemaVersion } from '../config/constants';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { FileParameterData } from './file-parameter-data';

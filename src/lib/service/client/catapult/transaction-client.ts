@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { merge, Observable } from 'rxjs';
+import { filter, map, take } from 'rxjs/operators';
 import {
   Address,
   Listener,
   SignedTransaction,
   Transaction,
   TransactionHttp
-} from 'proximax-nem2-sdk';
-import { merge, Observable } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
+} from 'tsjs-xpx-chain-sdk';
 import { BlockchainNetworkConnection } from '../../../connection/blockchain-network-connection';
 import { PromiseHelper } from '../../../helper/promise-helper';
 

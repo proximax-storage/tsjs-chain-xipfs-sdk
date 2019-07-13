@@ -63,20 +63,20 @@
     "node": ">=8.9"
   },
   "dependencies": {
-    "ipfs-http-client": "^28.0.1",
-    "js-joda": "^1.9.2",
-    "node-fetch": "^2.2.0",
-    "proximax-nem2-library": "^0.9.11",
-    "proximax-nem2-sdk": "^0.10.15",
+    "ipfs-http-client": "^33.1.0",
+    "js-joda": "^1.11.0",
+    "node-fetch": "^2.6.0",
+    "js-xpx-chain-library": "^0.3.0",
+    "tsjs-xpx-chain-sdk": "^0.2.0",
     "request": "^2.88.0",
-    "rxjs": "^6.3.3",
+    "rxjs": "^6.5.2",
     "uribuilder": "^1.0.5",
     "utf-8": "^2.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.6",
     "@types/chai-as-promised": "^7.1.0",
-    "@types/mocha": "^5.2.5",
+    "@types/mocha": "^5.2.7",
     "@types/request": "^2.48.1",
     "@types/utf8": "^2.1.6",
     "ava": "1.0.0-beta.7",
@@ -98,7 +98,7 @@
     "tslint-config-prettier": "^1.13.0",
     "tslint-immutable": "^4.8.0",
     "typedoc": "^0.12.0",
-    "typescript": "^3.1.1"
+    "typescript": "^3.5.3"
   },
   "ava": {
     "failFast": true,
