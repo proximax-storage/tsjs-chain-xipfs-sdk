@@ -33,6 +33,7 @@ export class UploadParameterBuilder {
   private useBlockchainSecureMessage?: boolean;
   private detectContentType?: boolean;
   private computeDigest?: boolean;
+  private generateHash:string;
 
   constructor(
     private data: UploadParameterData,
@@ -145,6 +146,7 @@ export class UploadParameterBuilder {
       this.privacyStrategy || PlainPrivacyStrategy.create(),
       this.transactionDeadline || 12,
       this.useBlockchainSecureMessage || false,
+      this.generateHash,
       this.detectContentType || false,
       this.computeDigest || false,
       this.transactionMosaics,

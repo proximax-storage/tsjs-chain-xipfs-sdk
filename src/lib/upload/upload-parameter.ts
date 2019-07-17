@@ -122,6 +122,7 @@ export class UploadParameter {
     public readonly privacyStrategy: PrivacyStrategy,
     public readonly transactionDeadline: number,
     public readonly useBlockchainSecureMessage: boolean,
+    public readonly generateHash:string,
     public readonly detectContentType: boolean,
     public readonly computeDigest: boolean,
     public readonly transactionMosaics?: Mosaic[],

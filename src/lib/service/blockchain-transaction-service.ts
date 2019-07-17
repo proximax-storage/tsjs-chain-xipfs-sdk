@@ -24,6 +24,7 @@ import {
   Mosaic,
   MosaicId,
   NetworkType,
+  SignSchema,
   TransactionType,
   TransferTransaction,
   UInt64
@@ -103,7 +104,10 @@ export class BlockchainTransactionService {
       signerPrivateKey,
       this.networkType
     );
-    const signedTransaction = signerAccount.sign(transferTransaction);
+
+    const blockInfo = await this.transactionClient.getNemesisBlockInfo().toPromise();
+    
+    const signedTransaction = signerAccount.sign(transferTransaction,blockInfo.generationHash,SignSchema.SHA3);
 
     await this.transactionClient.announce(
       signedTransaction,

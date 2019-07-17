@@ -68,4 +68,11 @@ describe('TransactionClient', () => {
       expect(trx.isConfirmed()).to.be.true;
     });
   });
+
+  it('should return the generation hash from blockchain', async () => {
+    await client.getNemesisBlockInfo().subscribe(blockInfo => {
+      // console.log('Transaction ' + JSON.stringify(trx));
+      expect(blockInfo.generationHash).to.be.true;
+    });
+  });
 });

@@ -22,7 +22,7 @@ import { Protocol } from './protocol';
  * Class represents the blockchain network connection
  */
 export class BlockchainNetworkConnection {
-  private apiUrl;
+  private apiUrl: string;
 
   constructor(
     /**
