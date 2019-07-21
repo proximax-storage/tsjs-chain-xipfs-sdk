@@ -99,7 +99,7 @@ export class TransactionClient {
     if (!transactionHash) {
       throw new Error('transaction hash is required');
     }
-
+  
     return this.transactionHttp.getTransaction(transactionHash);
   }
 

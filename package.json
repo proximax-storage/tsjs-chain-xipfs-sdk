@@ -63,12 +63,12 @@
     "node": ">=8.9"
   },
   "dependencies": {
-    "ipfs-http-client": "^33.1.0",
+    "ipfs-http-client": "^28.0.1",
     "js-joda": "^1.11.0",
     "node-fetch": "^2.6.0",
     "tsjs-xpx-chain-sdk": "^0.4.0",
     "request": "^2.88.0",
-    "rxjs": "^6.5.2",
+    "rxjs": "^6.3.3",
     "uribuilder": "^1.0.5",
     "utf-8": "^2.0.0"
   },

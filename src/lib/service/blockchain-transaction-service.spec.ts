@@ -50,7 +50,7 @@ describe('BlockchainTransactionService', () => {
       RecipientAccount.publicKey,
       RecipientAccount.address
     );
-
+    console.log(txnHash);
     expect(txnHash).to.be.not.equal(undefined);
   });
 
