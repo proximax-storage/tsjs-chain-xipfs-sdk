@@ -1,6 +1,6 @@
 {
-  "name": "xpx2-ts-js-sdk",
-  "version": "0.0.42",
+  "name": "tsjs-chain-xipfs-sdk",
+  "version": "0.0.44",
   "description": "Proximax P2P Storage Javascript SDK",
   "main": "build/main/src/index.js",
   "typings": "build/main/src/index.d.ts",
@@ -9,11 +9,11 @@
   "keywords": [],
   "browser": {},
   "bugs": {
-    "url": "https://github.com/proximax-storage//xpx2-ts-js-sdk/issues"
+    "url": "https://github.com/proximax-storage/tsjs-chain-xipfs-sdk/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/proximax-storage/xpx2-ts-js-sdk.git"
+    "url": "git+https://github.com/proximax-storage/tsjs-chain-xipfs-sdk.git"
   },
   "publishConfig": {
     "registry": "http://localhost:8081/repository/npm-private/"
