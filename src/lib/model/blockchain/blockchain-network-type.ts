@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { NetworkType } from 'proximax-nem2-sdk';
+import { NetworkType } from 'tsjs-xpx-chain-sdk';
 
 /**
  * Enumerations blockchain network type

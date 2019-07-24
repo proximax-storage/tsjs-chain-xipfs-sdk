@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { merge, Observable } from 'rxjs';
+import { filter, map, take } from 'rxjs/operators';
 import {
   Address,
+  BlockHttp,
+  BlockInfo,
   Listener,
   SignedTransaction,
   Transaction,
   TransactionHttp
-} from 'proximax-nem2-sdk';
-import { merge, Observable } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
+} from 'tsjs-xpx-chain-sdk';
 import { BlockchainNetworkConnection } from '../../../connection/blockchain-network-connection';
 import { PromiseHelper } from '../../../helper/promise-helper';
 
@@ -32,6 +34,7 @@ export class TransactionClient {
   public static readonly StatusForSuccessfulUnconfirmedTransaction = 'SUCCESS';
 
   private readonly transactionHttp: TransactionHttp;
+  private readonly blockHttp: BlockHttp;
   private readonly blockchainNetworkRestApiUrl: string;
 
   /**
@@ -41,6 +44,7 @@ export class TransactionClient {
    */
   constructor(public readonly connection: BlockchainNetworkConnection) {
     this.transactionHttp = new TransactionHttp(connection.getApiUrl());
+    this.blockHttp = new BlockHttp(connection.getApiUrl());
     this.blockchainNetworkRestApiUrl = connection
       .getApiUrl()
       .replace('https://', 'wss://')
@@ -95,8 +99,16 @@ export class TransactionClient {
     if (!transactionHash) {
       throw new Error('transaction hash is required');
     }
-
+  
     return this.transactionHttp.getTransaction(transactionHash);
+  }
+
+  /**
+   * Gets the nemesis block info
+   * @return the generation hash
+   */
+  public getNemesisBlockInfo(): Observable<BlockInfo> {
+    return this.blockHttp.getBlockByHeight(1);
   }
 
   private async announceAndWaitForStatus(

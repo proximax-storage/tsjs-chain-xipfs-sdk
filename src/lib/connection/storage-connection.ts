@@ -2,7 +2,7 @@ import { UriBuilder } from 'uribuilder';
 import { FileStorageConnection } from './file-storage-connection';
 
 export class StorageConnection extends FileStorageConnection {
-  private apiUrl;
+  private apiUrl: string;
 
   constructor(
     public apiHost: string,

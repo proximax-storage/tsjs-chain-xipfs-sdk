@@ -1,6 +1,6 @@
 import crypto from 'crypto';
-import { convert, nacl_catapult, sha3Hasher } from 'proximax-nem2-library';
 import { Transform, TransformCallback } from 'stream';
+import { Convert, crypto_shared_key_hash, SHA3Hasher, SignSchema  } from 'tsjs-xpx-chain-sdk';
 import { NemKeysCipherStreamOptions } from './nem-keys-cipher-stream-options';
 
 export class NemKeysDecipherStream extends Transform {
@@ -83,7 +83,7 @@ export class NemKeysDecipherStream extends Transform {
   }
 
   private hashFunction(dest: Uint8Array, data: Uint8Array): void {
-    const sha3 = sha3Hasher.createHasher(64);
+    const sha3 = SHA3Hasher.createHasher(64);
     sha3.reset();
     sha3.update(data);
     sha3.finalize(dest);
@@ -95,14 +95,15 @@ export class NemKeysDecipherStream extends Transform {
     salt: Buffer,
     iv: Buffer
   ): crypto.Decipher {
-    const privateKeyUint8Arr = convert.hexToUint8(privateKey);
-    const publicKeyUint8Arr = convert.hexToUint8(publicKey);
+    const privateKeyUint8Arr = Convert.hexToUint8(privateKey);
+    const publicKeyUint8Arr = Convert.hexToUint8(publicKey);
     const sharedKey = new Uint8Array(32);
-    (nacl_catapult as any).lowlevel.crypto_shared_key_hash(
+    crypto_shared_key_hash(
       sharedKey,
       publicKeyUint8Arr,
       privateKeyUint8Arr,
-      this.hashFunction
+      this.hashFunction,
+      SignSchema.SHA3
     );
 
     for (let i = 0; i < salt.length; i++) {
@@ -110,7 +111,7 @@ export class NemKeysDecipherStream extends Transform {
     }
 
     const key = new Uint8Array(32);
-    const sha3 = sha3Hasher.createHasher(32);
+    const sha3 = SHA3Hasher.createHasher(32);
     sha3.reset();
     sha3.update(sharedKey);
     sha3.finalize(key);

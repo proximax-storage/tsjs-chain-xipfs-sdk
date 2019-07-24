@@ -1,5 +1,6 @@
-import { NetworkType } from 'proximax-nem2-sdk';
-import { Protocol } from '../..';
+import { NetworkType } from 'tsjs-xpx-chain-sdk';
+
+import { Protocol } from '../connection/protocol';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 
 export class Converter {

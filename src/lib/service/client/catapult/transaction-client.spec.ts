@@ -1,18 +1,13 @@
 import { expect } from 'chai';
 import 'mocha';
-// import {
-//   Account,
-//   Deadline,
-//   PlainMessage,
-//   TransferTransaction,
-//   XEM
-// } from 'proximax-nem2-sdk';
 import {
   BlockchainInfo,
   // RecipientAccount,
-  SampleTransactionHash
+  // GenerationHash,
+  // SampleTransactionHash
   // SenderAccount
 } from '../../../config/testconfig';
+
 import { BlockchainNetworkConnection } from '../../../connection/blockchain-network-connection';
 import { Protocol } from '../../../connection/protocol';
 // import { Converter } from '../../../helper/converter';
@@ -26,10 +21,11 @@ describe('TransactionClient', () => {
     BlockchainInfo.apiPort,
     Protocol.HTTP
   );
+  // const connection = new BlockchainNetworkConnection(BlockchainNetworkType.TEST_NET,'bcstage2.xpxsirius.io',3000,Protocol.HTTP);
   const client = new TransactionClient(connection);
 
-  const transactionHash = SampleTransactionHash;
-
+  const transactionHash = '93531E3C043A2EC4484E16B41CD0E93880F31B2591FAFB0ABC2566A49AB9F5DF'; // SampleTransactionHash;
+  const generationHash = 'B750FC8ADD9FAB8C71F0BB90B6409C66946844F07C5CADB51F27A9FAF219BFC7';
   // TODO revisit
   // it('should announce transaction to blockchain network', async () => {
   //   const message = 'Test announce transaction';
@@ -64,8 +60,18 @@ describe('TransactionClient', () => {
 
   it('should return transaction by transaction hash from blockchain', async () => {
     await client.getTransaction(transactionHash).subscribe(trx => {
-      // console.log('Transaction ' + JSON.stringify(trx));
+      console.log('Transaction ' + JSON.stringify(trx));
       expect(trx.isConfirmed()).to.be.true;
+    },err => {
+      console.log(err)
+    });
+  });
+
+  it('should return the generation hash from blockchain', async () => {
+    await client.getNemesisBlockInfo().subscribe(blockInfo => {
+      // console.log('Transaction ' + JSON.stringify(trx));
+      // console.log(blockInfo);
+      expect(blockInfo.generationHash).to.be.equal(generationHash);
     });
   });
 });

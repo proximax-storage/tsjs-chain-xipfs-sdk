@@ -68,7 +68,13 @@ export class StringParameterData extends AbstractByteStreamParameterData {
    */
   public async getByteStream(): Promise<Readable> {
     const stream = new PassThrough();
-    stream.write(Buffer.from(this.text, this.encoding && 'utf8'));
+    
+    if(Buffer.isEncoding(this.encoding!)) {
+      stream.write(Buffer.from(this.text, this.encoding && 'utf8'));
+    } else {
+      stream.write(Buffer.from(this.text,'utf8'));
+    }
+
     stream.end();
     return stream;
   }

@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import {
   Account,
   Address,
   Deadline,
   Message,
   Mosaic,
-  MosaicId,
+  NetworkCurrencyMosaic,
   NetworkType,
+  SignSchema,
   TransactionType,
-  TransferTransaction,
-  UInt64
-} from 'proximax-nem2-sdk';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+  TransferTransaction
+} from 'tsjs-xpx-chain-sdk';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { Converter } from '../helper/converter';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
@@ -103,13 +103,16 @@ export class BlockchainTransactionService {
       signerPrivateKey,
       this.networkType
     );
-    const signedTransaction = signerAccount.sign(transferTransaction);
 
+    const generationHash = (await this.transactionClient.getNemesisBlockInfo().pipe(take(1)).toPromise()).generationHash;
+  
+    const signedTransaction = signerAccount.sign(transferTransaction,generationHash,SignSchema.SHA3);
+    
     await this.transactionClient.announce(
       signedTransaction,
       signerAccount.address
     );
-
+ 
     return signedTransaction.hash;
   }
 
@@ -160,7 +163,7 @@ export class BlockchainTransactionService {
   ): TransferTransaction {
     const mosaic =
       transactionMosaicsParam === undefined
-        ? [new Mosaic(new MosaicId('prx:xpx'), UInt64.fromUint(0))]
+        ? [NetworkCurrencyMosaic.createRelative(0)]
         : transactionMosaicsParam;
     return TransferTransaction.create(
       Deadline.create(transactionDeadline),

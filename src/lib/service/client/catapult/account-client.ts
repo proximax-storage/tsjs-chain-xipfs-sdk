@@ -4,7 +4,7 @@ import {
   PublicAccount,
   QueryParams,
   Transaction
-} from 'proximax-nem2-sdk';
+} from 'tsjs-xpx-chain-sdk';
 import { BlockchainNetworkConnection } from '../../../connection/blockchain-network-connection';
 import { TransactionFilter } from '../../../model/blockchain/transaction-filter';
 
