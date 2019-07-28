@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Mosaic } from 'proximax-nem2-sdk';
+import { Mosaic } from 'tsjs-xpx-chain-sdk';
 import {
   NemPrivacyStrategy,
   PasswordPrivacyStrategy,

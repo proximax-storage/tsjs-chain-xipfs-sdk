@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
   Account,
   Address,
@@ -25,9 +27,7 @@ import {
   TransactionType,
   TransferTransaction,
   UInt64
-} from 'proximax-nem2-sdk';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+} from 'tsjs-xpx-chain-sdk';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { Converter } from '../helper/converter';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';

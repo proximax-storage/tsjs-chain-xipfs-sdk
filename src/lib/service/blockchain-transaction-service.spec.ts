@@ -11,7 +11,7 @@ import { ProximaxDataModel } from '../model/proximax/data-model';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 
 import { expect } from 'chai';
-import { TransactionType } from 'proximax-nem2-sdk';
+import { TransactionType } from 'tsjs-xpx-chain-sdk';
 import { SchemaVersion } from '../config/constants';
 // import { TransactionClient } from './client/transaction-client';
 import { Protocol } from '../connection/protocol';

@@ -1,6 +1,6 @@
 {
   "name": "xpx2-ts-js-sdk",
-  "version": "0.0.42",
+  "version": "0.0.43",
   "description": "Proximax P2P Storage Javascript SDK",
   "main": "build/main/src/index.js",
   "typings": "build/main/src/index.d.ts",
@@ -66,8 +66,8 @@
     "ipfs-http-client": "^28.0.1",
     "js-joda": "^1.9.2",
     "node-fetch": "^2.2.0",
-    "proximax-nem2-library": "^0.9.11",
-    "proximax-nem2-sdk": "^0.10.15",
+    "tsjs-xpx-chain-sdk": "^0.2.0",
+    "js-xpx-chain-library": "^0.3.0",
     "request": "^2.88.0",
     "rxjs": "^6.3.3",
     "uribuilder": "^1.0.5",

@@ -6,7 +6,7 @@ import 'mocha';
 //   PlainMessage,
 //   TransferTransaction,
 //   XEM
-// } from 'proximax-nem2-sdk';
+// } from 'tsjs-xpx-chain-sdk';
 import {
   BlockchainInfo,
   // RecipientAccount,

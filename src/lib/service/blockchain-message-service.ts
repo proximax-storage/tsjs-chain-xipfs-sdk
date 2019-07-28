@@ -1,13 +1,13 @@
 import {
   Account,
   Address,
+  EncryptedMessage,
   Message,
   NetworkType,
   PlainMessage,
   PublicAccount,
-  SecureMessage,
   TransferTransaction
-} from 'proximax-nem2-sdk';
+} from 'tsjs-xpx-chain-sdk';
 import { Converter } from '../..';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
@@ -51,12 +51,9 @@ export class BlockchainMessageService {
 
     const jsonPayload = JSON.stringify(messagePayload);
     if (useBlockchainSecureMessage) {
-      const recipientPublicKey = await this.getRecipientPublicKey(
-        senderPrivateKey,
-        recipientPublicKeyRaw,
-        recipientAddress
-      );
-      return SecureMessage.create(
+      const recipientPublicKey = PublicAccount.createFromPublicKey(recipientPublicKeyRaw!, this.networkType);
+      console.log(recipientAddress);
+      return EncryptedMessage.create(
         jsonPayload,
         recipientPublicKey,
         senderPrivateKey
@@ -86,7 +83,7 @@ export class BlockchainMessageService {
       return transferTransaction.message.payload!;
     }
 
-    if (transferTransaction.message instanceof SecureMessage) {
+    if (transferTransaction.message instanceof EncryptedMessage) {
       if (!accountPrivateKey) {
         throw new Error('transferTransaction is required');
       }
@@ -96,15 +93,21 @@ export class BlockchainMessageService {
         this.networkType
       );
 
-      const secureMessage = transferTransaction.message as SecureMessage;
+      const secureMessage = transferTransaction.message as EncryptedMessage;
 
-      return secureMessage.decrypt(
-        await this.getTransactionOtherPartyPublicKey(
-          account,
-          transferTransaction
-        ),
-        accountPrivateKey
+           
+      const publicKey =  await this.getTransactionOtherPartyPublicKey(
+        account,
+        transferTransaction
       );
+
+      const publicAccount = PublicAccount.createFromPublicKey(publicKey, this.networkType);
+
+      return EncryptedMessage.decrypt(
+        secureMessage,
+        accountPrivateKey,
+        publicAccount
+      ).payload;
     } else {
       throw new Error(
         `Download of message type ${
@@ -114,6 +117,7 @@ export class BlockchainMessageService {
     }
   }
 
+  /*
   private async getRecipientPublicKey(
     senderPrivateKey: string,
     recipientPublicKey?: string,
@@ -145,7 +149,7 @@ export class BlockchainMessageService {
         .publicKey;
     }
   }
-
+  
   private isSenderPrivateKeySameWithRecipientAddress(
     signerPublicKey: string,
     recipientAddress: string
@@ -156,7 +160,7 @@ export class BlockchainMessageService {
     );
     return senderAddress.plain() === recipientAddress;
   }
-
+ */
   private async getTransactionOtherPartyPublicKey(
     retrieveAccount: Account,
     transferTransaction: TransferTransaction
@@ -165,7 +169,7 @@ export class BlockchainMessageService {
       throw new Error('Unexpected missing signer on transfer transaction');
     }
     const senderAccount = transferTransaction.signer as PublicAccount;
-    const recipientAddress = transferTransaction.recipient;
+    const recipientAddress = transferTransaction.recipient as Address;
     const retrieverAddress = retrieveAccount.address;
 
     if (retrieverAddress.plain() === recipientAddress.plain()) {

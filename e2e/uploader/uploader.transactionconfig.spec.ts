@@ -2,8 +2,10 @@ import chai, { expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { ChronoUnit } from 'js-joda';
 import 'mocha';
+import { filter, take } from 'rxjs/operators';
 import {
   Account,
+  Address,
   Deadline,
   Listener,
   Mosaic,
@@ -11,8 +13,7 @@ import {
   Transaction,
   TransferTransaction,
   UInt64
-} from 'proximax-nem2-sdk';
-import { filter, take } from 'rxjs/operators';
+} from 'tsjs-xpx-chain-sdk';
 import { Converter } from '../../src';
 import { BlockchainNetworkConnection } from '../../src/lib/connection/blockchain-network-connection';
 import { ConnectionConfig } from '../../src/lib/connection/connection-config';
@@ -61,7 +62,7 @@ describe('Uploader integration tests for transaction config', () => {
     expect(result.transactionHash.length > 0).to.be.true;
     expect(result.data.dataHash.length > 0).to.be.true;
     expect(transaction instanceof TransferTransaction).to.be.true;
-    expect((transaction as TransferTransaction).recipient.plain()).to.be.equal(
+    expect(((transaction as TransferTransaction).recipient as Address).plain()).to.be.equal(
       SenderAccount.address
     );
 
@@ -88,7 +89,7 @@ describe('Uploader integration tests for transaction config', () => {
     expect(result.transactionHash.length > 0).to.be.true;
     expect(result.data.dataHash.length > 0).to.be.true;
     expect(transaction instanceof TransferTransaction).to.be.true;
-    expect((transaction as TransferTransaction).recipient.plain()).to.be.equal(
+    expect(((transaction as TransferTransaction).recipient as Address).plain()).to.be.equal(
       RecipientAccount.address
     );
 
@@ -115,7 +116,7 @@ describe('Uploader integration tests for transaction config', () => {
     expect(result.transactionHash.length > 0).to.be.true;
     expect(result.data.dataHash.length > 0).to.be.true;
     expect(transaction instanceof TransferTransaction).to.be.true;
-    expect((transaction as TransferTransaction).recipient.plain()).to.be.equal(
+    expect(((transaction as TransferTransaction).recipient as Address).plain()).to.be.equal(
       RecipientAccount.address
     );
 

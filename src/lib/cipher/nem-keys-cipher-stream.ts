@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { convert, nacl_catapult, sha3Hasher } from 'proximax-nem2-library';
+import { convert, nacl_catapult, sha3Hasher } from 'js-xpx-chain-library';
 import { Transform, TransformCallback } from 'stream';
 import { NemKeysCipherStreamOptions } from './nem-keys-cipher-stream-options';
 
