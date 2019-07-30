@@ -22,11 +22,10 @@ import {
   Deadline,
   Message,
   Mosaic,
-  MosaicId,
+  NetworkCurrencyMosaic,
   NetworkType,
   TransactionType,
-  TransferTransaction,
-  UInt64
+  TransferTransaction
 } from 'tsjs-xpx-chain-sdk';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { Converter } from '../helper/converter';
@@ -160,7 +159,7 @@ export class BlockchainTransactionService {
   ): TransferTransaction {
     const mosaic =
       transactionMosaicsParam === undefined
-        ? [new Mosaic(new MosaicId('prx:xpx'), UInt64.fromUint(0))]
+        ? [NetworkCurrencyMosaic.createRelative(0)]
         : transactionMosaicsParam;
     return TransferTransaction.create(
       Deadline.create(transactionDeadline),
