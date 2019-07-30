@@ -1,5 +1,5 @@
 import { NetworkType } from 'tsjs-xpx-chain-sdk';
-import { Protocol } from '../..';
+import { Protocol } from '../connection/protocol';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 
 export class Converter {
@@ -63,7 +63,7 @@ export class Converter {
   }
 
   public static toProtocol(protocol: string): Protocol {
-    switch (protocol) {
+    switch (protocol.toLowerCase()) {
       case 'http':
         return Protocol.HTTP;
       case 'https':

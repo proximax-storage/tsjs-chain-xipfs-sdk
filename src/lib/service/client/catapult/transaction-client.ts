@@ -76,7 +76,7 @@ export class TransactionClient {
     if (
       txnStatus !== TransactionClient.StatusForSuccessfulUnconfirmedTransaction
     ) {
-      throw new Error('Failed to announce transaction with status ' + status);
+      throw new Error('Failed to announce transaction with status ' + txnStatus);
     }
 
     return txnStatus;
@@ -126,7 +126,14 @@ export class TransactionClient {
         .pipe(take(1))
         .toPromise();
 
-      this.transactionHttp.announce(signedTransaction);
+      try {
+        const result = this.transactionHttp.announce(signedTransaction);
+        console.log(result);
+        console.log(signedTransaction);
+      } catch(error) {
+        console.log(error);
+      }
+
 
       const txnStatus = await PromiseHelper.timeout(
         txnStatusPromise,

@@ -1,8 +1,6 @@
-import {
-  ProximaxDataModel,
-  ProximaxMessagePayloadModel,
-  UploadParameter
-} from '../..';
+import { ProximaxDataModel } from '../model/proximax/data-model';
+import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
+import { UploadParameter } from '../upload/upload-parameter';
 
 /**
  * The service class responsible for retrieving message payload from transaction

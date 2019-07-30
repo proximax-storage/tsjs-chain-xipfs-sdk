@@ -15,12 +15,11 @@
  */
 
 import { Mosaic } from 'tsjs-xpx-chain-sdk';
-import {
-  NemPrivacyStrategy,
-  PasswordPrivacyStrategy,
-  PlainPrivacyStrategy,
-  PrivacyStrategy
-} from '../..';
+
+import { NemPrivacyStrategy } from '../privacy/nem-privacy';
+import { PasswordPrivacyStrategy } from '../privacy/password-privacy';
+import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
+import { PrivacyStrategy } from '../privacy/privacy';
 import { UploadParameter } from './upload-parameter';
 import { UploadParameterData } from './upload-parameter-data';
 

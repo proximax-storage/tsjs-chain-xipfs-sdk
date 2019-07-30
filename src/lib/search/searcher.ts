@@ -4,13 +4,12 @@ import {
   PublicAccount,
   TransferTransaction
 } from 'tsjs-xpx-chain-sdk';
-import {
-  AccountClient,
-  Converter,
-  ProximaxMessagePayloadModel,
-  RetrieveProximaxMessagePayloadService
-} from '../..';
+
 import { ConnectionConfig } from '../connection/connection-config';
+import { Converter } from '../helper/converter';
+import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
+import { AccountClient } from '../service/client/catapult/account-client';
+import { RetrieveProximaxMessagePayloadService } from '../service/retrieve-proximax-message-payload-service';
 import { SearchParameter } from './search-parameter';
 import { SearchResult } from './search-result';
 import { SearchResultItem } from './search-result-item';

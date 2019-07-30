@@ -1,13 +1,13 @@
-export const BaseHost = '192.168.0.6';
+export const BaseHost = 'bctestnet2.xpxsirius.io';
 
 export const IpfsInfo = {
-  host: 'ipfs1-dev.xpxsirius.io',
+  host: 'ipfs2-dev.xpxsirius.io',
   options: { protocol: 'http' },
   port: 5001
 };
 
 export const BlockchainInfo = {
-  apiHost: 'privatetest1.xpxsirius.io',
+  apiHost: 'bctestnet2.xpxsirius.io',
   apiPort: 3000,
   apiProtocol: 'http'
 };
@@ -21,10 +21,10 @@ export const StorageInfo = {
 };
 
 export const SenderAccount = {
-  address: 'SDB5DP6VGVNPSQJYEC2X3QIWKAFJ3DCMNQCIF6OA',
+  address: 'VAS7OXWAUSR3HSOM67JNEZIC6VP6HUS2ORSTWF6U',
   privateKey:
-    '97226FCCBD876D399BA2A70E640AD2C2C97AD5CE57A40EE9455C226D3C39AD49',
-  publicKey: '632479641258F56F961473CD729F6357563D276CE7B68D5AD8F9F7FA071BB963'
+    '4E9B434DD2DFC3A32467AC590F9AC2F9E47C0443C3C811B7D9D6F2077DB92C36',
+  publicKey: 'A9AA64E5D1CAAD6884CB41CE7C1466ED501DB50A341F0A76499DF3D43193EBAB'
 };
 export const RecipientAccount = {
   address: 'SDUCJBPMHXWEWJL6KI4GVW3X4EKWSINM3WBVUDQ2',

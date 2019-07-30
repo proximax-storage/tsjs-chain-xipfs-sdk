@@ -1,8 +1,7 @@
 import { TransferTransaction } from 'tsjs-xpx-chain-sdk';
-import {
-  BlockchainNetworkConnection,
-  ProximaxMessagePayloadModel
-} from '../..';
+
+import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
+import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { BlockchainMessageService } from './blockchain-message-service';
 
 /**

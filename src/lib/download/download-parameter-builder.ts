@@ -1,4 +1,5 @@
-import { NemPrivacyStrategy } from '../..';
+
+import { NemPrivacyStrategy } from '../privacy/nem-privacy';
 import { PasswordPrivacyStrategy } from '../privacy/password-privacy';
 import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
 import { PrivacyStrategy } from '../privacy/privacy';

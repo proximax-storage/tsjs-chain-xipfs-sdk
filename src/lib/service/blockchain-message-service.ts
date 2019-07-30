@@ -8,8 +8,9 @@ import {
   PublicAccount,
   TransferTransaction
 } from 'tsjs-xpx-chain-sdk';
-import { Converter } from '../..';
+
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
+import { Converter } from '../helper/converter';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { AccountClient } from './client/catapult/account-client';
 
