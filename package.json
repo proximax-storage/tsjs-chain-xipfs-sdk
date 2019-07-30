@@ -1,6 +1,6 @@
 {
   "name": "xpx2-ts-js-sdk",
-  "version": "0.0.44",
+  "version": "0.0.45",
   "description": "Proximax P2P Storage Javascript SDK",
   "main": "build/main/src/index.js",
   "typings": "build/main/src/index.d.ts",
@@ -14,9 +14,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/proximax-storage/xpx2-ts-js-sdk.git"
-  },
-  "publishConfig": {
-    "registry": "http://localhost:8081/repository/npm-private/"
   },
   "scripts": {
     "info": "npm-scripts-info",
