@@ -29,7 +29,7 @@ import {
   UInt64
 } from 'tsjs-xpx-chain-sdk';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
-// import { Converter } from '../helper/converter';
+import { Converter } from '../helper/converter';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { BlockchainMessageService } from './blockchain-message-service';
 import { TransactionClient } from './client/catapult/transaction-client';
@@ -50,8 +50,7 @@ export class BlockchainTransactionService {
   constructor(public readonly connection: BlockchainNetworkConnection) {
     this.blockchainMessageService = new BlockchainMessageService(connection);
     this.transactionClient = new TransactionClient(connection);
-    this.networkType = NetworkType.TEST_NET;
-    // this.networkType = Converter.getNemNetworkType(this.connection.networkType);
+    this.networkType = Converter.getNemNetworkType(this.connection.networkType);
   }
 
   /**
@@ -89,6 +88,7 @@ export class BlockchainTransactionService {
       recipientPublicKey,
       recipientAddress
     );
+    console.log(message);
     const recipient = this.getRecipient(
       signerPrivateKey,
       recipientAddress,
@@ -104,8 +104,8 @@ export class BlockchainTransactionService {
       signerPrivateKey,
       this.networkType
     );
-    console.log(signerPrivateKey);
-    console.log(signerAccount);
+    // console.log(signerPrivateKey);
+    // console.log(signerAccount);
     const signedTransaction = signerAccount.sign(transferTransaction);
 
     await this.transactionClient.announce(
@@ -163,7 +163,7 @@ export class BlockchainTransactionService {
   ): TransferTransaction {
     const mosaic =
       transactionMosaicsParam === undefined
-        ? [new Mosaic(new MosaicId('prx.xpx'), UInt64.fromUint(0))]
+        ? [new Mosaic(new MosaicId('0dc67fbe1cad29e3'), UInt64.fromUint(0))]
         : transactionMosaicsParam;
     return TransferTransaction.create(
       Deadline.create(transactionDeadline),

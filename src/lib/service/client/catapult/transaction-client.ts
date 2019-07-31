@@ -126,15 +126,8 @@ export class TransactionClient {
         .pipe(take(1))
         .toPromise();
 
-      try {
-        const result = this.transactionHttp.announce(signedTransaction);
-        console.log(result);
-        console.log(signedTransaction);
-      } catch(error) {
-        console.log(error);
-      }
-
-
+      this.transactionHttp.announce(signedTransaction);
+       
       const txnStatus = await PromiseHelper.timeout(
         txnStatusPromise,
         'announce transaction',
@@ -143,7 +136,7 @@ export class TransactionClient {
 
       return txnStatus;
     } catch (err) {
-      throw new Error('Failed to announce transaction ' + err);
+      throw new Error('Failed to announce transaction ' + JSON.stringify(err));
     } finally {
       await this.closeListener(listener);
     }
