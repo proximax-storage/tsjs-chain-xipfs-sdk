@@ -26,7 +26,7 @@ npm init
 
 ### 2. Install xpx2-ts-js-sdk and rxjs library
 ```nodejs
-npm install xpx2-ts-sdk rxjs --save
+npm install xpx2-ts-js-sdk --save
 ```
 
 ## Basic Usages
