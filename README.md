@@ -1,8 +1,8 @@
-# Proximax P2P Storage Typescript SDK - xpx2-ts-js-sdk
+# Proximax P2P Storage Typescript SDK - tsjs-chain-xipfs-sdk
 
 ![banner](https://proximax.io/wp-content/uploads/2018/03/ProximaX-logotype.png)
 
-ProximaX is a project that utilizes the NEM blockchain technology with the IPFS P2P storage technology to form a very powerful proofing solution for documents or files which are stored in an immutable and irreversible manner, similar to the blockchain technology solutions.
+ProximaX is a project that utilizes the Sirius-Chain blockchain technology with the IPFS P2P storage technology to form a very powerful proofing solution for documents or files which are stored in an immutable and irreversible manner, similar to the blockchain technology solutions.
 
 # Requirements
 ## NodeJs
@@ -27,4 +27,4 @@ Check the sample app [here](examples)
 The release notes can be found [here](CHANGELOG.md)
 
 # License
-Copyright (c) 2018 ProximaX Limited Licensed under the Apache License 2.0
+Copyright (c) 2019 ProximaX Limited Licensed under the Apache License 2.0
