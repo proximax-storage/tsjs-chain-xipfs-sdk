@@ -1,6 +1,6 @@
 {
   "name": "tsjs-chain-xipfs-sdk",
-  "version": "0.0.44",
+  "version": "0.4.0",
   "description": "Proximax P2P Storage Javascript SDK",
   "main": "build/main/src/index.js",
   "typings": "build/main/src/index.d.ts",
