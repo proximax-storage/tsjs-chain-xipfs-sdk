@@ -15,14 +15,14 @@
  */
 
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import {
   Account,
   Address,
   Deadline,
   Message,
   Mosaic,
-  NetworkCurrencyMosaic,
+  MosaicId,
   NetworkType,
   SignSchema,
   TransactionType,
