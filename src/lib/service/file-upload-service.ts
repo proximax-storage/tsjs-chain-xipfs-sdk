@@ -1,7 +1,9 @@
 import { map } from 'rxjs/operators';
 import { Stream } from 'stream';
-import { PlainPrivacyStrategy, PrivacyStrategy } from '../..';
+
 import { DigestUtils } from '../helper/digest-util';
+import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
+import { PrivacyStrategy } from '../privacy/privacy';
 import { FileUploadResponse } from './file-upload-response';
 import { FileRepository } from './repository/file-repository';
 

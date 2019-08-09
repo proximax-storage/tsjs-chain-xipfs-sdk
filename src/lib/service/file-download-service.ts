@@ -1,8 +1,8 @@
 import { map } from 'rxjs/operators';
 import { Stream } from 'stream';
-import { PlainPrivacyStrategy } from '../..';
 import { FileStorageConnection } from '../connection/file-storage-connection';
 import { DigestUtils } from '../helper/digest-util';
+import { PlainPrivacyStrategy } from '../privacy/plain-privacy';
 import { PrivacyStrategy } from '../privacy/privacy';
 import { FileRepositoryFactory } from './factory/file-repository-factory';
 import { FileRepository } from './repository/file-repository';

@@ -1,7 +1,7 @@
 export const BaseHost = '192.168.0.18';
 
 export const IpfsInfo = {
-  host: 'ipfs1-dev.xpxsirius.io',
+  host: 'ipfs2-dev.xpxsirius.io',
   options: { protocol: 'http' },
   port: 5001
 };

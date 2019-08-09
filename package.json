@@ -15,9 +15,6 @@
     "type": "git",
     "url": "git+https://github.com/proximax-storage/tsjs-chain-xipfs-sdk.git"
   },
-  "publishConfig": {
-    "registry": "http://localhost:8081/repository/npm-private/"
-  },
   "scripts": {
     "info": "npm-scripts-info",
     "build": "run-s clean && run-p build:*",

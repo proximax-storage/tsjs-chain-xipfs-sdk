@@ -15,7 +15,7 @@
  */
 
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import {
   Account,
   Address,
@@ -26,7 +26,8 @@ import {
   NetworkType,
   SignSchema,
   TransactionType,
-  TransferTransaction
+  TransferTransaction,
+  UInt64
 } from 'tsjs-xpx-chain-sdk';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { Converter } from '../helper/converter';
@@ -88,6 +89,7 @@ export class BlockchainTransactionService {
       recipientPublicKey,
       recipientAddress
     );
+    console.log(message);
     const recipient = this.getRecipient(
       signerPrivateKey,
       recipientAddress,
@@ -163,7 +165,7 @@ export class BlockchainTransactionService {
   ): TransferTransaction {
     const mosaic =
       transactionMosaicsParam === undefined
-        ? [NetworkCurrencyMosaic.createRelative(0)]
+        ? [new Mosaic(new MosaicId('0dc67fbe1cad29e3'), UInt64.fromUint(0))]
         : transactionMosaicsParam;
     return TransferTransaction.create(
       Deadline.create(transactionDeadline),

@@ -66,6 +66,7 @@ export class Uploader {
 
   private async doUpload(param: UploadParameter): Promise<UploadResult> {
     const uploadData = await this.createProximaxDataService.createData(param);
+    console.log(uploadData);
     const messagePayload = await this.createProximaxMessagePayloadService.createMessagePayload(
       param,
       uploadData

@@ -52,12 +52,6 @@ export class BlockchainMessageService {
 
     const jsonPayload = JSON.stringify(messagePayload);
     if (useBlockchainSecureMessage) {
-      /*
-      const recipientPublicKey = await this.getRecipientPublicKey(
-        senderPrivateKey,
-        recipientPublicKeyRaw,
-        recipientAddress
-      );*/
       const recipientPublicKey = PublicAccount.createFromPublicKey(recipientPublicKeyRaw!, this.networkType);
       console.log(recipientAddress);
       return EncryptedMessage.create(
@@ -101,7 +95,8 @@ export class BlockchainMessageService {
       );
 
       const secureMessage = transferTransaction.message as EncryptedMessage;
-      
+
+           
       const publicKey =  await this.getTransactionOtherPartyPublicKey(
         account,
         transferTransaction
@@ -154,7 +149,7 @@ export class BlockchainMessageService {
         .publicKey;
     }
   }
- 
+  
   private isSenderPrivateKeySameWithRecipientAddress(
     signerPublicKey: string,
     recipientAddress: string
@@ -165,7 +160,7 @@ export class BlockchainMessageService {
     );
     return senderAddress.plain() === recipientAddress;
   }
-  */
+ */
   private async getTransactionOtherPartyPublicKey(
     retrieveAccount: Account,
     transferTransaction: TransferTransaction

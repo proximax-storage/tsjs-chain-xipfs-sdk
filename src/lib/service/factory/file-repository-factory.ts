@@ -1,5 +1,6 @@
-import { IpfsConnection } from '../../..';
+
 import { FileStorageConnection } from '../../connection/file-storage-connection';
+import { IpfsConnection } from '../../connection/ipfs-connection';
 import { StorageConnection } from '../../connection/storage-connection';
 import { IpfsClient } from '../client/ipfs-client';
 import { StorageNodeClient } from '../client/storage-node-client';
