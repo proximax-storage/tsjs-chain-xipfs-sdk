@@ -12,7 +12,7 @@ Follow instruction [here](https://ipfs.io/blog/1-run-ipfs-on-docker/) to install
 Follow instruction [here](https://nemtech.github.io/getting-started/setup-workstation.html) to run catapult service using docker image.
 
 ## Setting up your development environment
-### 1. Proximax storage xpx2-ts-js-sdk is build with Typescript language and it is recommended to use Typescript when building the application.
+### 1. Proximax storage tsjs-chain-xipfs-sdk is built with Typescript  and it is recommended to use Typescript when building the application.
 
 ```nodejs
 npm install -g typescript ts-node
@@ -24,15 +24,15 @@ npm install -g typescript ts-node
 npm init
 ```
 
-### 2. Install xpx2-ts-js-sdk and rxjs library
+### 2. Install tsjs-chain-xipfs-sdk and rxjs library
 ```nodejs
-npm install xpx2-ts-js-sdk --save
+npm install tsjs-chain-xipfs-sdk rxjs --save
 ```
 
 ## Basic Usages
 ### 1. Upload content
 
-Imports xpx2-ts-js-sdk
+Imports tsjs-chain-xipfs-sdk
 
 ```ts
 import {
@@ -46,7 +46,7 @@ import {
   IpfsConnection,
   UploadParameterData,
   UploadParameter
-} from 'xpx2-ts-js-sdk'
+} from 'tsjs-chain-xipfs-sdk'
 ```
 
 Prepares Proximax upload service 
@@ -214,7 +214,7 @@ Please check the status of this known [issue](https://github.com/ipfs/js-ipfs-ap
 ### 2. Download content
 
 
-Imports xpx2-ts-js-sdk
+Imports tsjs-chain-xipfs-sdk
 
 ```ts
 import {
@@ -227,7 +227,7 @@ import {
   IpfsClient,
   IpfsConnection,
   DownloadParameter
-} from 'xpx2-ts-js-sdk'
+} from 'tsjs-chain-xipfs-sdk'
 ```
 
 Prepares Proximax download service 
