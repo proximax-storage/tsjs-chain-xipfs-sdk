@@ -23,7 +23,7 @@ chai.use(chaiAsPromised);
 describe('Uploader integration tests for privacy strategies', () => {
   const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
     new BlockchainNetworkConnection(
-      BlockchainNetworkType.MIJIN_TEST,
+      BlockchainNetworkType.TEST_NET,
       BlockchainInfo.apiHost,
       BlockchainInfo.apiPort,
       Protocol.HTTP
@@ -91,5 +91,35 @@ describe('Uploader integration tests for privacy strategies', () => {
       result,
       'shouldUploadWithSecuredWithPasswordPrivacyStrategy'
     );
+  }).timeout(10000);
+
+  it('should upload uint8 array with password strategy', async () => {
+    const byteStream = new Uint8Array(
+      Buffer.from('Proximax P2P Uploader test')
+    );
+
+    const param = UploadParameter.createForUint8ArrayUpload(
+      byteStream,
+      SenderAccount.privateKey
+    )
+    .withPasswordPrivacy(SamplePassword)
+    .build();
+
+    try {
+      const result = await uploader.upload(param);
+      console.log(result);
+      expect(result.transactionHash.length > 0).to.be.true;
+      expect(result.data.dataHash.length > 0).to.be.true;
+      expect(result.data.contentType).to.be.undefined;
+      expect(result.data.metadata).to.be.undefined;
+      expect(result.data.description).to.be.undefined;
+      expect(result.data.name).to.be.undefined;
+      expect(result.privacyType).to.be.equal(PrivacyType.PASSWORD);
+  
+      TestDataRepository.logAndSaveResult(result, 'shouldUploadUint8ArrayWithPassword');
+    } catch(error) {
+      console.log(error);
+    }
+    
   }).timeout(10000);
 });

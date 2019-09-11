@@ -1,8 +1,8 @@
 import request from 'request';
 import { from, Observable } from 'rxjs';
 import { Stream } from 'stream';
-import { StreamHelper } from '../../..';
 import { StorageConnection } from '../../connection/storage-connection';
+import { StreamHelper } from '../../helper/stream-helper';
 import { FileRepository } from '../repository/file-repository';
 import { NodeInfoResponse } from './node-info-response';
 

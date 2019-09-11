@@ -4,7 +4,7 @@ import { PassThrough, Readable, Stream } from 'stream';
 export class StreamHelper {
   public static string2Stream(text: string, encoding?: string): PassThrough {
     const stream = new PassThrough();
-
+   
     if(Buffer.isEncoding(encoding!)) {
       stream.write(Buffer.from(text,encoding!));
     } else {
