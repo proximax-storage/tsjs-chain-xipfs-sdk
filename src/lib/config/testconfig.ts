@@ -1,16 +1,16 @@
-export const BaseHost = '192.168.0.18';
+export const BaseHost = 'bctestnet4.xpxsirius.io';
 
 export const IpfsInfo = {
-  host: 'ipfs2-dev.xpxsirius.io',
-  options: { protocol: 'http' },
-  port: 5001
+  host: 'ipfs1-dev.xpxsirius.io',
+  options: { protocol: 'https' },
+  port: 443
 };
 
 export const BlockchainInfo = {
  // apiHost: 'bcstage2.xpxsirius.io',
-  apiHost: '192.168.0.18',
-  apiPort: 3000,
-  apiProtocol: 'http'
+  apiHost: 'bctestnet4.xpxsirius.io',
+  apiPort: 443,
+  apiProtocol: 'https'
 };
 
 export const StorageInfo = {
@@ -22,15 +22,15 @@ export const StorageInfo = {
 };
 
 export const SenderAccount = {
-  address: 'SBGS2IGUED476REYI5ZZGISVSEHAF6YIQZV6YJFQ',
+  address: 'VARBGLTGMJKK7JSHD7QSS2YX4T6HHJHZERP5D2UL',
   privateKey:
-    '28FCECEA252231D2C86E1BCF7DD541552BDBBEFBB09324758B3AC199B4AA7B78',
-  publicKey: '0EB448D07C7CCB312989AC27AA052738FF589E2F83973F909B506B450DC5C4E2'
+    '6E638FDB80CD04A9070AAB5BA966D77DFB215B145186873392B504B3B04532F2',
+  publicKey: '60CD2C2F2954FC7D97F52B7F75A66C6B44E12DC3533BAA6E78702B8CF0ABE840'
 };
 export const RecipientAccount = {
-  address: 'SDUCJBPMHXWEWJL6KI4GVW3X4EKWSINM3WBVUDQ2',
+  address: 'VCS45IZJPJKWYUZLP5PWUNAJQV2BLM3INRBHXASZ',
   privateKey:
-    'D19EDBF7C5F4665BBB168F8BFF3DC1CA85766080B10AABD60DDE5D6D7E893D5B',
+    '817B7F9907BA72369954463A866951C010AAEFDC6A53B44D7C7691A235E83B26',
   publicKey: 'D1869362F4FAA5F683AEF78FC0D6E04B976833000F3958862A09CC7B6DF347C2'
 };
 export const SampleTransactionHash =

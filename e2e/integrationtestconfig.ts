@@ -1,13 +1,13 @@
 export const IpfsInfo = {
-  host: 'ipfs2-dev.xpxsirius.io',
-  options: { protocol: 'http' },
-  port: 5001
+  host: 'ipfs1-dev.xpxsirius.io',
+  options: { protocol: 'https' },
+  port: 443
 };
 
 export const BlockchainInfo = {
-  apiHost: 'bctestnet2.xpxsirius.io',
-  apiPort: 3000,
-  apiProtocol: 'http'
+  apiHost: 'bctestnet4.xpxsirius.io',
+  apiPort: 443,
+  apiProtocol: 'https'
 };
 
 export const StorageNodeApi = {
@@ -18,6 +18,7 @@ export const StorageNodeApi = {
   nemAddress: 'nem:test'
 };
 
+/*
 export const SenderAccount = {
   address: 'VAS7OXWAUSR3HSOM67JNEZIC6VP6HUS2ORSTWF6U',
   privateKey:
@@ -29,6 +30,22 @@ export const RecipientAccount = {
   address: 'SDUCJBPMHXWEWJL6KI4GVW3X4EKWSINM3WBVUDQ2',
   privateKey:
     'D19EDBF7C5F4665BBB168F8BFF3DC1CA85766080B10AABD60DDE5D6D7E893D5B',
+  publicKey: 'D1869362F4FAA5F683AEF78FC0D6E04B976833000F3958862A09CC7B6DF347C2'
+};
+*/
+
+
+export const SenderAccount = {
+  address: 'VARBGLTGMJKK7JSHD7QSS2YX4T6HHJHZERP5D2UL',
+  privateKey:
+    '6E638FDB80CD04A9070AAB5BA966D77DFB215B145186873392B504B3B04532F2',
+  publicKey: '60CD2C2F2954FC7D97F52B7F75A66C6B44E12DC3533BAA6E78702B8CF0ABE840'
+};
+
+export const RecipientAccount = {
+  address: 'VCS45IZJPJKWYUZLP5PWUNAJQV2BLM3INRBHXASZ',
+  privateKey:
+    '817B7F9907BA72369954463A866951C010AAEFDC6A53B44D7C7691A235E83B26',
   publicKey: 'D1869362F4FAA5F683AEF78FC0D6E04B976833000F3958862A09CC7B6DF347C2'
 };
 
