@@ -23,16 +23,18 @@ import { TransactionClient } from './transaction-client';
 
 describe('TransactionClient', () => {
   const connection = new BlockchainNetworkConnection(
-    BlockchainNetworkType.MIJIN_TEST,
+    BlockchainNetworkType.TEST_NET,
     BlockchainInfo.apiHost,
     BlockchainInfo.apiPort,
-    Protocol.HTTP
+    Protocol.HTTPS
   );
+  console.log(connection);
+
   // const connection = new BlockchainNetworkConnection(BlockchainNetworkType.TEST_NET,'bcstage2.xpxsirius.io',3000,Protocol.HTTP);
   const client = new TransactionClient(connection);
 
-  const transactionHash = '93531E3C043A2EC4484E16B41CD0E93880F31B2591FAFB0ABC2566A49AB9F5DF'; // SampleTransactionHash;
-  const generationHash = 'B750FC8ADD9FAB8C71F0BB90B6409C66946844F07C5CADB51F27A9FAF219BFC7';
+  const transactionHash = '085B3C760E02E1C761E4A58C04EE7B1AFAE543F4F106DDE6EE6E146A63E5EB4B'; // SampleTransactionHash;
+  const generationHash = '3D9507C8038633C0EB2658704A5E7BC983E4327A99AC14D032D67F5AACBCCF6A';
   // TODO revisit
   // it('should announce transaction to blockchain network', async () => {
   //   const message = 'Test announce transaction';

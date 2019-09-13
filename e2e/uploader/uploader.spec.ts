@@ -19,6 +19,7 @@ import {
   SenderAccount
 } from '../integrationtestconfig';
 import { TestDataRepository } from '../testdatarepository';
+import { Mosaic, MosaicId, UInt64 } from 'tsjs-xpx-chain-sdk';
 
 describe('Uploader integration tests', () => {
   const connectionConfig = ConnectionConfig.createWithLocalIpfsConnection(
@@ -26,11 +27,11 @@ describe('Uploader integration tests', () => {
       BlockchainNetworkType.TEST_NET,
       BlockchainInfo.apiHost,
       BlockchainInfo.apiPort,
-      Protocol.HTTP
+      Protocol.HTTPS
     ),
-    new IpfsConnection(IpfsInfo.host, IpfsInfo.port)
+    new IpfsConnection(IpfsInfo.host, IpfsInfo.port,IpfsInfo.options)
   );
-
+  console.log(connectionConfig);
   const uploader = new Uploader(connectionConfig);
 
   it('should upload uint8 array', async () => {
@@ -38,10 +39,13 @@ describe('Uploader integration tests', () => {
       Buffer.from('Proximax P2P Uploader test')
     );
 
+    const mosaic = [new Mosaic(new MosaicId('3c0f3de5298ced2d'), UInt64.fromUint(0))]
+
     const param = UploadParameter.createForUint8ArrayUpload(
       byteStream,
       SenderAccount.privateKey
-    ).build();
+    ).withTransactionMosaics(mosaic)
+    .build();
 
     try {
       const result = await uploader.upload(param);

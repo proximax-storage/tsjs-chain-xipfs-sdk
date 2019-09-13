@@ -68,6 +68,10 @@ export class Converter {
         return Protocol.HTTP;
       case 'https':
         return Protocol.HTTPS;
+      case 'ws':
+          return Protocol.SOCKET;
+      case 'wss':
+            return Protocol.SECURESOCKET;
       default:
         throw new Error('unknown protocol ' + protocol);
     }
