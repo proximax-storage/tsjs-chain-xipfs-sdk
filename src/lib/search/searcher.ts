@@ -1,11 +1,14 @@
 import {
   Account,
+  Address,
   NetworkType,
   PublicAccount,
   TransferTransaction
 } from 'tsjs-xpx-chain-sdk';
+
 import { ConnectionConfig } from '../connection/connection-config';
 import { Converter } from '../helper/converter';
+import { TransactionFilter } from '../model/blockchain/transaction-filter';
 import { ProximaxMessagePayloadModel } from '../model/proximax/message-payload-model';
 import { AccountClient } from '../service/client/catapult/account-client';
 import { RetrieveProximaxMessagePayloadService } from '../service/retrieve-proximax-message-payload-service';
@@ -40,19 +43,33 @@ export class Searcher {
     let fromTransactionId = param.fromTransactionId;
     let toTransactionId: string | undefined;
     const results: SearchResultItem[] = [];
-    const publicAccount: PublicAccount = await this.getPublicAccount(
-      param.accountPrivateKey,
-      param.accountPublicKey,
-      param.accountAddress
-    );
+    
 
     while (results.length < param.resultSize) {
-      const transactions = await this.accountClient.getTransactions(
-        param.transactionFilter,
-        Searcher.BATCH_TRANSACTION_SIZE,
-        publicAccount,
-        fromTransactionId
-      );
+      let transactions;
+
+      if (param.transactionFilter === TransactionFilter.INCOMING) {
+        const address = Address.createFromRawAddress(param.accountAddress!);
+        transactions = await this.accountClient.getIncomingTransactions(
+          param.transactionFilter,
+          Searcher.BATCH_TRANSACTION_SIZE,
+          address,
+          fromTransactionId
+        );
+      } else {
+        const publicAccount = await this.getPublicAccount(
+          param.accountPrivateKey,
+          param.accountPublicKey,
+          param.accountAddress
+        );
+        
+        transactions = await this.accountClient.getTransactions(
+          param.transactionFilter,
+          Searcher.BATCH_TRANSACTION_SIZE,
+          publicAccount,
+          fromTransactionId
+        );
+      }
 
       if (transactions && transactions.length > 0) {
         for (

@@ -43,6 +43,7 @@ export class AccountClient {
     const accountInfo = await this.accountHttp
       .getAccountInfo(Address.createFromRawAddress(address))
       .toPromise();
+
     if (accountInfo.publicKey === AccountClient.PUBLIC_KEY_NOT_FOUND) {
       throw new Error(`Address ${address} has no public key yet on blockchain`);
     }
@@ -71,11 +72,32 @@ export class AccountClient {
         .outgoingTransactions(publicAccount, queryParams)
         .toPromise();
     } else if (transactionFilter === TransactionFilter.INCOMING) {
-      return this.accountHttp
+        return this.accountHttp
         .incomingTransactions(publicAccount, queryParams)
         .toPromise();
     } else {
       throw new Error(`Unknown transactionFilter ${transactionFilter}`);
+    }
+  }
+
+  public async getIncomingTransactions(
+    transactionFilter: TransactionFilter,
+    resultSize: number,
+    address: Address,
+    fromTransactionId?: string
+  ): Promise<Transaction[]> {
+    if (!transactionFilter) {
+      throw new Error('transactionFilter is required');
+    }
+
+    const queryParams = new QueryParams(resultSize, fromTransactionId);
+
+    if (transactionFilter === TransactionFilter.INCOMING) {
+        return this.accountHttp
+        .incomingTransactions(address, queryParams)
+        .toPromise();
+    } else {
+      throw new Error(`Unknown transactionFilter ${transactionFilter} . Must be INCOMING transaction filter`);
     }
   }
 }
