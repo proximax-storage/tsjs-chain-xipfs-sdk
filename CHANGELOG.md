@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.2.5"></a>
+## 0.2.5 (2019-09-26)
+
+
+
+<a name="0.0.51"></a>
+## 0.0.51 (2019-07-31)
+
+
+
+<a name="0.0.44"></a>
+## 0.0.44 (2019-07-28)
+
+
+
+<a name="0.0.4"></a>
+## 0.0.4 (2018-09-16)
+
+
+
 <a name="0.0.51"></a>
 ## [0.0.51](https://github.com/proximax-storage/xpx2-ts-js-sdk/compare/v0.0.50...v0.0.51) (2019-07-31)
 
