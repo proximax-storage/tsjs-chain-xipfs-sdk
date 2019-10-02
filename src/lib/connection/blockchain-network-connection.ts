@@ -80,6 +80,12 @@ export class BlockchainNetworkConnection {
    * Gets the api url
    */
   public getApiUrl(): string {
+
+    // remove ending '/' from the api url
+    const lastChar = this.apiUrl.slice(this.apiUrl.length - 1);
+    if (lastChar === '/') {
+      return this.apiUrl.slice(0,this.apiUrl.length - 1);
+    }
     return this.apiUrl;
   }
 }

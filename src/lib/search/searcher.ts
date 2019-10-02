@@ -1,6 +1,5 @@
 import {
   Account,
-  Address,
   NetworkType,
   PublicAccount,
   TransferTransaction
@@ -46,23 +45,32 @@ export class Searcher {
     
 
     while (results.length < param.resultSize) {
-      let transactions;
+      let transactions: any;
+
+      const publicAccount = await this.getPublicAccount(
+        param.accountPrivateKey,
+        param.accountPublicKey,
+        param.accountAddress
+      );
 
       if (param.transactionFilter === TransactionFilter.INCOMING) {
-        const address = Address.createFromRawAddress(param.accountAddress!);
-        transactions = await this.accountClient.getIncomingTransactions(
-          param.transactionFilter,
-          Searcher.BATCH_TRANSACTION_SIZE,
-          address,
-          fromTransactionId
-        );
-      } else {
-        const publicAccount = await this.getPublicAccount(
-          param.accountPrivateKey,
-          param.accountPublicKey,
-          param.accountAddress
-        );
         
+        if(publicAccount.address) {
+          transactions = await this.accountClient.getIncomingTransactions(
+            param.transactionFilter,
+            Searcher.BATCH_TRANSACTION_SIZE,
+            publicAccount.address,
+            fromTransactionId
+          );
+        } else {
+          transactions = await this.accountClient.getTransactions(
+            param.transactionFilter,
+            Searcher.BATCH_TRANSACTION_SIZE,
+            publicAccount,
+            fromTransactionId
+          );
+        }
+      } else {
         transactions = await this.accountClient.getTransactions(
           param.transactionFilter,
           Searcher.BATCH_TRANSACTION_SIZE,
