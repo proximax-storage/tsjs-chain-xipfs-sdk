@@ -20,6 +20,7 @@ import { BlockchainInfo } from '../config/testconfig';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { BlockchainNetworkConnection } from './blockchain-network-connection';
 import { Protocol } from './protocol';
+import { FeeCalculationStrategy } from 'tsjs-xpx-chain-sdk';
 
 describe('BlockChainNetworkConnection', () => {
   it('should throw error if the blockchain network type is invalid', () => {
@@ -79,11 +80,31 @@ describe('BlockChainNetworkConnection', () => {
       '://' +
       BlockchainInfo.apiHost +
       ':' +
-      BlockchainInfo.apiPort +
-      '/';
+      BlockchainInfo.apiPort;
     // console.log(expectedUrl);
     // console.log(connection.getApiUrl());
     expect(connection).to.be.a.instanceof(BlockchainNetworkConnection);
     expect(connection.getApiUrl()).to.be.equal(expectedUrl);
+  });
+
+  it('should create new instance of BlockchainNetworkConnection with default fee strategy', () => {
+    const connection = new BlockchainNetworkConnection(
+      BlockchainNetworkType.MIJIN_TEST,
+      BlockchainInfo.apiHost,
+      BlockchainInfo.apiPort,
+      Protocol.HTTP
+    );
+
+    const expectedUrl =
+      Protocol.HTTP +
+      '://' +
+      BlockchainInfo.apiHost +
+      ':' +
+      BlockchainInfo.apiPort;
+    // console.log(expectedUrl);
+    // console.log(connection.getApiUrl());
+    expect(connection).to.be.a.instanceof(BlockchainNetworkConnection);
+    expect(connection.getApiUrl()).to.be.equal(expectedUrl);
+    expect(connection.networkFeeStrategy).to.be.equal(FeeCalculationStrategy.ZeroFeeCalculationStrategy);
   });
 });
