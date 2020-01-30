@@ -63,7 +63,7 @@
     "ipfs-http-client": "^29.1.1",
     "js-joda": "^1.11.0",
     "node-fetch": "^2.6.0",
-    "tsjs-xpx-chain-sdk": "^0.6.0",
+    "tsjs-xpx-chain-sdk": "^0.7.0",
     "request": "^2.88.0",
     "rxjs": "^6.3.3",
     "uribuilder": "^1.0.5",

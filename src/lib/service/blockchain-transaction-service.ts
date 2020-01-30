@@ -26,7 +26,8 @@ import {
   NetworkType,
   SignSchema,
   TransactionType,
-  TransferTransaction
+  TransferTransaction,
+  TransferTransactionBuilder
 } from 'tsjs-xpx-chain-sdk';
 import { BlockchainNetworkConnection } from '../connection/blockchain-network-connection';
 import { Converter } from '../helper/converter';
@@ -88,7 +89,7 @@ export class BlockchainTransactionService {
       recipientPublicKey,
       recipientAddress
     );
-    console.log(message);
+    // console.log(message);
     const recipient = this.getRecipient(
       signerPrivateKey,
       recipientAddress,
@@ -170,12 +171,23 @@ export class BlockchainTransactionService {
         ? [new Mosaic(new MosaicId('0dc67fbe1cad29e3'), UInt64.fromUint(0))]
         : transactionMosaicsParam;*/
 
+    const txBuilder = new TransferTransactionBuilder();
+
+    txBuilder.deadline(Deadline.create(transactionDeadline))
+             .recipient(recipientAddress)
+             .mosaics(mosaic)
+             .message(message)
+             .networkType(this.networkType)
+             .feeCalculationStrategy(this.connection.networkFeeStrategy);
+             
+    return txBuilder.build();
+    /*
     return TransferTransaction.create(
       Deadline.create(transactionDeadline),
       recipientAddress,
       mosaic,
       message,
       this.networkType
-    );
+    );*/
   }
 }

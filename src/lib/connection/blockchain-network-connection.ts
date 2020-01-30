@@ -17,6 +17,7 @@
 import { UriBuilder } from 'uribuilder';
 import { BlockchainNetworkType } from '../model/blockchain/blockchain-network-type';
 import { Protocol } from './protocol';
+import { FeeCalculationStrategy } from 'tsjs-xpx-chain-sdk';
 
 /**
  * Class represents the blockchain network connection
@@ -41,7 +42,11 @@ export class BlockchainNetworkConnection {
      * The api protocol
      *
      */
-    public apiProtocol?: Protocol
+    public apiProtocol?: Protocol,
+    /**
+     * The network fee strategy, if not specifed assume the network will use ZeroFeeCalculationStrategy
+     */
+    public networkFeeStrategy: FeeCalculationStrategy = FeeCalculationStrategy.ZeroFeeCalculationStrategy
   ) {
     if (
       this.networkType === null ||
