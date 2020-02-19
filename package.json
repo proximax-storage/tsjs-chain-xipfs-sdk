@@ -1,6 +1,6 @@
 {
   "name": "tsjs-chain-xipfs-sdk",
-  "version": "0.2.7",
+  "version": "0.2.11",
   "description": "Proximax P2P Storage Javascript SDK",
   "main": "build/main/src/index.js",
   "typings": "build/main/src/index.d.ts",
@@ -63,11 +63,12 @@
     "ipfs-http-client": "^29.1.1",
     "js-joda": "^1.11.0",
     "node-fetch": "^2.6.0",
-    "tsjs-xpx-chain-sdk": "^0.7.0",
     "request": "^2.88.0",
     "rxjs": "^6.3.3",
+    "tsjs-xpx-chain-sdk": "^0.7.0",
     "uribuilder": "^1.0.5",
-    "utf-8": "^2.0.0"
+    "utf-8": "^2.0.0",
+    "zlib": "^1.0.5"
   },
   "devDependencies": {
     "@types/chai": "^4.1.6",
