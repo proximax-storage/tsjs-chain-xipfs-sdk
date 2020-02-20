@@ -46,7 +46,8 @@ export class NemPrivacyStrategy implements PrivacyStrategy {
    * @return the encrypted byte stream
    */
   public encrypt(stream: Stream): Stream {
-    return stream.pipe(
+    return stream
+    .pipe(
       new NemKeysCipherStream({
         privateKey: this.privateKey,
         publicKey: this.publicKey

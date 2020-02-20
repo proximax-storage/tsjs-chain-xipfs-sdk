@@ -18,7 +18,6 @@ export class NemKeysCipherStream extends Transform {
       salt,
       iv
     );
-
     this.push(salt);
     this.push(iv);
   }
@@ -60,7 +59,6 @@ export class NemKeysCipherStream extends Transform {
     for (let i = 0; i < salt.length; i++) {
       sharedKey[i] ^= salt[i];
     }
-
     const key = new Uint8Array(32);
     const sha3 = SHA3Hasher.createHasher(32);
     sha3.reset();
