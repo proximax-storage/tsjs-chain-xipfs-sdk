@@ -48,7 +48,8 @@ export class PasswordPrivacyStrategy implements PrivacyStrategy {
    * @return the encrypted byte stream
    */
   public encrypt(stream: Stream): Stream {
-    return stream.pipe(new PbeCipherStream({ password: this.password }));
+    return stream
+      .pipe(new PbeCipherStream({ password: this.password }));
   }
 
   /**
@@ -57,8 +58,10 @@ export class PasswordPrivacyStrategy implements PrivacyStrategy {
    * @return the decrypted byte stream
    */
   public decrypt(encryptedStream: Stream): Stream {
-    return encryptedStream.pipe(
-      new PbeDecipherStream({ password: this.password })
-    );
+    return encryptedStream
+      .pipe(
+        new PbeDecipherStream({ password: this.password })
+      );
+     
   }
 }

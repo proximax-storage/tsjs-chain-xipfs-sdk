@@ -55,8 +55,10 @@ export class NemKeysDecipherStream extends Transform {
 
     if (
       this.saltBytesRead === NemKeysDecipherStream.SaltLength &&
-      this.ivBytesRead === NemKeysDecipherStream.IvLength
+      this.ivBytesRead === NemKeysDecipherStream.IvLength &&
+      !this.decipher
     ) {
+    
       this.decipher = this.getDecipher(
         this.privateKey,
         this.publicKey,
@@ -105,7 +107,7 @@ export class NemKeysDecipherStream extends Transform {
       this.hashFunction,
       SignSchema.SHA3
     );
-
+   
     for (let i = 0; i < salt.length; i++) {
       sharedKey[i] ^= salt[i];
     }

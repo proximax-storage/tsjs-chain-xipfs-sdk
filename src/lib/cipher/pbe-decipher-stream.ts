@@ -51,7 +51,8 @@ export class PbeDecipherStream extends Transform {
 
     if (
       this.saltBytesRead === PbeDecipherStream.SaltLength &&
-      this.ivBytesRead === PbeDecipherStream.IvLength
+      this.ivBytesRead === PbeDecipherStream.IvLength &&
+      !this.decipher
     ) {
       const key = crypto.pbkdf2Sync(
         this.password,
