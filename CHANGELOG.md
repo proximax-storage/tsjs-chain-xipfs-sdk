@@ -2,64 +2,9 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-<a name="0.2.10"></a>
-## [0.2.10](https://github.com/proximax-storage/tsjs-chain-xipfs-sdk/compare/v0.2.21...v0.2.10) (2020-02-20)
 
-
-
-<a name="0.2.21"></a>
-## [0.2.21](https://github.com/proximax-storage/tsjs-chain-xipfs-sdk/compare/v0.2.20...v0.2.21) (2020-02-20)
-
-
-
-<a name="0.2.20"></a>
-## [0.2.20](https://github.com/proximax-storage/tsjs-chain-xipfs-sdk/compare/v0.2.19...v0.2.20) (2020-02-20)
-
-
-
-<a name="0.2.19"></a>
-## [0.2.19](https://github.com/proximax-storage/tsjs-chain-xipfs-sdk/compare/v0.2.18...v0.2.19) (2020-02-19)
-
-
-
-<a name="0.2.18"></a>
-## [0.2.18](https://github.com/proximax-storage/tsjs-chain-xipfs-sdk/compare/v0.2.17...v0.2.18) (2020-02-19)
-
-
-
-<a name="0.2.17"></a>
-## [0.2.17](https://github.com/proximax-storage/tsjs-chain-xipfs-sdk/compare/v0.2.16...v0.2.17) (2020-02-19)
-
-
-
-<a name="0.2.16"></a>
-## [0.2.16](https://github.com/proximax-storage/tsjs-chain-xipfs-sdk/compare/v0.2.15...v0.2.16) (2020-02-19)
-
-
-
-<a name="0.2.15"></a>
-## [0.2.15](https://github.com/proximax-storage/tsjs-chain-xipfs-sdk/compare/v0.2.14...v0.2.15) (2020-02-19)
-
-
-
-<a name="0.2.14"></a>
-## [0.2.14](https://github.com/proximax-storage/tsjs-chain-xipfs-sdk/compare/v0.2.13...v0.2.14) (2020-02-19)
-
-
-
-<a name="0.2.13"></a>
-## [0.2.13](https://github.com/proximax-storage/tsjs-chain-xipfs-sdk/compare/v0.2.12...v0.2.13) (2020-02-19)
-
-
-
-<a name="0.2.12"></a>
-## [0.2.12](https://github.com/proximax-storage/tsjs-chain-xipfs-sdk/compare/v0.2.11...v0.2.12) (2020-02-19)
-
-
-
-<a name="0.2.11"></a>
-## [0.2.11](https://github.com/proximax-storage/tsjs-chain-xipfs-sdk/compare/v0.2.5...v0.2.11) (2020-02-19)
-
+<a name="0.2.9"></a>
+## 0.2.8 (2020-02-21)
 
 
 <a name="0.2.8"></a>
