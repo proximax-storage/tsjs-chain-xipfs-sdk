@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import { Transform, TransformCallback } from 'stream';
-import { Convert, crypto_shared_key_hash, SHA3Hasher, SignSchema  } from 'tsjs-xpx-chain-sdk';
+import { Convert, KeyPair, SignSchema } from 'tsjs-xpx-chain-sdk';
 import { NemKeysCipherStreamOptions } from './nem-keys-cipher-stream-options';
 
 export class NemKeysDecipherStream extends Transform {
@@ -84,39 +84,15 @@ export class NemKeysDecipherStream extends Transform {
     callback();
   }
 
-  private hashFunction(dest: Uint8Array, data: Uint8Array): void {
-    const sha3 = SHA3Hasher.createHasher(64);
-    sha3.reset();
-    sha3.update(data);
-    sha3.finalize(dest);
-  }
-
   private getDecipher(
     privateKey: string,
     publicKey: string,
     salt: Buffer,
     iv: Buffer
   ): crypto.Decipher {
-    const privateKeyUint8Arr = Convert.hexToUint8(privateKey);
-    const publicKeyUint8Arr = Convert.hexToUint8(publicKey);
-    const sharedKey = new Uint8Array(32);
-    crypto_shared_key_hash(
-      sharedKey,
-      publicKeyUint8Arr,
-      privateKeyUint8Arr,
-      this.hashFunction,
-      SignSchema.SHA3
-    );
-   
-    for (let i = 0; i < salt.length; i++) {
-      sharedKey[i] ^= salt[i];
-    }
-
-    const key = new Uint8Array(32);
-    const sha3 = SHA3Hasher.createHasher(32);
-    sha3.reset();
-    sha3.update(sharedKey);
-    sha3.finalize(key);
+    const keyPair = KeyPair.createKeyPairFromPrivateKeyString(privateKey, SignSchema.SHA3);
+    const pk = Convert.hexToUint8(publicKey);
+    const key = KeyPair.deriveSharedKey(keyPair, pk, salt, SignSchema.SHA3);
 
     return crypto.createDecipheriv('aes-256-cbc', key, iv);
   }
