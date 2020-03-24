@@ -8,6 +8,7 @@ cache:
     - "node_modules"
 before_script:
   - npm run fix
+  - npm run version
   - npm run build
 script:
   - node_version=$(node -v); if [ ${node_version:1:2} = 12 ]; then npm run test:coveralls; else npm run test; fi
