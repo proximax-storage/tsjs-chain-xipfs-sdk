@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "flatbuffers": "^1.10.0",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-scripts": "2.0.5",
-    "xpx2-ts-js-sdk": "^0.0.24"
+    "flatbuffers": "^1.12.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "^3.4.3",
+    "tsjs-chain-xipfs-sdk": "^0.2.9"
   },
   "scripts": {
     "start": "react-scripts start",
