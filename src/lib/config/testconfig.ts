@@ -8,7 +8,7 @@ export const IpfsInfo = {
 
 export const BlockchainInfo = {
  // apiHost: 'bcstage2.xpxsirius.io',
-  apiHost: 'bctestnet4.xpxsirius.io',
+  apiHost: 'bctestnet2.brimstone.xpxsirius.io',
   apiPort: 443,
   apiProtocol: 'https'
 };
